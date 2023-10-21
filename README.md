@@ -2,10 +2,10 @@
 
 ## EDUCATION
 
-- #### Masters in Data Science and AI
+- #### Masters in Data Science and AI (2022 - 2024)
 Chalmers University of Technology, Sweden
 
-- #### Bachelor of Engineering in Computer Science Engineering
+- #### Bachelor of Engineering in Computer Science Engineering (2018 - 2022)
 NMAM Institute of Technology, India
 
 ## TECHNICAL SKILLS 
