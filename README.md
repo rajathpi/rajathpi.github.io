@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">Aspiring Data Scientist <img width="50" src="https://em-content.zobj.net/source/microsoft-teams/363/man-technologist_1f468-200d-1f4bb.png" alt="Material Bread logo"></h1>
+  <h1 align="center">Aspiring Data Scientist <img width="69" src="https://em-content.zobj.net/source/microsoft-teams/363/man-technologist_1f468-200d-1f4bb.png" alt="1"></h1>
 </p>
 
 <!--
@@ -28,13 +28,11 @@ Power BI, Tensorflow, Keras, Pytorch, STL
 ## EXPERIENCE
 
 - #### Volvo Group
-Summer Intern (June-August 2023) 
-
+Summer Intern (June-August 2023)                                                                                           
 Worked in the people analytics team on development of regression models for estimating human resources factors within the company along with improving Power BI reports.
 
 - #### Chalmers University of Technology
-Research Assistant (February-June 2023) 
-
+Research Assistant (February-June 2023)                                                                                            
 Worked on analysis of data collected from e-scooters as a part of the e-SAFER project at the Division of Vehicle Safety within Chalmers University of Technology.
 
 ## ACADEMIC PROJECTS
