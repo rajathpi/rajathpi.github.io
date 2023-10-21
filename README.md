@@ -1,10 +1,9 @@
 # Aspiring Data Scientist
 
-- #### Masters in Data Science and AI
-Chalmers University of Technology, Sweden
+## EDUCATION
 
-- #### Bachelor of Engineering in Computer Science Engineering
-NMAM Institute of Technology, India
+- M.S., Data Science and AI	| Chalmers University of Technology, Sweden (_2022 - 2024_)	 			        		
+- B.E., Computer Science | NMAM Institute of Technology, India (_2018 - 2022_)
 
 ### TECHNICAL SKILLS 
 - #### Languages
@@ -20,25 +19,25 @@ Power BI, Tensorflow, Keras, Pytorch, STL
 ### EXPERIENCE
 
 - #### Volvo Group
-Summer Intern (June-August 2023)
+Summer Intern (June-August 2023) </p>
 Worked in the people analytics team on development of regression models for estimating human resources factors within the company along with improving Power BI reports.
 
 - #### Chalmers University of Technology
-Research Assistant (February-June 2023)
+Research Assistant (February-June 2023) </p>
 Worked on analysis of data collected from e-scooters as a part of the e-SAFER project at the Division of Vehicle Safety within Chalmers University of Technology.
 
 ### ACADEMIC PROJECTS
 
-- #### Automatic Medical Report Generation from Radiology Chest X-Ray using Deep learning Strategy
+- #### [Automatic Medical Report Generation from Radiology Chest X-Ray using Deep learning Strategy](https://github.com/rajathpi/automatic-report-generator)
 Using CNN, the CheXNET model for feature extraction, LSTM, and RNN to build a predictive model that involves frontal and lateral chest Xray images and text processing to build a deep learning model.
 
 - #### FaceAntiSpoofing 
 Using HOG to find the magnitude and angle of each pixel so that we could extract features from the image. Implemented a Support Vector Machine, which is a classifier used to classify if the face is real or fake.
 
-- #### AI Learns to Play Flappy Bird 
+- #### [AI Learns to Play Flappy Bird](https://github.com/rajathpi/flappy-bird) 
 Using neuroevolution of arguments topologies, trained an agent to play a clone of the game Flappy Bird. Both the game environment and AI are programmed using Python.
 
-- #### Health First App
+- #### [Health First App](https://github.com/rajathpi/health-first)
 An android app that contains detailed information on the food items, the health benefits, and the diseases that can be prevented by the consumption of the specific food item.
 
 ### COMPETITIVE PROGRAMMING 
