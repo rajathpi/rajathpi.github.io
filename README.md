@@ -1,10 +1,10 @@
+<!--
 <p align="center">
   <h1 align="center">Aspiring Data Scientist <img width="69" src="https://em-content.zobj.net/source/microsoft-teams/363/man-technologist_1f468-200d-1f4bb.png" alt="1"></h1>
 </p>
+-->
 
-
-
-
+# Aspiring Data Scientist 
 
 ## EDUCATION
 
