@@ -1,5 +1,7 @@
 # Aspiring Data Scientist
 
+[![GitHub](https://img.shields.io/badge/GitHub-rajathpi-181717?style=flat-square&logo=github)](https://github.com/rajathpi) [![LinkedIn](https://img.shields.io/badge/LinkedIn-rajath--pai-0077B5?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/rajath-pai/)
+
 ## EDUCATION
 
 - #### Masters in Data Science and AI (2022 - 2024)
@@ -22,11 +24,13 @@ Power BI, Tensorflow, Keras, Pytorch, STL
 ## EXPERIENCE
 
 - #### Volvo Group
-Summer Intern (June-August 2023) </p>
+Summer Intern (June-August 2023) 
+
 Worked in the people analytics team on development of regression models for estimating human resources factors within the company along with improving Power BI reports.
 
 - #### Chalmers University of Technology
-Research Assistant (February-June 2023) </p>
+Research Assistant (February-June 2023) 
+
 Worked on analysis of data collected from e-scooters as a part of the e-SAFER project at the Division of Vehicle Safety within Chalmers University of Technology.
 
 ## ACADEMIC PROJECTS
