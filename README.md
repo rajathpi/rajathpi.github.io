@@ -3,7 +3,7 @@
 </p>
 
 
-[![GitHub](https://img.shields.io/badge/GitHub-rajathpi-181717?style=flat-square&logo=github)](https://github.com/rajathpi) [![LinkedIn](https://img.shields.io/badge/LinkedIn-rajath--pai-0077B5?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/rajath-pai/)
+
 
 
 ## EDUCATION
@@ -77,3 +77,7 @@ Completed the certified course offered by Stanford University
 ### HOBBIES
 - Photography
 - Drawing
+
+
+
+[![GitHub](https://img.shields.io/badge/GitHub-rajathpi-181717?style=flat-square&logo=github)](https://github.com/rajathpi) [![LinkedIn](https://img.shields.io/badge/LinkedIn-rajath--pai-0077B5?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/rajath-pai/)
