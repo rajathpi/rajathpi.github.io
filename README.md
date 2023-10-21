@@ -1,6 +1,5 @@
 <p align="center">
-  <img width="200" src="https://em-content.zobj.net/source/microsoft-teams/363/man-technologist_1f468-200d-1f4bb.png" alt="Material Bread logo">
-  <h1 align="center">Aspiring Data Scientist</h1>
+  <h1 align="center">Aspiring Data Scientist <img width="50" src="https://em-content.zobj.net/source/microsoft-teams/363/man-technologist_1f468-200d-1f4bb.png" alt="Material Bread logo"></h1>
 </p>
 
 <!--
