@@ -2,8 +2,8 @@
 
 ## EDUCATION
 
-- M.S., Data Science and AI	| Chalmers University of Technology, Sweden (_2022 - 2024_)	 			        		
-- B.E., Computer Science | NMAM Institute of Technology, India (_2018 - 2022_)
+M.S., Data Science and AI	| Chalmers University of Technology, Sweden (_2022 - 2024_)	 	 </p>		        		
+B.E., Computer Science | NMAM Institute of Technology, India (_2018 - 2022_) </p>
 
 ### TECHNICAL SKILLS 
 - #### Languages
