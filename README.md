@@ -2,9 +2,9 @@
   <h1 align="center">Aspiring Data Scientist <img width="69" src="https://em-content.zobj.net/source/microsoft-teams/363/man-technologist_1f468-200d-1f4bb.png" alt="1"></h1>
 </p>
 
-<!--
+
 [![GitHub](https://img.shields.io/badge/GitHub-rajathpi-181717?style=flat-square&logo=github)](https://github.com/rajathpi) [![LinkedIn](https://img.shields.io/badge/LinkedIn-rajath--pai-0077B5?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/rajath-pai/)
--->
+
 
 ## EDUCATION
 
