@@ -3,16 +3,3 @@ logo: /assets/img/headshot_circle.png
 #description: text below image
 # show_downloads: true
 theme: jekyll-theme-minimal
-
-# Customize styling for a black background and white text
-sass:
-  style: compressed  # Change to "expanded" for development
-  syntax: scss
-
-# Define custom colors and typography
-colors:
-  primary: '#ffffff'  # White text
-  background: '#000000'  # Black background
-font:
-  family: 'Arial, sans-serif'
-  size: 16px
