@@ -43,10 +43,10 @@ An android app that contains detailed information on the food items, the health 
 
 ### COMPETITIVE PROGRAMMING 
 
-Global Rank 1117 in Google Codejam 2021 Round 1 C and qualified to Round 2.
-Global Rank 302 in Google Kickstart Round H – 2021.
-Global Rank 30 in Codechef August-2021 Long Challenge.
-Global Rank 37 in Codechef July Long Challenge.
+- Global Rank 1117 in Google Codejam 2021 Round 1 C and qualified to Round 2.
+- Global Rank 302 in Google Kickstart Round H – 2021.
+- Global Rank 30 in Codechef August-2021 Long Challenge.
+- Global Rank 37 in Codechef July Long Challenge.
 
 ### WORKSHOPS, TRAINING, AND CERTIFICATION
 
