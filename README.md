@@ -16,13 +16,13 @@ NMAM Institute of Technology, India
 
 ## TECHNICAL SKILLS 
 - #### Languages
-C++, C, Python, Java, R, Matlab
+Python, C++, C, Java, R, Matlab
 
 - #### DBMS
-MS SQL
+PostgreSQL
 
 - #### Frameworks
-Power BI, Tensorflow, Keras, Pytorch, STL
+PyTorch, Tensorflow, Keras, Power BI, STL
 
 
 ## EXPERIENCE
@@ -39,6 +39,9 @@ Worked on analysis of data collected from e-scooters as a part of the e-SAFER pr
 
 - #### [Automatic Medical Report Generation from Radiology Chest X-Ray using Deep learning Strategy](https://github.com/rajathpi/automatic-report-generator)
 Using CNN, the CheXNET model for feature extraction, LSTM, and RNN to build a predictive model that involves frontal and lateral chest Xray images and text processing to build a deep learning model.
+
+- #### [Scattering Parameters Parameterization](https://github.com/rajathpi/Scattering-parameter-parameterization)
+This project utilizes TensorFlow and Keras to apply neural networks (Basic, LSTM, and GRU) to predict input parameters for a human head-antenna system using scattering parameters. The GRU model consistently outperforms others, showcasing its potential for accurate predictions
 
 - #### FaceAntiSpoofing 
 Using HOG to find the magnitude and angle of each pixel so that we could extract features from the image. Implemented a Support Vector Machine, which is a classifier used to classify if the face is real or fake.
