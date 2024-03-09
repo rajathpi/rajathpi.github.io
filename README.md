@@ -28,6 +28,10 @@ PyTorch, Tensorflow, Keras, Power BI, STL
 ## EXPERIENCE
 
 - #### Volvo Group
+Master's Thesis (Januray-  2024)                                                                                           
+I am currently working on my Master's thesis at Volvo GTT, focusing on using machine learning to identify reasons why truck drivers turn off one of the ADAS functions and what leads to them disabling it.
+
+- #### Volvo Group
 Summer Intern (June-August 2023)                                                                                           
 Worked in the people analytics team on development of regression models for estimating human resources factors within the company along with improving Power BI reports.
 
