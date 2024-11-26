@@ -7,8 +7,8 @@ Hi there! I'm an aspiring data scientist passionate about leveraging technology 
 - [About Me](aboutme.md)  
   Learn more about my education, skills, experience, projects, and interests.
 
-- [Blogs](blogs/llms.md)  
-  Check out my thoughts on various tech topics, including my latest blog on Large Language Models (LLMs).  
+- [Blogs](blogs/blogpage.md)  
+  Explore all my blog posts on technology, data science, and more.
 
 ---
 
