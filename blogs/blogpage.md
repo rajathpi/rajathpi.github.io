@@ -10,5 +10,3 @@ Welcome to my blog page! Here, I share my insights, experiences, and knowledge o
 
 ---
 
-## How to Stay Updated  
-I’m constantly writing about new topics. Be sure to check back regularly for updates!  
