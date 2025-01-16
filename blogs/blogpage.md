@@ -13,4 +13,7 @@ Welcome to my blog page! Here, I share my insights, experiences, and knowledge o
    *Published: January 16, 2025*  
    A step-by-step guide to using MLflow for managing ML experiments and deployments.
 
+2. **[KFold](KFold.md)**  
+   *Published: January 16, 2025*
+   Lets understand how to use KFold
 ---
