@@ -144,6 +144,15 @@ Fold 4:
      [19 20]], labels=[ 9 10]
 ```
 
+This is how it works
+```plaintext
+Fold 0: Test = [0, 1], Train = [2, 3, 4, 5, 6, 7, 8, 9]
+Fold 1: Test = [2, 3], Train = [0, 1, 4, 5, 6, 7, 8, 9]
+Fold 2: Test = [4, 5], Train = [0, 1, 2, 3, 6, 7, 8, 9]
+Fold 3: Test = [6, 7], Train = [0, 1, 2, 3, 4, 5, 8, 9]
+Fold 4: Test = [8, 9], Train = [0, 1, 2, 3, 4, 5, 6, 7]
+```
+
 ---
 
 ## Key Points
