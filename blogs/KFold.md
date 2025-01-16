@@ -144,15 +144,6 @@ Fold 4:
      [19 20]], labels=[ 9 10]
 ```
 
-Here's how it works: 
-Fold 0: Test = [0, 1], Train = [2, 3, 4, 5, 6, 7, 8, 9]
-Fold 1: Test = [2, 3], Train = [0, 1, 4, 5, 6, 7, 8, 9]
-Fold 2: Test = [4, 5], Train = [0, 1, 2, 3, 6, 7, 8, 9]
-Fold 3: Test = [6, 7], Train = [0, 1, 2, 3, 4, 5, 8, 9]
-Fold 4: Test = [8, 9], Train = [0, 1, 2, 3, 4, 5, 6, 7]
-
-
-
 ---
 
 ## Key Points
@@ -165,4 +156,3 @@ Fold 4: Test = [8, 9], Train = [0, 1, 2, 3, 4, 5, 6, 7]
 ### Advantages
 1. Every data point gets used for both training and testing.
 2. Reduces bias in performance evaluation by ensuring diverse train-test splits.
-
