@@ -1,3 +1,4 @@
+### Code
 ```python
 import numpy as np
 from sklearn.datasets import make_classification
@@ -8,15 +9,18 @@ from xgboost import XGBClassifier
 from sklearn.metrics import classification_report
 import warnings
 warnings.filterwarnings('ignore')
+### Output
 ```
 
 
+### Code
 ```python
 # Step 1: Create an imbalanced binary classification dataset
 X, y = make_classification(n_samples=1000, n_features=10, n_informative=2, n_redundant=8, 
                            weights=[0.9, 0.1], flip_y=0, random_state=42)
 
 np.unique(y, return_counts=True)
+### Output
 ```
 
 
@@ -27,12 +31,15 @@ np.unique(y, return_counts=True)
 
 
 
+### Code
 ```python
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y, random_state=42)
+### Output
 ```
 
 
+### Code
 ```python
 # Define the model hyperparameters
 params = {
@@ -50,6 +57,7 @@ y_pred = lr.predict(X_test)
 
 report = classification_report(y_test, y_pred)
 print(report)
+### Output
 ```
 
                   precision    recall  f1-score   support
@@ -64,9 +72,11 @@ print(report)
     
 
 
+### Code
 ```python
 report_dict = classification_report(y_test, y_pred, output_dict=True)
 report_dict
+### Output
 ```
 
 
@@ -93,11 +103,14 @@ report_dict
 
 
 
+### Code
 ```python
 import mlflow
+### Output
 ```
 
 
+### Code
 ```python
 mlflow.set_experiment("First Experiment")
 mlflow.set_tracking_uri("http://127.0.0.1:5000/")
@@ -113,6 +126,7 @@ with mlflow.start_run():
         'f1_score_macro': report_dict['macro avg']['f1-score']
     })
     mlflow.sklearn.log_model(lr, "Logistic Regression")
+### Output
 ```
 
     2025/01/16 09:56:47 WARNING mlflow.models.model: Model logged without a signature and input example. Please set `input_example` parameter when logging the model to auto infer the model signature.
@@ -123,6 +137,8 @@ with mlflow.start_run():
     
 
 
+### Code
 ```python
 
+### Output
 ```
