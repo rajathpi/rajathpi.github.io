@@ -1,10 +1,4 @@
-# My Blogs  
-
-Welcome to my blog page! Here, I share my insights, experiences, and knowledge on various topics in technology and data science.  
-
----
-
-## Blog Posts  
+# Blogs  
 
 1. **[Building RAG from Scratch](RAG.md)**  
    *Published: January 24, 2025*  
