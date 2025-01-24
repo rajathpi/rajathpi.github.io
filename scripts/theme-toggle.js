@@ -3,10 +3,17 @@ const themeToggle = document.getElementById("theme-toggle");
 
 // Check for saved theme in localStorage
 const savedTheme = localStorage.getItem("theme");
+
+// Set default theme to light-mode if no theme is saved
 if (savedTheme) {
   document.body.classList.add(savedTheme);
-  updateButtonIcon(savedTheme);
+} else {
+  document.body.classList.add("light-mode"); // Default to light mode
+  localStorage.setItem("theme", "light-mode"); // Save light mode as default
 }
+
+// Update the button icon based on the current theme
+updateButtonIcon(savedTheme || "light-mode");
 
 // Toggle between light and dark mode
 themeToggle.addEventListener("click", () => {
