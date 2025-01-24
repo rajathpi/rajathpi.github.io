@@ -1,18 +1,40 @@
 /* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
   }
   
+  :root {
+    --full-viewport-height: 100vh;
+    --safe-area-inset-top: env(safe-area-inset-top, 0px);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  
+  body {
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+    -webkit-font-smoothing: auto;
+    line-height: 1.6;
+    background-color: rgb(25, 25, 25); /* Dark background */
+    color: rgba(255, 255, 255, 0.81); /* Light text color */
+    caret-color: rgba(255, 255, 255, 0.81);
+    height: var(--full-viewport-height);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  ::selection {
+    background: #2383e247;
+  }
+  
+  /* Header Styles */
   header {
     background: #333;
     color: #fff;
     padding: 1rem 0;
     text-align: center;
+    width: 100%;
   }
   
   nav ul {
@@ -30,20 +52,172 @@ body {
     text-decoration: none;
   }
   
+  /* Main Content Styles */
   main {
     padding: 20px;
+    max-width: 708px;
+    width: 100%;
+    margin: 0 auto;
+    flex: 1; /* Ensures main content grows to push footer down */
   }
   
   .hero, .explore, .contact, .about, .blogs {
     margin-bottom: 20px;
   }
   
+  .hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .hero p {
+    font-size: 1.1rem;
+  }
+  
+  .explore h2, .contact h2, .about h1, .blogs h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .explore ul, .contact ul, .about ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .explore ul li, .contact ul li, .about ul li {
+    margin-bottom: 10px;
+  }
+  
+  .explore ul li a, .contact ul li a {
+    color: rgba(255, 255, 255, 0.81);
+    text-decoration: none;
+  }
+  
+  .explore ul li a:hover, .contact ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  .mugshot {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Section Divider */
+  .section-divider {
+    border: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 40px 0;
+  }
+  
+  /* Section Spacing */
+  section {
+    margin-bottom: 40px;
+  }
+  
+  /* Light Mode Styles */
+  body.light-mode {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  body.light-mode header {
+    background: #0077b5;
+  }
+  
+  body.light-mode nav ul li a {
+    color: #fff;
+  }
+  
+  /* Theme Toggle Button */
+  #theme-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+  }
+
+  /* Add space after each <li> in the workshops section only */
+  .education ul li,
+  .skills ul li,
+  .experience ul li, 
+  .projects ul li {
+      margin-bottom: 20px;
+  }
+
+
+ /* Blogs Section Styles */
+.blogs ul {
+    list-style-type: none; /* Remove default bullet points */
+    padding-left: 0; /* Remove default padding */
+  }
+  
+  .blogs ul li {
+    margin-bottom: 20px; /* Add space between blog posts */
+  }
+  
+  .blogs strong {
+    font-size: 1.2rem; /* Make blog titles slightly larger */
+  }
+  
+  .blogs em {
+    color: #666; /* Gray color for publication date */
+    font-size: 0.9rem; /* Smaller font size for date */
+  }
+  
+  .blogs a {
+    color: #1e90ff; /* Blue color for links */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  .blogs a:hover {
+    text-decoration: underline; /* Add underline on hover */
+  }
+
+
+  /* Code Block Styling */
+pre {
+    background-color: #2d2d2d; Dark background for code blocks
+    color: #f8f8f2; /* Light text color */
+    padding: 15px; /* Add padding inside the code block */
+    border-radius: 5px; /* Rounded corners */
+    overflow-x: auto; /* Add horizontal scroll if needed */
+    font-family: "Courier New", Courier, monospace; /* Monospace font for code */
+    font-size: 0.9rem; /* Slightly smaller font size */
+    line-height: 1.5; /* Improve readability */
+    margin: 20px 0; /* Add space above and below the code block */
+  }
+  
+  code {
+    background-color: #2d2d2d; /* Dark background for inline code */
+    color: #f8f8f2; /* Light text color */
+    padding: 3px 5px; /* Add padding for inline code */
+    border-radius: 3px; /* Rounded corners for inline code */
+    font-family: "Courier New", Courier, monospace; /* Monospace font for code */
+    font-size: 0.9rem; /* Slightly smaller font size */
+  }
+  
+  /* Syntax Highlighting (Optional) */
+  pre .keyword { color: #f92672; } /* Keywords */
+  pre .string { color: #e6db74; } /* Strings */
+  pre .comment { color: #75715e; font-style: italic; } /* Comments */
+  pre .function { color: #66d9ef; } /* Functions */
+  pre .number { color: #ae81ff; } /* Numbers */
+  
+  /* Footer Styles */
   footer {
     background: #333;
     color: #fff;
     text-align: center;
     padding: 1rem 0;
-    position: fixed;
     width: 100%;
-    bottom: 0;
   }
