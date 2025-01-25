@@ -10,19 +10,35 @@
     --safe-area-inset-top: env(safe-area-inset-top, 0px);
     --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
   }
-  
+
+
+  /* 
   body {
     font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
     -webkit-font-smoothing: auto;
     line-height: 1.6;
-    background-color: rgb(25, 25, 25); /* Dark background */
-    color: rgba(255, 255, 255, 0.81); /* Light text color */
+    background-color: rgb(25, 25, 25); 
+    color: rgba(255, 255, 255, 0.81);
     caret-color: rgba(255, 255, 255, 0.81);
     height: var(--full-viewport-height);
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+  } 
+  */
+  
+  body {
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+    -webkit-font-smoothing: auto;
+    line-height: 1.6;
+    background-color: white; /* Light gray background */
+    color: black; /* Black text color */
+    caret-color: black; /* Black caret color */
+    height: var(--full-viewport-height);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
   
   ::selection {
     background: #2383e247;
@@ -212,6 +228,7 @@ pre {
   pre .comment { color: #75715e; font-style: italic; } /* Comments */
   pre .function { color: #66d9ef; } /* Functions */
   pre .number { color: #ae81ff; } /* Numbers */
+  
   
   /* Footer Styles */
   footer {

@@ -60,14 +60,38 @@
     .grid a:hover::before {
       opacity: 1; /* Show gradient overlay on hover */
     }
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(145deg, #111311, #0e0f0e);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2),
+                  -5px -5px 10px rgba(255, 255, 255, 0.1);
+    }
+    .back-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3),
+                  -8px -8px 15px rgba(255, 255, 255, 0.1);
+    }
+    .back-button:active {
+      transform: translateY(0);
+      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2),
+                  -3px -3px 8px rgba(255, 255, 255, 0.1);
+    }
   </style>
 </head>
 <body>
+  <a href="../index.html" class="back-button">Back to Home</a>
   <div class="grid">
-    <a href="about.html">About Me</a>
-    <a href="blogs.html">Blog</a>
-    <a href="contact.html">Contact Me</a>
-    <!-- <a href="https://www.linkedin.com/in/rajath-pai/" target="_blank">LinkedIn</a> -->
+    <a href="https://github.com/rajathpi" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/rajath-pai/" target="_blank">LinkedIn</a>
+    <a href="mailto:rajathpai2000@gmail.com">Email</a>
   </div>
 </body>
 </html>
