@@ -22,6 +22,7 @@
 
     body {
       font-family: 'Lora', serif; /* Elegant serif for body text */
+      line-height: 1.6;
       margin: 0;
       padding: 0;
       background-color: var(--light-bg-color); /* Soft off-white background */
@@ -259,13 +260,15 @@
 
     .experience li strong {
       font-size: 1.1em;
-      margin-bottom: 5px;
+      margin-bottom: 5px; /* Adjust margin as content is now on one line */
+      display: inline; /* Keep strong inline if role and company are on one line */
     }
 
-    .experience li em {
+    .experience li em { /* Keep for potential sub-details if needed */
       font-size: 1em;
       color: var(--medium-gray);
       margin-bottom: 8px;
+      display: inline; /* Keep em inline */
     }
 
     .experience li:not(:first-child) {
@@ -404,8 +407,7 @@
   <header>
     <nav>
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html" class="active">About Me</a></li>
+        <li><a href="about.html" class="active">Home</a></li>
         <li><a href="blogs.html">Blogs</a></li>
         <li><a href="contact.html">Contact Me</a></li>
       </ul>
@@ -415,25 +417,19 @@
   <div class="profile-section">
     <img src="assets/headshot_circle.png" alt="Rajath Pai's Mugshot" class="mugshot">
     <h1>Rajath Rajendra Pai</h1>
-    <p>Aspiring Data Scientist | Chalmers University of Technology</p>
+    <p>Data Scientist</p> <!-- Changed to Data Scientist -->
   </div>
 
   <main>
     <div class="about-container">
-      <!-- About Rajath Introduction -->
+      <!-- About Rajath Introduction - Heading removed, text updated -->
       <section class="about-intro">
-        <h2>About Rajath</h2>
         <p>
-          Hello! I'm Rajath Rajendra Pai, a passionate and driven Data Scientist. Currently pursuing my Master's in Data Science and AI at Chalmers University of Technology in Sweden, I am deeply fascinated by the power of data to solve complex problems and drive innovation.
-        </p>
-        <p>
-          My journey in technology began with a Bachelor's in Computer Science Engineering, leading me to explore various facets of software development and problem-solving. Over the years, I've honed my skills in programming, machine learning, and data analysis, with a keen interest in applying these to real-world challenges. My experience at Volvo Group has provided invaluable insights into industry applications of data science, from optimizing ETL pipelines to developing predictive models.
-        </p>
-        <p>
-          Beyond my technical expertise, I am a lifelong learner with strong communication and collaboration skills, always eager to contribute effectively within cross-functional teams. I believe in the power of clear data storytelling to translate complex insights into actionable strategies.
-        </p>
-        <p>
-          Welcome to my page! Feel free to explore my projects, blogs, and get in touch.
+          Hello! I’m currently working as an Associate Data Scientist at Volvo Group, where I build end-to-end solutions using the Microsoft Power Platform and Python. My focus is on predictive analytics and designing optimized, scalable, and reusable workflows.
+
+In my free time, I participate in Kaggle competitions — a great way to keep learning, sharpen my skills, and contribute to the data science community. You can check out my Kaggle profile <a href="https://www.kaggle.com/rajathrpai" target="_blank" style="color: var(--gold-accent); text-decoration: underline;">here</a>. Outside of tech, I enjoy swimming, cycling, and lately, getting lost in the world of Red Dead Redemption 2 — it's been amazing.
+
+Feel free to reach out if you'd like to connect or chat!
         </p>
       </section>
 
@@ -452,44 +448,38 @@
         </ul>
       </section>
 
-      <!-- Experience Section -->
+      <!-- Experience Section - Formatting updated -->
       <section class="experience">
         <h2>Experience</h2>
         <ul>
           <li>
-            <strong>Volvo Group</strong><br>
-            <em>People Data Analyst</em> (Sep 2024 – Nov 2024)<br>
+            <strong>Volvo Group - People Data Analyst</strong> <em>(Sep 2024 – Nov 2024)</em><br>
             - Optimized ETL pipelines to enhance data processing efficiency.<br>
             - Automated data workflows using Python to streamline operations.<br>
             - Enhanced Power BI dashboards by optimizing PowerQuery and DAX queries for better performance.
           </li>
           <li>
-            <strong>Volvo Group</strong><br>
-            <em>Summer Workshop – Production Logistics</em> (Jul 2024 – Aug 2024)<br>
+            <strong>Volvo Group - Summer Workshop – Production Logistics</strong> <em>(Jul 2024 – Aug 2024)</em><br>
             - Processed and analyzed features to improve data matching accuracy for production logistics datasets using PySpark in Azure Databricks.<br>
             - Applied fuzzy matching and machine learning algorithms to identify optimal matching criteria.<br>
             - Collaborated in an agile framework with cross-functional teams to iteratively develop and refine solutions.
           </li>
           <li>
-            <strong>Volvo Group</strong><br>
-            <em>Summer Intern - People Analytics Team</em> (Jun 2024 – Jul 2024)<br>
+            <strong>Volvo Group - Summer Intern - People Analytics Team</strong> <em>(Jun 2024 – Jul 2024)</em><br>
             - Enhanced Power BI dashboards by optimizing PowerQuery and DAX queries for better performance.
           </li>
           <li>
-            <strong>Volvo Group</strong><br>
-            <em>Master's Thesis Worker</em> (Jan 2024 – Jun 2024)<br>
+            <strong>Volvo Group - Master's Thesis Worker</strong> <em>(Jan 2024 – Jun 2024)</em><br>
             - Developed a predictive model using multivariate time series data from truck sensors, external weather, and road-type datasets.<br>
             - Aimed to anticipate driver deactivation of ADAS functions to improve system design and usability.
           </li>
           <li>
-            <strong>Volvo Group</strong><br>
-            <em>Summer Intern – People Analytics Team</em> (Jun 2023 – Aug 2023)<br>
+            <strong>Volvo Group - Summer Intern – People Analytics Team</strong> <em>(Jun 2023 – Aug 2023)</em><br>
             - Designed and refined regression models for estimating human resource factors within the company.<br>
             - Enhanced Power BI reports to improve data visualization and accessibility.
           </li>
           <li>
-            <strong>Chalmers University of Technology</strong><br>
-            <em>Research Assistant</em> (Feb 2023 – Jun 2023)<br>
+            <strong>Chalmers University of Technology - Research Assistant</strong> <em>(Feb 2023 – Jun 2023)</em><br>
             - Conducted data analysis for the e-SAFER project at the Division of Vehicle Safety.<br>
             - Worked on analyzing data collected from e-scooters to identify patterns and safety improvements.
           </li>
@@ -501,13 +491,15 @@
         <h2>Core Technologies</h2>
         <ul>
           <li>Python</li>
-          <li>Pandas, NumPy, Scikit-learn</li>
-          <li>TensorFlow, PyTorch</li>
-          <li>PySpark, Databricks</li>
-          <li>SQL, PostgreSQL</li>
-          <li>Power BI, Matplotlib, Seaborn, Streamlit</li>
+          <li>SQL</li>
+          <li>PyTorch</li>
+          <li>Databricks</li>
+          <li>PowerBI</li>
+          <li>PowerApps</li>
+          <li>PowerAutomate</li>
           <li>MLflow</li>
           <li>Git</li>
+          <li>Other Python Libraries</li>
         </ul>
       </section>
 
@@ -539,9 +531,10 @@
       </section>
     </div>
   </main>
-
+<!--
   <footer>
     <p>&copy; 2025 Rajath Pai. All rights reserved.</p>
   </footer>
+ -->
 </body>
 </html>
