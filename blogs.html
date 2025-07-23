@@ -3,8 +3,285 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Me - Rajath Pai</title>
-  <link rel="stylesheet" href="../styles/style.css">
+  <title>Blogs - Rajath Pai</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Color Palette Variables for consistency */
+    :root {
+      --gold-accent: #B8860B; /* Primary gold color */
+      --darker-gold-hover: #DAA520; /* Darker gold for hover */
+      --deep-blue-gray: #2C3E50; /* Dark text/heading color */
+      --medium-gray: #555; /* Subtitle/general text color */
+      --soft-dark-gray: #444; /* Paragraph text color */
+      --light-bg-color: #F5F5F5; /* Soft off-white background */
+      --white-card-bg: #FFFFFF; /* Pure white for content cards */
+      --light-border: #E0E0E0; /* Light gray for subtle borders */
+      --shadow-color: rgba(0, 0, 0, 0.1); /* Subtle shadow color */
+      --shadow-hover-color: rgba(0, 0, 0, 0.15); /* Slightly darker shadow for hover */
+    }
+
+    body {
+      font-family: 'Lora', serif; /* Elegant serif for body text */
+      margin: 0;
+      padding: 0;
+      background-color: var(--light-bg-color); /* Soft off-white background */
+      color: var(--soft-dark-gray); /* Default text color */
+      display: flex;
+      flex-direction: column; /* Stack header, main, footer vertically */
+      align-items: center; /* Center content horizontally */
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    /* Header & Navigation Styling */
+    header {
+      width: 100%;
+      background-color: var(--white-card-bg);
+      padding: 15px 0;
+      box-shadow: 0 2px 5px var(--shadow-color);
+      position: sticky; /* Make header sticky */
+      top: 0;
+      z-index: 1000; /* Ensure it stays on top */
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      gap: 30px; /* Space between nav items */
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--deep-blue-gray);
+      font-family: 'Playfair Display', serif; /* Elegant serif for navigation */
+      font-weight: 500;
+      font-size: 1.1rem; /* Slightly larger for elegance */
+      padding: 5px 10px;
+      transition: color 0.3s ease, transform 0.3s ease;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -5px;
+      width: 0;
+      height: 2px;
+      background-color: var(--gold-accent);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--gold-accent);
+      transform: translateY(-2px); /* Subtle lift */
+    }
+
+    nav a:hover::after,
+    nav a.active::after { /* Add 'active' class to current page link */
+      width: 100%;
+      left: 0;
+    }
+    /* Specific styling for the active 'Blogs' link */
+    nav a[href="blogs.html"] {
+      color: var(--gold-accent); /* Highlight current page */
+    }
+    nav a[href="blogs.html"]::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* Main Content Area */
+    main {
+      padding: 60px; /* Generous padding from the elegant example */
+      max-width: 800px; /* Constrain content width for readability */
+      width: 90%; /* Responsive width */
+      margin: 30px auto; /* Center content block with margin */
+      background-color: var(--white-card-bg);
+      border-radius: 10px;
+      box-shadow: 0 8px 30px var(--shadow-color); /* Refined shadow */
+      position: relative;
+      overflow: hidden; /* For subtle background texture */
+    }
+
+    /* Subtle background texture/pattern for main container */
+    main::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml,%3Csvg width="6" height="6" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23f0f0f0" fill-opacity="0.4" fill-rule="evenodd"%3E%3Cpath d="M5 0h1L0 6V5zM6 5v1H5z"/%3E%3C/g%3E%3C/svg%3E');
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    .blogs-container {
+      position: relative; /* Ensure content is above texture */
+      z-index: 1;
+      padding: 0 0px; /* No extra padding here, already on main */
+    }
+
+    /* Section Styling for Blogs */
+    .blogs-section {
+      margin-bottom: 40px; /* Space between sections */
+      padding-bottom: 20px; /* Padding inside each section */
+      border-bottom: 1px solid var(--light-border); /* Light divider */
+    }
+
+    .blogs-section:last-child {
+      border-bottom: none; /* No divider after the last section */
+      margin-bottom: 0;
+    }
+
+    .blogs-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--deep-blue-gray);
+      margin-bottom: 30px;
+      font-weight: 700;
+      text-align: left;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .blogs-section h2::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 70px;
+      height: 3px;
+      background-color: var(--gold-accent); /* Gold underline */
+      border-radius: 2px;
+    }
+
+    .blog-list {
+      list-style: none; /* Remove default bullet points */
+      padding: 0;
+      margin: 0;
+      text-align: left;
+    }
+
+    .blog-list li {
+      margin-bottom: 25px; /* Space between blog entries */
+      padding-left: 25px; /* Space for custom bullet */
+      position: relative;
+      font-size: 1.05rem;
+      color: var(--soft-dark-gray);
+    }
+
+    .blog-list li::before {
+      content: '•'; /* Custom bullet point */
+      color: var(--gold-accent);
+      font-size: 1.2em;
+      position: absolute;
+      left: 0;
+      top: 0; /* Align with text */
+      font-weight: bold;
+    }
+
+    .blog-list li strong {
+      color: var(--deep-blue-gray);
+      font-weight: 600;
+      display: block; /* Make title a block for new line */
+      margin-bottom: 3px;
+      font-size: 1.1em; /* Slightly larger for blog titles */
+    }
+
+    .blog-list li em {
+      color: var(--medium-gray);
+      font-style: normal; /* Remove default italic for clean look */
+      font-weight: 400;
+      font-size: 0.95em;
+      display: block; /* Make date a block for new line */
+      margin-bottom: 5px;
+    }
+
+    .blog-list li p { /* For the description */
+      margin-bottom: 0; /* No extra margin for description */
+      font-size: 1em;
+      color: var(--soft-dark-gray);
+    }
+
+    .blog-list li a {
+      color: var(--gold-accent);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      position: relative;
+      padding-bottom: 3px; /* Space for underline */
+    }
+
+    .blog-list li a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--gold-accent);
+      transition: width 0.3s ease;
+    }
+
+    .blog-list li a:hover {
+      text-decoration: none; /* Ensure no default underline */
+      color: var(--darker-gold-hover);
+    }
+    .blog-list li a:hover::after {
+      width: 100%;
+    }
+
+    /* Footer Styling */
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 25px 0;
+      margin-top: 40px; /* Space above footer */
+      background-color: var(--deep-blue-gray); /* Dark footer background */
+      color: var(--light-bg-color); /* Light text */
+      font-family: 'Lora', serif;
+      font-size: 0.9rem;
+      box-shadow: 0 -2px 5px var(--shadow-color);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      main {
+        padding: 40px;
+      }
+      .blogs-section h2 {
+        font-size: 2rem;
+      }
+      nav ul {
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+      nav a {
+        font-size: 1rem;
+        padding: 5px;
+      }
+      main {
+        padding: 30px 20px;
+      }
+      .blogs-section h2 {
+        font-size: 1.8rem;
+      }
+      .blog-list li {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -12,34 +289,44 @@
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About Me</a></li>
-        <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="blogs.html" class="active">Blogs</a></li>
+        <li><a href="contact.html">Contact Me</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
-    <!-- Blogs Content -->
-    <h1>Blogs</h1>
-    <ul class="blog-list">
-      <li>
-        <strong><a href="blogs/RAG.html" target="_blank">Building RAG from Scratch</a></strong><br>
-        <em>Published: January 24, 2025</em><br>
-        Let's build a RAG from scratch using Llama3 and deepseek-r1.
-      </li>
-      <li>
-        <strong><a href="blogs/mlflow_tutorial.html" target="_blank">MLflow</a></strong><br>
-        <em>Published: January 16, 2025</em><br>
-        A step-by-step guide to using MLflow for managing ML experiments and deployments.
-      </li>
-      <li>
-        <strong><a href="blogs/KFold.html" target="_blank">KFold</a></strong><br>
-        <em>Published: January 16, 2025</em><br>
-        Let's understand how to use KFold.
-      </li>
-      <li>
-        <strong><a href="blogs/llms.html" target="_blank">Understanding Large Language Models (LLMs)</a></strong><br>
-        <em>Published: November 26, 2024</em><br>
-        A deep dive into the world of Large Language Models, their architecture, and real-world applications.
-      </li>
-    </ul>
+    <div class="blogs-container">
+      <section class="blogs-section">
+        <h2>My Blog Posts</h2>
+        <ul class="blog-list">
+          <li>
+            <strong><a href="blogs/RAG.html" target="_blank">Building RAG from Scratch</a></strong><br>
+            <em>Published: January 24, 2025</em><br>
+            Let's build a RAG from scratch using Llama3 and deepseek-r1.
+          </li>
+          <li>
+            <strong><a href="blogs/mlflow_tutorial.html" target="_blank">MLflow</a></strong><br>
+            <em>Published: January 16, 2025</em><br>
+            A step-by-step guide to using MLflow for managing ML experiments and deployments.
+          </li>
+          <li>
+            <strong><a href="blogs/KFold.html" target="_blank">KFold</a></strong><br>
+            <em>Published: January 16, 2025</em><br>
+            Let's understand how to use KFold.
+          </li>
+          <li>
+            <strong><a href="blogs/llms.html" target="_blank">Understanding Large Language Models (LLMs)</a></strong><br>
+            <em>Published: November 26, 2024</em><br>
+            A deep dive into the world of Large Language Models, their architecture, and real-world applications.
+          </li>
+        </ul>
+      </section>
+    </div>
   </main>
+
+  <footer>
+    <p>&copy; 2025 Rajath Pai. All rights reserved.</p>
+  </footer>
+</body>
+</html>
