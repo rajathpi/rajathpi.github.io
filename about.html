@@ -4,25 +4,414 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Me - Rajath Pai</title>
-  <link rel="stylesheet" href="../styles/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Color Palette Variables for consistency */
+    :root {
+      --gold-accent: #B8860B; /* Primary gold color */
+      --darker-gold-hover: #DAA520; /* Darker gold for hover */
+      --deep-blue-gray: #2C3E50; /* Dark text/heading color */
+      --medium-gray: #555; /* Subtitle/general text color */
+      --soft-dark-gray: #444; /* Paragraph text color */
+      --light-bg-color: #F5F5F5; /* Soft off-white background */
+      --white-card-bg: #FFFFFF; /* Pure white for content cards */
+      --light-border: #E0E0E0; /* Light gray for subtle borders */
+      --shadow-color: rgba(0, 0, 0, 0.1); /* Subtle shadow color */
+      --shadow-hover-color: rgba(0, 0, 0, 0.15); /* Slightly darker shadow for hover */
+    }
+
+    body {
+      font-family: 'Lora', serif; /* Elegant serif for body text */
+      margin: 0;
+      padding: 0;
+      background-color: var(--light-bg-color); /* Soft off-white background */
+      color: var(--soft-dark-gray); /* Default text color */
+      display: flex;
+      flex-direction: column; /* Stack header, main, footer vertically */
+      align-items: center; /* Center content horizontally */
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    /* Header & Navigation Styling */
+    header {
+      width: 100%;
+      background-color: var(--white-card-bg);
+      padding: 15px 0;
+      box-shadow: 0 2px 5px var(--shadow-color);
+      position: sticky; /* Make header sticky */
+      top: 0;
+      z-index: 1000; /* Ensure it stays on top */
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      gap: 30px; /* Space between nav items */
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--deep-blue-gray);
+      font-family: 'Playfair Display', serif; /* Elegant serif for navigation */
+      font-weight: 500;
+      font-size: 1.1rem; /* Slightly larger for elegance */
+      padding: 5px 10px;
+      transition: color 0.3s ease, transform 0.3s ease;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -5px;
+      width: 0;
+      height: 2px;
+      background-color: var(--gold-accent);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--gold-accent);
+      transform: translateY(-2px); /* Subtle lift */
+    }
+
+    nav a:hover::after,
+    nav a.active::after { /* Add 'active' class to current page link */
+      width: 100%;
+      left: 0;
+    }
+    /* Specific styling for the active 'About Me' link */
+    nav a[href="about.html"] {
+      color: var(--gold-accent); /* Highlight current page */
+    }
+    nav a[href="about.html"]::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* Profile Section - Integrated into the main flow */
+    .profile-section {
+      text-align: center;
+      padding: 50px 20px;
+      background: linear-gradient(135deg, var(--white-card-bg), var(--light-bg-color)); /* Subtle gradient */
+      border-bottom: 1px solid var(--light-border);
+      width: 100%; /* Ensure it spans full width below header */
+      box-sizing: border-box;
+    }
+
+    .mugshot {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--gold-accent); /* Gold accent border */
+      box-shadow: 0 0 15px rgba(184, 134, 11, 0.4); /* Subtle gold glow */
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .mugshot:hover {
+      transform: scale(1.05); /* Subtle zoom on hover */
+    }
+
+    .profile-section h1 {
+      font-family: 'Playfair Display', serif; /* Classic serif for titles */
+      font-size: 3.2rem;
+      color: var(--deep-blue-gray); /* Deep blue-gray */
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .profile-section p {
+      font-family: 'Lora', serif;
+      font-size: 1.4rem;
+      color: var(--medium-gray);
+      font-weight: 500;
+      font-style: italic;
+    }
+
+    /* Main Content Area */
+    main {
+      padding: 60px; /* Generous padding from the elegant example */
+      max-width: 800px; /* Constrain content width for readability */
+      width: 90%; /* Responsive width */
+      margin: 30px auto; /* Center content block with margin */
+      background-color: var(--white-card-bg);
+      border-radius: 10px;
+      box-shadow: 0 8px 30px var(--shadow-color); /* Refined shadow */
+      position: relative;
+      overflow: hidden; /* For subtle background texture */
+    }
+
+    /* Subtle background texture/pattern for main container */
+    main::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml,%3Csvg width="6" height="6" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23f0f0f0" fill-opacity="0.4" fill-rule="evenodd"%3E%3Cpath d="M5 0h1L0 6V5zM6 5v1H5z"/%3E%3C/g%3E%3C/svg%3E');
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    .about-container {
+      position: relative; /* Ensure content is above texture */
+      z-index: 1;
+      padding: 0 0px; /* No extra padding here, already on main */
+    }
+
+    /* Sections Styling */
+    section {
+      margin-bottom: 40px; /* Space between sections */
+      padding-bottom: 20px; /* Padding inside each section */
+      border-bottom: 1px solid var(--light-border); /* Light divider */
+    }
+
+    section:last-child {
+      border-bottom: none; /* No divider after the last section */
+      margin-bottom: 0;
+    }
+
+    section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--deep-blue-gray);
+      margin-bottom: 30px;
+      font-weight: 700;
+      text-align: left;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    section h2::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 70px;
+      height: 3px;
+      background-color: var(--gold-accent); /* Gold underline */
+      border-radius: 2px;
+    }
+
+    section p {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 20px; /* Adjust for paragraph spacing within sections */
+      color: var(--soft-dark-gray);
+      text-align: left;
+    }
+    section p:last-of-type {
+      margin-bottom: 0; /* No margin after last paragraph in a section */
+    }
+
+
+    section ul {
+      list-style: none; /* Remove default bullet points */
+      padding: 0;
+      margin: 0;
+    }
+
+    section li {
+      margin-bottom: 15px;
+      padding-left: 25px; /* Space for custom bullet */
+      position: relative;
+      font-size: 1.05rem;
+      color: var(--soft-dark-gray);
+    }
+
+    section li::before {
+      content: '•'; /* Custom bullet point */
+      color: var(--gold-accent);
+      font-size: 1.2em;
+      position: absolute;
+      left: 0;
+      top: 0; /* Align with text */
+      font-weight: bold;
+    }
+
+    /* Specific content styling for lists */
+    section strong {
+      color: var(--deep-blue-gray);
+      font-weight: 600;
+      display: block; /* Make strong text a block for new line */
+      margin-bottom: 3px;
+    }
+
+    section em {
+      color: var(--medium-gray);
+      font-style: normal; /* Remove default italic for clean look */
+      font-weight: 400;
+      font-size: 0.95em;
+    }
+
+    /* Experience section specifics */
+    .experience li {
+      margin-bottom: 25px;
+    }
+
+    .experience li strong {
+      font-size: 1.1em;
+      margin-bottom: 5px;
+    }
+
+    .experience li em {
+      font-size: 1em;
+      color: var(--medium-gray);
+      margin-bottom: 8px;
+    }
+
+    .experience li:not(:first-child) {
+      margin-top: 20px; /* Add space between different roles */
+    }
+
+    /* Project links */
+    .projects li a {
+      color: var(--gold-accent);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      position: relative;
+      padding-bottom: 3px; /* Space for underline */
+    }
+
+    .projects li a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--gold-accent);
+      transition: width 0.3s ease;
+    }
+
+    .projects li a:hover {
+      text-decoration: none; /* Ensure no default underline */
+      color: var(--darker-gold-hover);
+    }
+    .projects li a:hover::after {
+      width: 100%;
+    }
+
+    /* Technical Skills - concise tag-like list */
+    .skills ul {
+        display: flex;
+        flex-wrap: wrap; /* Allow items to wrap to next line */
+        gap: 10px; /* Space between skill tags */
+        margin-top: 0; /* Align with heading */
+    }
+    .skills li {
+        background-color: var(--deep-blue-gray); /* Dark background for tags */
+        color: var(--white-card-bg); /* White text on tags */
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-size: 0.95em;
+        font-weight: 500;
+        margin-bottom: 0; /* Override default li margin-bottom */
+        padding-left: 15px; /* Remove custom bullet padding */
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .skills li::before {
+        content: none; /* Remove custom bullet */
+    }
+    .skills li:hover {
+        background-color: var(--gold-accent); /* Gold highlight on hover */
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .skills li strong { /* Keep strong for emphasis, but integrate into tag */
+        display: inline;
+        color: inherit;
+        font-weight: 500;
+    }
+
+    /* Footer Styling */
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 25px 0;
+      margin-top: 40px; /* Space above footer */
+      background-color: var(--deep-blue-gray); /* Dark footer background */
+      color: var(--light-bg-color); /* Light text */
+      font-family: 'Lora', serif;
+      font-size: 0.9rem;
+      box-shadow: 0 -2px 5px var(--shadow-color);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .profile-section h1 {
+        font-size: 2.5rem;
+      }
+      .profile-section p {
+        font-size: 1.2rem;
+      }
+      main {
+        padding: 40px;
+      }
+      section h2 {
+        font-size: 2rem;
+      }
+      nav ul {
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+      nav a {
+        font-size: 1rem;
+        padding: 5px;
+      }
+      .profile-section h1 {
+        font-size: 2rem;
+      }
+      .profile-section p {
+        font-size: 1rem;
+      }
+      .mugshot {
+        width: 100px;
+        height: 100px;
+      }
+      main {
+        padding: 30px 20px;
+      }
+      section h2 {
+        font-size: 1.8rem;
+      }
+      section li, section p {
+        font-size: 0.95rem;
+      }
+      .skills li {
+        font-size: 0.85em;
+        padding: 6px 12px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About Me</a></li>
+        <li><a href="about.html" class="active">About Me</a></li>
         <li><a href="blogs.html">Blogs</a></li>
+        <li><a href="contact.html">Contact Me</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- Background Image Section -->
-  <!-- <div class="background-image">
-    <img src="assets/background.jpeg" alt="Background Image">
-  </div> -->
-
-  <!-- Profile Section -->
   <div class="profile-section">
     <img src="assets/headshot_circle.png" alt="Rajath Pai's Mugshot" class="mugshot">
     <h1>Rajath Rajendra Pai</h1>
@@ -31,194 +420,128 @@
 
   <main>
     <div class="about-container">
-      <!-- Right Column: Content -->
-      <div class="right-column">
-        <!-- Education Section -->
-        <section class="education">
-          <h2>Education</h2>
-          <ul>
-            <li>
-              <strong>Master’s in Data Science and AI</strong><br>
-              <em>Chalmers University of Technology, Sweden</em> (2022 – 2024)
-            </li>
-            <li>
-              <strong>Bachelor of Engineering in Computer Science Engineering</strong><br>
-              <em>NMAM Institute of Technology, India</em> (2018 – 2022)
-            </li>
-          </ul>
-        </section>
+      <!-- About Rajath Introduction -->
+      <section class="about-intro">
+        <h2>About Rajath</h2>
+        <p>
+          Hello! I'm Rajath Rajendra Pai, a passionate and driven Data Scientist. Currently pursuing my Master's in Data Science and AI at Chalmers University of Technology in Sweden, I am deeply fascinated by the power of data to solve complex problems and drive innovation.
+        </p>
+        <p>
+          My journey in technology began with a Bachelor's in Computer Science Engineering, leading me to explore various facets of software development and problem-solving. Over the years, I've honed my skills in programming, machine learning, and data analysis, with a keen interest in applying these to real-world challenges. My experience at Volvo Group has provided invaluable insights into industry applications of data science, from optimizing ETL pipelines to developing predictive models.
+        </p>
+        <p>
+          Beyond my technical expertise, I am a lifelong learner with strong communication and collaboration skills, always eager to contribute effectively within cross-functional teams. I believe in the power of clear data storytelling to translate complex insights into actionable strategies.
+        </p>
+        <p>
+          Welcome to my page! Feel free to explore my projects, blogs, and get in touch.
+        </p>
+      </section>
 
-        <!-- Technical Skills Section -->
-        <section class="skills">
-          <h2>Technical Skills</h2>
-          <ul>
-            <li>
-              <strong>Programming Languages:</strong><br>
-              Python, C++, Java, C, SQL, R, Matlab
-            </li>
-            <li>
-              <strong>Data Manipulation and Analysis:</strong><br>
-              Pandas, NumPy, Scikit-learn, PySpark
-            </li>
-            <li>
-              <strong>Machine Learning and Deep Learning Frameworks:</strong><br>
-              TensorFlow, PyTorch, Hugging Face, LangChain
-            </li>
-            <li>
-              <strong>Big Data and Distributed Computing:</strong><br>
-              Databricks
-            </li>
-            <li>
-              <strong>Data Visualization and Reporting:</strong><br>
-              Power BI, Matplotlib, Seaborn, Streamlit
-            </li>
-            <li>
-              <strong>MLOps and Model Deployment:</strong><br>
-              MLflow
-            </li>
-            <li>
-              <strong>Databases:</strong><br>
-              Microsoft SQL Server, PostgreSQL
-            </li>
-            <li>
-              <strong>Version Control:</strong><br>
-              Git
-            </li>
-            <li>
-              <strong>Soft Skills:</strong><br>
-              Storytelling with Data, Effective Communication, Cross-Team Collaboration
-            </li>
-          </ul>
-        </section>
+      <!-- Education Section -->
+      <section class="education">
+        <h2>Education</h2>
+        <ul>
+          <li>
+            <strong>Master’s in Data Science and AI</strong><br>
+            <em>Chalmers University of Technology, Sweden</em> (2022 – 2024)
+          </li>
+          <li>
+            <strong>Bachelor of Engineering in Computer Science Engineering</strong><br>
+            <em>NMAM Institute of Technology, India</em> (2018 – 2022)
+          </li>
+        </ul>
+      </section>
 
-        <!-- Experience Section -->
-        <section class="experience">
-          <h2>Experience</h2>
-          <ul>
-            <li>
-              <strong>Volvo Group</strong><br>
-              <em>People Data Analyst</em> (Sep 2024 – Nov 2024)<br>
-              - Optimized ETL pipelines to enhance data processing efficiency.<br>
-              - Automated data workflows using Python to streamline operations.<br>
-              - Enhanced Power BI dashboards by optimizing PowerQuery and DAX queries for better performance.
-            </li>
-            <li>
-              <strong>Volvo Group</strong><br>
-              <em>Summer Workshop – Production Logistics</em> (Jul 2024 – Aug 2024)<br>
-              - Processed and analyzed features to improve data matching accuracy for production logistics datasets using PySpark in Azure Databricks.<br>
-              - Applied fuzzy matching and machine learning algorithms to identify optimal matching criteria.<br>
-              - Collaborated in an agile framework with cross-functional teams to iteratively develop and refine solutions.
-            </li>
-            <li>
-              <strong>Volvo Group</strong><br>
-              <em>Summer Intern - People Analytics Team</em> (Jun 2024 – Jul 2024)<br>
-              - Enhanced Power BI dashboards by optimizing PowerQuery and DAX queries for better performance.
-            </li>
-            <li>
-              <strong>Volvo Group</strong><br>
-              <em>Master's Thesis Worker</em> (Jan 2024 – Jun 2024)<br>
-              - Developed a predictive model using multivariate time series data from truck sensors, external weather, and road-type datasets.<br>
-              - Aimed to anticipate driver deactivation of ADAS functions to improve system design and usability.
-            </li>
-            <li>
-              <strong>Volvo Group</strong><br>
-              <em>Summer Intern – People Analytics Team</em> (Jun 2023 – Aug 2023)<br>
-              - Designed and refined regression models for estimating human resource factors within the company.<br>
-              - Enhanced Power BI reports to improve data visualization and accessibility.
-            </li>
-            <li>
-              <strong>Chalmers University of Technology</strong><br>
-              <em>Research Assistant</em> (Feb 2023 – Jun 2023)<br>
-              - Conducted data analysis for the e-SAFER project at the Division of Vehicle Safety.<br>
-              - Worked on analyzing data collected from e-scooters to identify patterns and safety improvements.
-            </li>
-          </ul>
-        </section>
+      <!-- Experience Section -->
+      <section class="experience">
+        <h2>Experience</h2>
+        <ul>
+          <li>
+            <strong>Volvo Group</strong><br>
+            <em>People Data Analyst</em> (Sep 2024 – Nov 2024)<br>
+            - Optimized ETL pipelines to enhance data processing efficiency.<br>
+            - Automated data workflows using Python to streamline operations.<br>
+            - Enhanced Power BI dashboards by optimizing PowerQuery and DAX queries for better performance.
+          </li>
+          <li>
+            <strong>Volvo Group</strong><br>
+            <em>Summer Workshop – Production Logistics</em> (Jul 2024 – Aug 2024)<br>
+            - Processed and analyzed features to improve data matching accuracy for production logistics datasets using PySpark in Azure Databricks.<br>
+            - Applied fuzzy matching and machine learning algorithms to identify optimal matching criteria.<br>
+            - Collaborated in an agile framework with cross-functional teams to iteratively develop and refine solutions.
+          </li>
+          <li>
+            <strong>Volvo Group</strong><br>
+            <em>Summer Intern - People Analytics Team</em> (Jun 2024 – Jul 2024)<br>
+            - Enhanced Power BI dashboards by optimizing PowerQuery and DAX queries for better performance.
+          </li>
+          <li>
+            <strong>Volvo Group</strong><br>
+            <em>Master's Thesis Worker</em> (Jan 2024 – Jun 2024)<br>
+            - Developed a predictive model using multivariate time series data from truck sensors, external weather, and road-type datasets.<br>
+            - Aimed to anticipate driver deactivation of ADAS functions to improve system design and usability.
+          </li>
+          <li>
+            <strong>Volvo Group</strong><br>
+            <em>Summer Intern – People Analytics Team</em> (Jun 2023 – Aug 2023)<br>
+            - Designed and refined regression models for estimating human resource factors within the company.<br>
+            - Enhanced Power BI reports to improve data visualization and accessibility.
+          </li>
+          <li>
+            <strong>Chalmers University of Technology</strong><br>
+            <em>Research Assistant</em> (Feb 2023 – Jun 2023)<br>
+            - Conducted data analysis for the e-SAFER project at the Division of Vehicle Safety.<br>
+            - Worked on analyzing data collected from e-scooters to identify patterns and safety improvements.
+          </li>
+        </ul>
+      </section>
 
-        <!-- Academic Projects Section -->
-        <section class="projects">
-          <h2>Projects</h2>
-          <ul>
-            <li>
-              <strong><a href="blogs/RAG.html" target="_blank">RAG: Build it from Scratch</a></strong><br>
-              Built a RAG from scratch using Llama3 and deepseek-r1. 
-            </li>
-            <li>
-              <strong><a href="https://github.com/rajathpi/automatic-report-generator" target="_blank">Automatic Medical Report Generation from Radiology Chest X-Ray using Deep Learning</a></strong><br>
-              Developed a predictive model using CNN (CheXNET for feature extraction), LSTM, and RNN to analyze frontal and lateral chest X-ray images and generate medical reports through text processing.
-            </li>
-            <li>
-              <strong><a href="https://github.com/rajathpi/Scattering-parameter-parameterization" target="_blank">Scattering Parameters Parameterization</a></strong><br>
-              Leveraged TensorFlow and Keras to implement neural networks (Basic, LSTM, and GRU) for predicting input parameters in a human head-antenna system based on scattering parameters. The GRU model outperformed others, demonstrating high accuracy.
-            </li>
-            <li>
-              <strong>Face Anti-Spoofing</strong><br>
-              Designed a face anti-spoofing model using Histogram of Oriented Gradients (HOG) to extract features from images. Implemented a Support Vector Machine (SVM) classifier to accurately determine whether a face is real or fake.
-            </li>
-            <li>
-              <strong><a href="https://github.com/rajathpi/flappy-bird" target="_blank">AI Learns to Play Flappy Bird</a></strong><br>
-              Trained an agent to play a Flappy Bird clone using neuroevolution of augmenting topologies. Both the game environment and AI were built entirely in Python.
-            </li>
-            <li>
-              <strong><a href="https://github.com/rajathpi/health-first" target="_blank">Health First App</a></strong><br>
-              Created an Android app that provides detailed information about food items, their health benefits, and the diseases they can help prevent.
-            </li>
-          </ul>
-        </section>
+      <!-- Technical Skills Section - Reimagined for conciseness -->
+      <section class="skills">
+        <h2>Core Technologies</h2>
+        <ul>
+          <li>Python</li>
+          <li>Pandas, NumPy, Scikit-learn</li>
+          <li>TensorFlow, PyTorch</li>
+          <li>PySpark, Databricks</li>
+          <li>SQL, PostgreSQL</li>
+          <li>Power BI, Matplotlib, Seaborn, Streamlit</li>
+          <li>MLflow</li>
+          <li>Git</li>
+        </ul>
+      </section>
 
-        <!-- Competitive Programming Section -->
-        <section class="competitive-programming">
-          <h2>Competitive Programming</h2>
-          <ul>
-            <li><strong>Google Codejam 2021:</strong> Global Rank <strong>1117</strong> in Round 1C; qualified for Round 2.</li>
-            <li><strong>Google Kickstart 2021:</strong> Global Rank <strong>302</strong> in Round H.</li>
-            <li><strong>Codechef August 2021 Long Challenge:</strong> Global Rank <strong>30</strong>.</li>
-            <li><strong>Codechef July 2021 Long Challenge:</strong> Global Rank <strong>37</strong>.</li>
-          </ul>
-        </section>
+      <!-- Academic Projects Section -->
+      <section class="projects">
+        <h2>Featured Projects</h2>
+        <ul>
+          <li>
+            <strong><a href="blogs/RAG.html" target="_blank">RAG: Build it from Scratch</a></strong><br>
+            Built a RAG from scratch using Llama3 and deepseek-r1.
+          </li>
+          <li>
+            <strong><a href="https://github.com/rajathpi/automatic-report-generator" target="_blank">Automatic Medical Report Generation from Radiology Chest X-Ray using Deep Learning</a></strong><br>
+            Developed a predictive model using CNN (CheXNET for feature extraction), LSTM, and RNN to analyze frontal and lateral chest X-ray images and generate medical reports through text processing.
+          </li>
+          <li>
+            <strong><a href="https://github.com/rajathpi/Scattering-parameter-parameterization" target="_blank">Scattering Parameters Parameterization</a></strong><br>
+            Leveraged TensorFlow and Keras to implement neural networks (Basic, LSTM, and GRU) for predicting input parameters in a human head-antenna system based on scattering parameters. The GRU model outperformed others, demonstrating high accuracy.
+          </li>
+          <li>
+            <strong>Face Anti-Spoofing</strong><br>
+            Designed a face anti-spoofing model using Histogram of Oriented Gradients (HOG) to extract features from images. Implemented a Support Vector Machine (SVM) classifier to accurately determine whether a face is real or fake.
+          </li>
+          <li>
+            <strong><a href="https://github.com/rajathpi/flappy-bird" target="_blank">AI Learns to Play Flappy Bird</a></strong><br>
+            Trained an agent to play a Flappy Bird clone using neuroevolution of augmenting topologies. Both the game environment and AI were built entirely in Python.
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
 
-        <!-- Workshops, Training, and Certification Section -->
-        <section class="workshops">
-            <h2>Workshops, Training, and Certification</h2>
-            <ul>
-            <li>
-                <strong>Machine Learning with Google DSC</strong><br>
-                Participated in a workshop on Machine Learning, organized by NMAM Institute of Technology in collaboration with Google DSC.
-            </li>
-            <li>
-                <strong>Algorithms and Data Structures</strong><br>
-                Earned a certification from edX, in association with Microsoft.
-            </li>
-            <li>
-                <strong>CS229: Machine Learning</strong><br>
-                Completed the certified course offered by Stanford University.
-            </li>
-            </ul>
-        </section>
-        
-        <!-- Horizontal Line -->
-        <!-- <hr class="section-divider"> -->
-        
-        <!-- Strengths Section -->
-        <section class="strengths">
-            <h2>Strengths</h2>
-            <ul>
-            <li>Lifelong Learner (Philomath)</li>
-            <li>Effective Team Player</li>
-            <li>Strong Communication Skills (Articulate)</li>
-            <li>Reliable and Consistent</li>
-            </ul>
-        </section>
-        
-        <!-- Horizontal Line -->
-        <!-- <hr class="section-divider"> -->
-        
-        <!-- Hobbies Section -->
-        <section class="hobbies">
-            <h2>Hobbies</h2>
-            <ul>
-            <li>Photography</li>
-            <li>Drawing</li>
-            </ul>
-        </section>
-            
+  <footer>
+    <p>&copy; 2025 Rajath Pai. All rights reserved.</p>
+  </footer>
+</body>
+</html>
