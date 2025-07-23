@@ -1,336 +1,340 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Blogs - Rajath Pai</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --gold-accent: #B8860B;
-      --darker-gold-hover: #DAA520;
-      --deep-blue-gray: #2C3E50;
-      --medium-gray: #555;
-      --soft-dark-gray: #444;
-      --light-bg-color: #F5F5F5;
-      --white-card-bg: #FFFFFF;
-      --light-border: #E0E0E0;
-      --shadow-color: rgba(0, 0, 0, 0.1);
-      --shadow-hover-color: rgba(0, 0, 0, 0.15);
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Blogs - Rajath Pai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Color Palette Variables (consistent with portfolio-elegant-earth-copper) */
+        :root {
+            --copper-accent: #B5651D; /* Primary Copper/Bronze color */
+            --darker-copper-hover: #8D4F17; /* Darker copper for hover */
+            --deep-brown-gray: #3A3A3A; /* Dark text/heading color */
+            --medium-gray-text: #6B6B6B; /* Subtitle/general text color */
+            --soft-dark-gray: #4A4A4A; /* Paragraph text color */
+            --light-cream-bg: #FDFBF6; /* Very light cream background */
+            --white-card-bg: #FFFFFF; /* Pure white for content cards */
+            --light-border: #E0E0E0; /* Light gray for subtle borders */
+            --shadow-color: rgba(0, 0, 0, 0.06); /* Subtle shadow color */
+            --shadow-hover-color: rgba(0, 0, 0, 0.08); /* Slightly darker shadow for hover */
+        }
 
-    body {
-      font-family: 'Lora', serif;
-      margin: 0;
-      padding: 0;
-      background-color: var(--light-bg-color);
-      color: var(--soft-dark-gray);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      box-sizing: border-box;
-    }
+        body {
+            font-family: 'Open Sans', sans-serif; /* Clean sans-serif for body */
+            line-height: 1.8;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--light-cream-bg); /* Updated background color */
+            color: var(--soft-dark-gray); /* Updated text color */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
 
-    header {
-      width: 100%;
-      background-color: var(--white-card-bg);
-      padding: 15px 0;
-      box-shadow: 0 2px 5px var(--shadow-color);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+        header {
+            width: 100%;
+            background-color: var(--white-card-bg);
+            padding: 15px 0;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-    }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
 
-    nav a {
-      text-decoration: none;
-      color: var(--deep-blue-gray);
-      font-family: 'Playfair Display', serif;
-      font-weight: 500;
-      font-size: 1.1rem;
-      padding: 5px 10px;
-      transition: color 0.3s ease, transform 0.3s ease;
-      position: relative;
-    }
+        nav a {
+            text-decoration: none;
+            color: var(--deep-brown-gray); /* Updated color */
+            font-family: 'Cormorant Garamond', serif; /* Updated font */
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 5px 10px;
+            transition: color 0.3s ease, transform 0.3s ease;
+            position: relative;
+        }
 
-    nav a::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: -5px;
-      width: 0;
-      height: 2px;
-      background-color: var(--gold-accent);
-      transition: width 0.3s ease, left 0.3s ease;
-    }
+        nav a::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background-color: var(--copper-accent); /* Updated color */
+            transition: width 0.3s ease, left 0.3s ease;
+        }
 
-    nav a:hover {
-      color: var(--gold-accent);
-      transform: translateY(-2px);
-    }
+        nav a:hover {
+            color: var(--copper-accent); /* Updated color */
+            transform: translateY(-2px);
+        }
 
-    nav a:hover::after,
-    nav a.active::after {
-      width: 100%;
-      left: 0;
-    }
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+            left: 0;
+        }
 
-    nav a[href="blogs.html"] {
-      color: var(--gold-accent);
-    }
+        /* Active link styling for Blogs */
+        nav a[href="blogs.html"] {
+            color: var(--copper-accent); /* Updated color */
+        }
 
-    nav a[href="blogs.html"]::after {
-      width: 100%;
-      left: 0;
-    }
+        nav a[href="blogs.html"]::after {
+            width: 100%;
+            left: 0;
+        }
 
-    main {
-      padding: 60px;
-      max-width: 800px;
-      width: 90%;
-      margin: 30px auto;
-      background-color: var(--white-card-bg);
-      border-radius: 10px;
-      box-shadow: 0 8px 30px var(--shadow-color);
-      position: relative;
-      overflow: hidden;
-    }
+        main {
+            padding: 55px; /* Consistent with other pages */
+            max-width: 780px; /* Consistent with other pages */
+            width: 90%;
+            margin: 30px auto;
+            background-color: var(--white-card-bg);
+            border-radius: 12px; /* Consistent with other pages */
+            box-shadow: 0 12px 50px var(--shadow-color); /* Consistent with other pages */
+            position: relative;
+            overflow: hidden;
+        }
 
-    main::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('data:image/svg+xml,%3Csvg width="6" height="6" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23f0f0f0" fill-opacity="0.4" fill-rule="evenodd"%3E%3Cpath d="M5 0h1L0 6V5zM6 5v1H5z"/%3E%3C/g%3E%3C/svg%3E');
-      opacity: 0.5;
-      z-index: 0;
-    }
+        main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,%3Csvg width="6" height="6" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23f0f0f0" fill-opacity="0.4" fill-rule="evenodd"%3E%3Cpath d="M5 0h1L0 6V5zM6 5v1H5z"/%3E%3C/g%3E%3C/svg%3E');
+            opacity: 0.5;
+            z-index: 0;
+        }
 
-    .blogs-container {
-      position: relative;
-      z-index: 1;
-    }
+        .blogs-container {
+            position: relative;
+            z-index: 1;
+        }
 
-    .blogs-section {
-      margin-bottom: 40px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--light-border);
-    }
+        .blogs-section {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--light-border);
+        }
 
-    .blogs-section:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-    }
+        .blogs-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
 
-    .blogs-section h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      color: var(--deep-blue-gray);
-      margin-bottom: 30px;
-      font-weight: 700;
-      text-align: left;
-      position: relative;
-      padding-bottom: 15px;
-    }
+        .blogs-section h2 {
+            font-family: 'Cormorant Garamond', serif; /* Updated font */
+            font-size: 2.4rem; /* Consistent with other pages */
+            color: var(--deep-brown-gray); /* Updated color */
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-align: left;
+            position: relative;
+            padding-bottom: 12px; /* Consistent with other pages */
+        }
 
-    .blogs-section h2::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 70px;
-      height: 3px;
-      background-color: var(--gold-accent);
-      border-radius: 2px;
-    }
+        .blogs-section h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 65px; /* Consistent with other pages */
+            height: 3px;
+            background-color: var(--copper-accent); /* Updated color */
+            border-radius: 2px;
+        }
 
-    .blog-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      text-align: left;
-    }
+        .blog-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
 
-    .blog-list li {
-      margin-bottom: 25px;
-      padding: 20px 25px;
-      position: relative;
-      font-size: 1.05rem;
-      color: var(--soft-dark-gray);
-      background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
-      border-radius: 10px;
-      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1),
-                  -5px -5px 15px rgba(255, 255, 255, 0.6);
-      transition: all 0.3s ease;
-      overflow: hidden;
-    }
+        .blog-list li {
+            margin-bottom: 25px;
+            padding: 20px 25px;
+            position: relative;
+            font-size: 1.05rem;
+            color: var(--soft-dark-gray);
+            background: linear-gradient(145deg, #f0f0f0, #e0e0e0); /* Kept light gradient for card effect */
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.08), /* Adjusted shadow for earth tones */
+                        -5px -5px 15px rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
 
-    .blog-list li:hover {
-      transform: translateY(-5px);
-      box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.15),
-                  -8px -8px 20px rgba(255, 255, 255, 0.5);
-    }
+        .blog-list li:hover {
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.12), /* Adjusted shadow for earth tones */
+                        -8px -8px 20px rgba(255, 255, 255, 0.5);
+        }
 
-    .blog-list li:active {
-      transform: translateY(0);
-      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1),
-                  -3px -3px 8px rgba(255, 255, 255, 0.3);
-    }
+        .blog-list li:active {
+            transform: translateY(0);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.06), /* Adjusted shadow for earth tones */
+                        -3px -3px 8px rgba(255, 255, 255, 0.3);
+        }
 
-    .blog-list li::before {
-      display: none;
-    }
+        .blog-list li::before {
+            display: none; /* No custom bullet for list items */
+        }
 
-    .blog-list li strong {
-      font-family: 'Playfair Display', serif;
-      font-weight: 600;
-      font-size: 1.3em;
-      color: var(--deep-blue-gray);
-      margin-bottom: 5px;
-      display: block;
-    }
+        .blog-list li strong {
+            font-family: 'Cormorant Garamond', serif; /* Updated font */
+            font-weight: 600;
+            font-size: 1.3em;
+            color: var(--deep-brown-gray); /* Updated color */
+            margin-bottom: 5px;
+            display: block;
+        }
 
-    .blog-list li em {
-      font-size: 0.9em;
-      color: var(--medium-gray);
-      margin-bottom: 8px;
-      display: block;
-    }
+        .blog-list li em {
+            font-size: 0.9em;
+            color: var(--medium-gray-text); /* Updated color */
+            margin-bottom: 8px;
+            display: block;
+        }
 
-    .blog-list li p {
-      margin: 0;
-      font-size: 1em;
-      color: var(--soft-dark-gray);
-    }
+        .blog-list li p {
+            margin: 0;
+            font-size: 1em;
+            color: var(--soft-dark-gray);
+        }
 
-    .blog-list li a {
-      color: var(--deep-blue-gray);
-      text-decoration: none;
-      position: relative;
-      padding-bottom: 3px;
-      transition: color 0.3s ease;
-    }
+        .blog-list li a {
+            color: var(--deep-brown-gray); /* Updated color for link text */
+            text-decoration: none;
+            position: relative;
+            padding-bottom: 3px;
+            transition: color 0.3s ease;
+        }
 
-    .blog-list li a::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: -2px;
-      width: 0;
-      height: 2px;
-      background-color: var(--gold-accent);
-      transition: width 0.3s ease;
-    }
+        .blog-list li a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background-color: var(--copper-accent); /* Updated color */
+            transition: width 0.3s ease;
+        }
 
-    .blog-list li a:hover {
-      color: var(--gold-accent);
-    }
+        .blog-list li a:hover {
+            color: var(--copper-accent); /* Updated color */
+        }
 
-    .blog-list li a:hover::after {
-      width: 100%;
-    }
+        .blog-list li a:hover::after {
+            width: 100%;
+        }
 
-    footer {
-      width: 100%;
-      text-align: center;
-      padding: 25px 0;
-      margin-top: 40px;
-      background-color: var(--deep-blue-gray);
-      color: var(--light-bg-color);
-      font-family: 'Lora', serif;
-      font-size: 0.9rem;
-      box-shadow: 0 -2px 5px var(--shadow-color);
-    }
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 40px;
+            background-color: var(--deep-brown-gray); /* Updated background color */
+            color: var(--light-cream-bg); /* Updated text color */
+            font-family: 'Open Sans', sans-serif; /* Updated font */
+            font-size: 0.9rem;
+            box-shadow: 0 -2px 5px var(--shadow-color);
+        }
 
-    @media (max-width: 768px) {
-      main {
-        padding: 40px;
-      }
-      .blogs-section h2 {
-        font-size: 2rem;
-      }
-      nav ul {
-        gap: 20px;
-      }
-    }
+        @media (max-width: 768px) {
+            main {
+                padding: 40px;
+            }
+            .blogs-section h2 {
+                font-size: 2rem;
+            }
+            nav ul {
+                gap: 20px;
+            }
+        }
 
-    @media (max-width: 480px) {
-      nav ul {
-        flex-direction: column;
-        gap: 10px;
-      }
-      nav a {
-        font-size: 1rem;
-        padding: 5px;
-      }
-      main {
-        padding: 30px 20px;
-      }
-      .blogs-section h2 {
-        font-size: 1.8rem;
-      }
-      .blog-list li {
-        font-size: 0.95rem;
-        padding: 15px;
-      }
-    }
-  </style>
+        @media (max-width: 480px) {
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+            nav a {
+                font-size: 1rem;
+                padding: 5px;
+            }
+            main {
+                padding: 30px 20px;
+            }
+            .blogs-section h2 {
+                font-size: 1.8rem;
+            }
+            .blog-list li {
+                font-size: 0.95rem;
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About Me</a></li>
-        <li><a href="blogs.html" class="active">Blogs</a></li>
-        <li><a href="contact.html">Contact Me</a></li>
-      </ul>
-    </nav>
-  </header>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="blogs.html" class="active">Blogs</a></li>
+                <!-- Removed 'About Me' and 'Contact Me' from navigation -->
+            </ul>
+        </nav>
+    </header>
 
-  <main>
-    <div class="blogs-container">
-      <section class="blogs-section">
-        <h2>My Blog Posts</h2>
-        <ul class="blog-list">
-          <li>
-            <strong><a href="blogs/RAG.html" target="_blank">Building RAG from Scratch</a></strong>
-            <em>Published: January 24, 2025</em>
-            <p>Let's build a RAG from scratch using Llama3 and deepseek-r1.</p>
-          </li>
-          <li>
-            <strong><a href="blogs/mlflow_tutorial.html" target="_blank">MLflow</a></strong>
-            <em>Published: January 16, 2025</em>
-            <p>A step-by-step guide to using MLflow for managing ML experiments and deployments.</p>
-          </li>
-          <li>
-            <strong><a href="blogs/KFold.html" target="_blank">KFold</a></strong>
-            <em>Published: January 16, 2025</em>
-            <p>Let's understand how to use KFold.</p>
-          </li>
-          <li>
-            <strong><a href="blogs/llms.html" target="_blank">Understanding Large Language Models (LLMs)</a></strong>
-            <em>Published: November 26, 2024</em>
-            <p>A deep dive into the world of Large Language Models, their architecture, and real-world applications.</p>
-          </li>
-        </ul>
-      </section>
-    </div>
-  </main>
+    <main>
+        <div class="blogs-container">
+            <section class="blogs-section">
+                <h2>My Blog Posts</h2>
+                <ul class="blog-list">
+                    <li>
+                        <strong><a href="blogs/RAG.html" target="_blank">Building RAG from Scratch</a></strong>
+                        <em>Published: January 24, 2025</em>
+                        <p>Let's build a RAG from scratch using Llama3 and deepseek-r1.</p>
+                    </li>
+                    <li>
+                        <strong><a href="blogs/mlflow_tutorial.html" target="_blank">MLflow</a></strong>
+                        <em>Published: January 16, 2025</em>
+                        <p>A step-by-step guide to using MLflow for managing ML experiments and deployments.</p>
+                    </li>
+                    <li>
+                        <strong><a href="blogs/KFold.html" target="_blank">KFold</a></strong>
+                        <em>Published: January 16, 2025</em>
+                        <p>Let's understand how to use KFold.</p>
+                    </li>
+                    <li>
+                        <strong><a href="blogs/llms.html" target="_blank">Understanding Large Language Models (LLMs)</a></strong>
+                        <em>Published: November 26, 2024</em>
+                        <p>A deep dive into the world of Large Language Models, their architecture, and real-world applications.</p>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </main>
 
-  <footer>
-    <p>&copy; 2025 Rajath Pai. All rights reserved.</p>
-  </footer>
+    <footer>
+        <p>Designed and Developed by Rajath Pai. Let's connect!</p>
+        <!-- If you want contact icons in the footer of this page, please let me know! -->
+    </footer>
 </body>
 </html>

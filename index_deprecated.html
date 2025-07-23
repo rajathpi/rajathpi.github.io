@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rajath Pai</title>
+  <link rel="stylesheet" href="../styles/style.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+      background-color: #ffffff; /* White background */
+      color: #000000; /* Black text */
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      text-align: center;
+    }
+    .grid a {
+      text-decoration: none;
+      color: #000000; /* Change text color to black for visibility */
+      background: linear-gradient(145deg, #f0f0f0, #e0e0e0); /* Light gray background */
+      padding: 20px 30px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+                  -5px -5px 10px rgba(255, 255, 255, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+    .grid a::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, #0077b5, #005f8b); /* Gradient overlay */
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    .grid a:hover {
+      transform: translateY(-5px);
+      box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.15),
+                  -8px -8px 15px rgba(255, 255, 255, 0.5);
+    }
+    .grid a:active {
+      transform: translateY(0);
+      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1),
+                  -3px -3px 8px rgba(255, 255, 255, 0.3);
+    }
+    .grid a:hover::before {
+      opacity: 0.2; /* Subtle overlay */
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <a href="about.html">About Me</a>
+    <a href="blogs.html">Blog</a>
+    <a href="contact.html">Contact Me</a>
+  </div>
+</body>
+</html>
