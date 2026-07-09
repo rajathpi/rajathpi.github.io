@@ -53,14 +53,14 @@
 <h2>The architecture: three engines, one selector</h2>
 <p>The system is a hybrid of three engines feeding a single selector that outputs the final two attempts.</p>
 <pre class="mermaid">flowchart TD
-  T[Task: train pairs plus test input] --> A[Engine A: Symbolic DSL battery, 19 families, CPU, verified rules]
-  T --> B[Engine B: Neural TTT model, Qwen-4B style, 16-token vocab, LoRA per task]
-  T --> C[Engine C: Test-time augmentation, 8 dihedral x color perms]
+  T["Task: train pairs + test input"] --> A["Engine A — Symbolic DSL battery (19 families, CPU, verified rules)"]
+  T --> B["Engine B — Neural TTT model (Qwen-4B, 16-token vocab, LoRA per task)"]
+  T --> C["Engine C — Test-time augmentation (8 dihedral × color perms)"]
   C --> A
   C --> B
-  A --> D[Engine D: Selector, symbolic verify plus augmentation consensus plus likelihood]
+  A --> D["Engine D — Selector (verify + consensus + likelihood)"]
   B --> D
-  D --> E[pass@2: attempt_1 and attempt_2]</pre>
+  D --> E["Final: pass@2 attempts"]</pre>
 <ul>
 <li><strong>Engine A — symbolic battery</strong> (<code>arc/solvers.py</code>): only emits hypotheses that reproduce all train pairs, giving ~100% precision. It rarely fires on eval, but each hit is a near-certain pass@2 slot at ~zero GPU cost.</li>
 <li><strong>Engine B — neural test-time training</strong> (<code>kaggle/arc_agi2_pipeline.py</code>): the primary scorer. Per task, it LoRA-fine-tunes a 16-token causal LM on the task's own augmented train pairs, then samples.</li>
