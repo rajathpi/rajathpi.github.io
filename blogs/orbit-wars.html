@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orbit Wars: When Self-Play Lies — Rajath Pai</title>
+  <meta name="description" content="An honest write-up of a Kaggle RTS competition where the ladder repeatedly demolished my self-play improvements, and the best move was adopting a stronger base agent.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/main.css">
+  <script src="../scripts/site.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="../index.html">Rajath&nbsp;Pai</a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../blogs.html" aria-current="page">Blog</a>
+        <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <article class="article">
+    <header class="article-header">
+      <p class="kicker">Blog · Kaggle</p>
+      <h1>Orbit Wars: How Adopting Someone Else's Bot Beat My Own, and Why Self-Play Kept Lying to Me</h1>
+      <p class="meta">Orbit Wars (Kaggle) · 10 min read</p>
+    </header>
+
+    <div class="prose">
+<h2>The game: capture planets, count ships at the buzzer</h2>
+<p>Orbit Wars is a Kaggle simulation competition built around a Galcon-style real-time-strategy game. Planets orbit a sun in a continuous 100&times;100 plane, each producing 1&ndash;5 ships per turn. You launch fleets to capture neutral or enemy planets, and there is exactly one number that matters: <strong>your total ship count at step 498</strong>. That is your score. Not planets held, not kills &mdash; ships.</p>
+<p>A few mechanics shape everything downstream. Fleet speed scales with size (bigger fleets move faster, capped at 6), so a trickle of small fleets is slow and loses head-on fights. Home planets start with exactly 10 ships; neutral planets sit behind garrisons of 9&ndash;66. You submit a Python agent, it plays on a TrueSkill ladder, and games are either 2-player duels or <strong>4-player free-for-alls</strong>. Two rules dominated my strategy: only your <em>last two submissions</em> stay active, and you get roughly 100 submissions a day. The prize was $50k; the deadline, 2026-06-23.</p>
+
+<h2>The agent architecture: a "producer-lite" planner</h2>
+<p>All my agents shared one core &mdash; a package I called <code>orbit_lite</code> (earlier <code>comet_lite</code>). The strategy lived in <code>main.py</code>: a frozen config of knobs plus how candidate launches get scored and selected. The core is a tensor pipeline (PyTorch, run under <code>torch.no_grad()</code>) that each turn shortlists targets, builds one candidate launch per (source, target) lane, scores them, and greedily commits a handful of waves.</p>
+<pre class="mermaid">flowchart TD
+  S[Observation: planets, fleets, ownership] --> P[parse_obs and build movement + distance cache]
+  P --> A[Adjust config by strength ratio and time]
+  A --> SH[build_target_shortlist: offensive + defensive]
+  SH --> D[safe_drain: how many ships each source can spare]
+  D --> F[capture_floor with reinforcement-risk beta]
+  F --> SC[score_candidates by ROI, distance, garrison]
+  SC --> L[Late-game suppression of doomed arrivals]
+  L --> G[greedy_select up to max_waves]
+  G --> R[Plan regroup with leftover ships]
+  R --> M[Emit moves: from_planet, angle, num_ships]</pre>
+<p>The key design decisions are all in that loop. <code>safe_drain</code> computes how many ships a planet can send without leaving itself flippable. <code>capture_floor</code> sets the minimum fleet needed to actually take a target given its garrison at the projected arrival time. <code>score_candidates</code> weighs return-on-investment against distance and cost, and a greedy selector commits waves until the budget or the ROI threshold runs out. Everything else &mdash; the difference between a 1141 agent and a 1250 agent &mdash; is <em>how well those floors and thresholds are chosen.</em></p>
+
+<h2>The lineage, and the move that actually worked</h2>
+<p>My original line evolved <code>comet &rarr; comet2 &rarr; comet3 &rarr; comet3_nfpw</code>. It plateaued hard at <strong>~1141&ndash;1157</strong>. I tuned it for weeks. The comet3 planner tried to be clever: it evaluated multiple fleet fractions per lane (<code>size_multipliers = (0.5, 0.75, 1.0)</code>), had a "danger-aware" target discount, a terminal end-game phase, comet-evacuation logic. More knobs did not mean more score.</p>
+<pre class="mermaid">flowchart LR
+  C1[comet] --> C2[comet2] --> C3[comet3] --> C4[comet3_nfpw ~1141]
+  C3 -.plateau.-> C4
+  LT[light: adopted public agent 1249.6] --> O2[light_o2 overhead=2: 1129.6 FAIL]
+  C4 -.superseded.-> LT</pre>
+<p>The winning move was not a tweak. It was <strong>adopting a stronger public agent</strong> &mdash; <code>light</code>, from <code>alycemiki/light-ver-1200-simple-orbit-intruder</code>. It scored <strong>~1249.6 live (peaked 1256.7)</strong> and beat my entire comet3 line outright. Reading its <code>main.py</code> was humbling, because it was <em>simpler</em> than mine and smarter in four specific ways:</p>
+<ul>
+<li><strong>Single-size launches.</strong> No multi-fraction search &mdash; it sends the full safe garrison drain in one shot (<code>sizes = drain</code>). My multi-tier search was wasted compute.</li>
+<li><strong>A reinforcement-risk floor (&beta;=2.2).</strong> It models ETA-aware enemy reinforcement and dynamically <em>raises</em> the capture requirement, so it never launches doomed attacks. This was a smarter, targeted version of the static <code>capture_overhead</code> idea I'd been hardcoding.</li>
+<li><strong>Continuous dynamic adjustment.</strong> Its <code>_adjust_config</code> reads <em>my strength &divide; the leader's strength</em> and smoothly ramps the ROI threshold and wave count &mdash; attack harder when behind, hold when ahead. No phase switches, just interpolation. That is the adaptive behavior I'd tried and failed to hardcode.</li>
+<li><strong>Late-game suppression.</strong> It stops launching attacks that would arrive too late to repay their cost before step 498.</li>
+</ul>
+
+<h2>The self-play saga: it lied to me twice</h2>
+<p>Here is the part that stings, and it is the real lesson. I have an arena harness (<code>arena.py</code> for mirrored 2p, <code>arena4_rot.py</code> for 4p with <em>full seat rotation</em> so win rates are seat-bias-free). Start position dominates 4p outcomes, so the rotation matters. I trusted these numbers. I should not have &mdash; at least, not the way I did.</p>
+<p>My tweak <code>light_o2</code> added <code>capture_overhead=2</code> in 4-player games. In self-play it looked <strong>+8pp</strong> across multiple batches and two architectures. So I submitted it. On the live ladder it scored <strong>1129.6</strong> versus <code>light</code>'s <strong>1249.6</strong> &mdash; a 120-point <em>loss</em> &mdash; and its 4p win rate dropped from 58% to 50%. I reverted.</p>
+<blockquote><p>Self-play lies. The ladder is the only truth. Beating a clone of your own base is not the same as beating the diverse ladder &mdash; and even seat-rotated 4p self-play can't fix it, because every opponent is still a copy of the exact thing you're tuning.</p></blockquote>
+<p>This was the <em>second</em> time. Earlier, <code>comet3_nfpw</code> looked <strong>+12pp</strong> in self-play and plateaued at 1141 live. The rule I finally adopted, and enforced for the rest of the competition:</p>
+<table>
+<thead><tr><th>Change</th><th>Self-play verdict</th><th>Live result</th></tr></thead>
+<tbody>
+<tr><td>Adopt <code>light</code></td><td>&mdash;</td><td><strong>1249.6</strong> (best)</td></tr>
+<tr><td><code>light_o2</code> (overhead=2, 4p)</td><td>"+8pp"</td><td>1129.6 (&minus;120)</td></tr>
+<tr><td><code>comet3_nfpw</code> (neutral-focus)</td><td>"+12pp"</td><td>1141 (plateau)</td></tr>
+</tbody>
+</table>
+<p><strong>Self-play is a regression screen only, never a ranking signal.</strong> A single 4p batch could swing from 30% to 19% on different seeds &mdash; pure noise dressed up as insight. And there was a structural reason my numbers looked good and then faded live: new submissions start with high TrueSkill uncertainty, so early lucky wins inflate the score before it regresses to true skill. A peak-then-decline doesn't mean the agent got worse; it means the early run was optimistic.</p>
+
+<h2>The 4-player diagnosis</h2>
+<p>I mined 61 live replays (download episodes via <code>kaggle competitions replay</code>, parse planet/fleet tensors per step). The verdict was clear: my <strong>2p win rate was healthy at 62.5%</strong>, but my <strong>4p rate was ~28%</strong> &mdash; barely above the 25% random baseline. And 4p is roughly half the games. I had been tuning the half that already worked.</p>
+<p>The failure mode in 4p was specific and almost poetic: I'd grab an early lead by step 40 by out-expanding everyone, then <strong>collapse by step 80</strong>. Leading the pack in a free-for-all paints a target on your back &mdash; the other three players snipe you back down. Even when leading at step 40, I only converted it to a win 38% of the time. This is exactly what <code>light</code>'s &beta;=2.2 reinforcement floor handles gracefully: it garrisons captured planets against ETA-aware counterattacks instead of leaving them thin. Which is why bolting my static <code>capture_overhead</code> on top of it only made things worse &mdash; I was over-garrisoning a policy that already defended intelligently, so I expanded slower and turtled.</p>
+
+<h2>The honest ceiling: heuristics vs. RL</h2>
+<p>Then I scraped all 20 discussion threads (with <code>scrape_threads.py</code>, a headless-Chromium scraper, because the Kaggle API has no discussions endpoint) to answer one question: what are the top players actually doing? The answer was uncomfortable. <strong>They're running reinforcement learning.</strong> The 1500&ndash;1788 top tier uses entity-transformer policies trained with PPO self-play against a JAX environment at ~10k steps/sec over multiple days.</p>
+<p>The entire heuristic "producer-lite" family &mdash; mine, <code>light</code>, <code>olasadek</code>, and the others sharing that core &mdash; clusters at <strong>~1240&ndash;1260</strong>. They trade coin-flips against each other. That's not a tuning gap; it's a structural ceiling. We are policy-bound, not representation-bound: more engineering will not break the wall, only a learned policy will. I confirmed the dead ends too &mdash; behavior-cloning the top RL bot lost roughly 5:1 to a public heuristic and cratered to ~4% win rate after PPO. Imitation captures moves, not search.</p>
+<p>With a week left, no RL pipeline, and a CPU-only environment, the honest call was: <strong>do not churn.</strong> Any new submission evicts an active agent and forces it to re-climb from a provisional ~700. So I held my two strongest distinct agents (<code>light</code> + <code>olasadek</code>) and stopped submitting. The biggest win of the whole competition was recognizing when a stranger's code was better than mine, and the biggest trap was believing my own simulator. The ladder was always the only judge.</p>
+
+      <a class="back-link" href="../blogs.html">← Back to all posts</a>
+    </div>
+  </article>
+
+  <footer class="site-footer">
+    <p>© <span id="year">2026</span> Rajath Rajendra Pai · Göteborg, Sweden</p>
+  </footer>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
+  </script>
+</body>
+</html>

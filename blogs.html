@@ -1,340 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Blogs - Rajath Pai</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        /* Color Palette Variables (consistent with portfolio-elegant-earth-copper) */
-        :root {
-            --copper-accent: #B5651D; /* Primary Copper/Bronze color */
-            --darker-copper-hover: #8D4F17; /* Darker copper for hover */
-            --deep-brown-gray: #3A3A3A; /* Dark text/heading color */
-            --medium-gray-text: #6B6B6B; /* Subtitle/general text color */
-            --soft-dark-gray: #4A4A4A; /* Paragraph text color */
-            --light-cream-bg: #FDFBF6; /* Very light cream background */
-            --white-card-bg: #FFFFFF; /* Pure white for content cards */
-            --light-border: #E0E0E0; /* Light gray for subtle borders */
-            --shadow-color: rgba(0, 0, 0, 0.06); /* Subtle shadow color */
-            --shadow-hover-color: rgba(0, 0, 0, 0.08); /* Slightly darker shadow for hover */
-        }
-
-        body {
-            font-family: 'Open Sans', sans-serif; /* Clean sans-serif for body */
-            line-height: 1.8;
-            margin: 0;
-            padding: 20px;
-            background-color: var(--light-cream-bg); /* Updated background color */
-            color: var(--soft-dark-gray); /* Updated text color */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
-
-        header {
-            width: 100%;
-            background-color: var(--white-card-bg);
-            padding: 15px 0;
-            box-shadow: 0 2px 5px var(--shadow-color);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--deep-brown-gray); /* Updated color */
-            font-family: 'Cormorant Garamond', serif; /* Updated font */
-            font-weight: 500;
-            font-size: 1.1rem;
-            padding: 5px 10px;
-            transition: color 0.3s ease, transform 0.3s ease;
-            position: relative;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: -5px;
-            width: 0;
-            height: 2px;
-            background-color: var(--copper-accent); /* Updated color */
-            transition: width 0.3s ease, left 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--copper-accent); /* Updated color */
-            transform: translateY(-2px);
-        }
-
-        nav a:hover::after,
-        nav a.active::after {
-            width: 100%;
-            left: 0;
-        }
-
-        /* Active link styling for Blogs */
-        nav a[href="blogs.html"] {
-            color: var(--copper-accent); /* Updated color */
-        }
-
-        nav a[href="blogs.html"]::after {
-            width: 100%;
-            left: 0;
-        }
-
-        main {
-            padding: 55px; /* Consistent with other pages */
-            max-width: 780px; /* Consistent with other pages */
-            width: 90%;
-            margin: 30px auto;
-            background-color: var(--white-card-bg);
-            border-radius: 12px; /* Consistent with other pages */
-            box-shadow: 0 12px 50px var(--shadow-color); /* Consistent with other pages */
-            position: relative;
-            overflow: hidden;
-        }
-
-        main::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml,%3Csvg width="6" height="6" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23f0f0f0" fill-opacity="0.4" fill-rule="evenodd"%3E%3Cpath d="M5 0h1L0 6V5zM6 5v1H5z"/%3E%3C/g%3E%3C/svg%3E');
-            opacity: 0.5;
-            z-index: 0;
-        }
-
-        .blogs-container {
-            position: relative;
-            z-index: 1;
-        }
-
-        .blogs-section {
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--light-border);
-        }
-
-        .blogs-section:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        .blogs-section h2 {
-            font-family: 'Cormorant Garamond', serif; /* Updated font */
-            font-size: 2.4rem; /* Consistent with other pages */
-            color: var(--deep-brown-gray); /* Updated color */
-            margin-bottom: 30px;
-            font-weight: 700;
-            text-align: left;
-            position: relative;
-            padding-bottom: 12px; /* Consistent with other pages */
-        }
-
-        .blogs-section h2::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 65px; /* Consistent with other pages */
-            height: 3px;
-            background-color: var(--copper-accent); /* Updated color */
-            border-radius: 2px;
-        }
-
-        .blog-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: left;
-        }
-
-        .blog-list li {
-            margin-bottom: 25px;
-            padding: 20px 25px;
-            position: relative;
-            font-size: 1.05rem;
-            color: var(--soft-dark-gray);
-            background: linear-gradient(145deg, #f0f0f0, #e0e0e0); /* Kept light gradient for card effect */
-            border-radius: 10px;
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.08), /* Adjusted shadow for earth tones */
-                        -5px -5px 15px rgba(255, 255, 255, 0.6);
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-
-        .blog-list li:hover {
-            transform: translateY(-5px);
-            box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.12), /* Adjusted shadow for earth tones */
-                        -8px -8px 20px rgba(255, 255, 255, 0.5);
-        }
-
-        .blog-list li:active {
-            transform: translateY(0);
-            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.06), /* Adjusted shadow for earth tones */
-                        -3px -3px 8px rgba(255, 255, 255, 0.3);
-        }
-
-        .blog-list li::before {
-            display: none; /* No custom bullet for list items */
-        }
-
-        .blog-list li strong {
-            font-family: 'Cormorant Garamond', serif; /* Updated font */
-            font-weight: 600;
-            font-size: 1.3em;
-            color: var(--deep-brown-gray); /* Updated color */
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        .blog-list li em {
-            font-size: 0.9em;
-            color: var(--medium-gray-text); /* Updated color */
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .blog-list li p {
-            margin: 0;
-            font-size: 1em;
-            color: var(--soft-dark-gray);
-        }
-
-        .blog-list li a {
-            color: var(--deep-brown-gray); /* Updated color for link text */
-            text-decoration: none;
-            position: relative;
-            padding-bottom: 3px;
-            transition: color 0.3s ease;
-        }
-
-        .blog-list li a::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            width: 0;
-            height: 2px;
-            background-color: var(--copper-accent); /* Updated color */
-            transition: width 0.3s ease;
-        }
-
-        .blog-list li a:hover {
-            color: var(--copper-accent); /* Updated color */
-        }
-
-        .blog-list li a:hover::after {
-            width: 100%;
-        }
-
-        footer {
-            width: 100%;
-            text-align: center;
-            padding: 25px 0;
-            margin-top: 40px;
-            background-color: var(--deep-brown-gray); /* Updated background color */
-            color: var(--light-cream-bg); /* Updated text color */
-            font-family: 'Open Sans', sans-serif; /* Updated font */
-            font-size: 0.9rem;
-            box-shadow: 0 -2px 5px var(--shadow-color);
-        }
-
-        @media (max-width: 768px) {
-            main {
-                padding: 40px;
-            }
-            .blogs-section h2 {
-                font-size: 2rem;
-            }
-            nav ul {
-                gap: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            nav ul {
-                flex-direction: column;
-                gap: 10px;
-            }
-            nav a {
-                font-size: 1rem;
-                padding: 5px;
-            }
-            main {
-                padding: 30px 20px;
-            }
-            .blogs-section h2 {
-                font-size: 1.8rem;
-            }
-            .blog-list li {
-                font-size: 0.95rem;
-                padding: 15px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Rajath Pai</title>
+  <meta name="description" content="Kaggle competition write-ups and notes on machine learning, LLMs, MLOps, and infrastructure by Rajath Rajendra Pai.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <script src="scripts/site.js"></script>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="blogs.html" class="active">Blogs</a></li>
-                <!-- Removed 'About Me' and 'Contact Me' from navigation -->
-            </ul>
-        </nav>
-    </header>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="index.html">Rajath&nbsp;Pai</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="blogs.html" aria-current="page">Blog</a>
+        <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
 
-    <main>
-        <div class="blogs-container">
-            <section class="blogs-section">
-                <h2>My Blog Posts</h2>
-                <ul class="blog-list">
-                    <li>
-                        <strong><a href="blogs/RAG.html" target="_blank">Building RAG from Scratch</a></strong>
-                        <em>Published: January 24, 2025</em>
-                        <p>Let's build a RAG from scratch using Llama3 and deepseek-r1.</p>
-                    </li>
-                    <li>
-                        <strong><a href="blogs/mlflow_tutorial.html" target="_blank">MLflow</a></strong>
-                        <em>Published: January 16, 2025</em>
-                        <p>A step-by-step guide to using MLflow for managing ML experiments and deployments.</p>
-                    </li>
-                    <li>
-                        <strong><a href="blogs/KFold.html" target="_blank">KFold</a></strong>
-                        <em>Published: January 16, 2025</em>
-                        <p>Let's understand how to use KFold.</p>
-                    </li>
-                    <li>
-                        <strong><a href="blogs/llms.html" target="_blank">Understanding Large Language Models (LLMs)</a></strong>
-                        <em>Published: November 26, 2024</em>
-                        <p>A deep dive into the world of Large Language Models, their architecture, and real-world applications.</p>
-                    </li>
-                </ul>
-            </section>
-        </div>
-    </main>
+  <main>
+    <section class="hero wrap">
+      <h1>Blog</h1>
+      <p class="lede">Two kinds of writing: deep-dives into my Kaggle competition solutions, and notes on the ideas I break down while learning in public.</p>
+    </section>
 
-    <footer>
-        <p>Designed and Developed by Rajath Pai. Let's connect!</p>
-        <!-- If you want contact icons in the footer of this page, please let me know! -->
-    </footer>
+    <!-- KAGGLE SOLUTIONS -->
+    <section class="section wrap reveal">
+      <p class="section-label">Competitions</p>
+      <h2 class="section-title">Kaggle Solutions</h2>
+      <p class="lead-note">In-depth write-ups of my competition approaches — the architecture, what actually worked, and honest post-mortems.</p>
+      <div class="post-list">
+        <a class="post-item" href="blogs/arc-agi.html">
+          <div class="post-title">Beating 24% on ARC-AGI-2: A Hybrid Symbolic + Neural Solver, Honestly</div>
+          <div class="post-date">June 2026</div>
+          <p class="post-desc">A three-engine hybrid solver for the ARC Prize 2026 (ARC-AGI-2) — and an honest look at why symbolic search scores exactly zero on the benchmark built to defeat it.</p>
+        </a>
+        <a class="post-item" href="blogs/orbit-wars.html">
+          <div class="post-title">Orbit Wars: How Adopting Someone Else's Bot Beat My Own</div>
+          <div class="post-date">June 2026</div>
+          <p class="post-desc">A candid RTS write-up: how the live ladder kept demolishing my self-play "improvements", and why adopting a stronger base agent was the real win.</p>
+        </a>
+        <a class="post-item" href="blogs/map.html">
+          <div class="post-title">Charting Student Math Misunderstandings with DeBERTa</div>
+          <div class="post-date">July 2025</div>
+          <p class="post-desc">Turning a student's written math explanation into a top-3 misconception prediction with DeBERTa-v3 — LB 0.925 / CV 0.930+ and a multi-model ensemble (105-upvote starter).</p>
+        </a>
+        <a class="post-item" href="blogs/make-data-count.html">
+          <div class="post-title">Finding Data in the Footnotes: LLMs + Constrained Decoding</div>
+          <div class="post-date">June 2025</div>
+          <p class="post-desc">From regex + random forests to a Qwen-32B pipeline that extracts dataset DOIs from papers and forces a Primary/Secondary call with logits-processor-zoo.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- NOTES & TUTORIALS -->
+    <section class="section wrap reveal">
+      <p class="section-label">Learning in public</p>
+      <h2 class="section-title">Notes &amp; Tutorials</h2>
+      <p class="lead-note">Concepts I’ve broken down while learning — infrastructure, MLOps, and ML fundamentals.</p>
+      <div class="post-list">
+        <a class="post-item" href="blogs/docker.html">
+          <div class="post-title">Docker Images, Layers &amp; Registries — Explained Simply</div>
+          <div class="post-date">May 12, 2026</div>
+          <p class="post-desc">A beginner-friendly walk through layers, checksums, manifests, registries, and why they beat dumping tarballs in S3.</p>
+        </a>
+        <a class="post-item" href="blogs/RAG.html">
+          <div class="post-title">Building RAG from Scratch</div>
+          <div class="post-date">January 24, 2025</div>
+          <p class="post-desc">Let’s build a RAG pipeline from scratch using Llama 3 and DeepSeek-R1.</p>
+        </a>
+        <a class="post-item" href="blogs/mlflow_tutorial.html">
+          <div class="post-title">MLflow</div>
+          <div class="post-date">January 16, 2025</div>
+          <p class="post-desc">A step-by-step guide to using MLflow for managing ML experiments and deployments.</p>
+        </a>
+        <a class="post-item" href="blogs/KFold.html">
+          <div class="post-title">KFold</div>
+          <div class="post-date">January 16, 2025</div>
+          <p class="post-desc">Let’s understand how to use KFold cross-validation.</p>
+        </a>
+        <a class="post-item" href="blogs/llms.html">
+          <div class="post-title">Understanding Large Language Models (LLMs)</div>
+          <div class="post-date">November 26, 2024</div>
+          <p class="post-desc">A deep dive into the world of Large Language Models, their architecture, and real-world applications.</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year">2026</span> Rajath Rajendra Pai · Göteborg, Sweden</p>
+  </footer>
 </body>
 </html>
