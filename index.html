@@ -74,7 +74,7 @@
         <ul>
           <li>Designed and run the cross-org backlog-sync platform — a serverless AWS service (Lambda, DynamoDB, EventBridge) that keeps 6,600+ issues in sync across 5 GitHub organizations (Volvo, Daimler, Accenture and partner orgs) and 8 project boards, processing ~19,000 webhook events a month at a 99.99% success rate.</li>
           <li>Built its automation suite end-to-end: label-gated routing of new issues onto per-org and global Projects, bidirectional field sync across 4 board chains (status, iteration, dates, numbers, text), historical backfills, customer auto-fill, holiday-aware reviewer due-dates, and a daily overdue-label reconciliation sweep.</li>
-          <li>Co-built AWS CI/CD infrastructure — an S3-backed Docker BuildKit cache (per-branch entries, 14-day auto-expiry) that halved devcontainer rebuilds from ~48 to ~24 minutes and unblocked the move to ephemeral runners, plus multi-GB CI images mirrored into Amazon ECR (ECR-first pulls) to keep traffic inside AWS and cut external data-transfer costs.</li>
+          <li>Engineered AWS CI/CD infrastructure — migrated the CI Docker BuildKit cache from Artifactory to S3 (per-branch entries, 14-day auto-expiry), halving devcontainer rebuilds from ~48 to ~24 minutes and unblocking the move to ephemeral runners, and mirrored multi-GB CI images into Amazon ECR (ECR-first pulls) to keep traffic inside AWS and cut external data-transfer costs.</li>
           <li>Migrated team observability to AWS-hosted Prometheus/Grafana and validated DevSecOps pipelines (Coverity static analysis); drove identity/access onboarding and SSO/SAML integration.</li>
         </ul>
       </div>
