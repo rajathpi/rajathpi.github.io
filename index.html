@@ -72,9 +72,9 @@
           <div class="entry-date">Mar 2026 — Present</div>
         </div>
         <ul>
-          <li>Own GitHub Projects and cross-org backlog automation for the developer-experience platform, syncing issues, statuses, and custom field schemas across partner organizations (Volvo, Daimler, Accenture) into a single unified backlog.</li>
-          <li>Built repo-sync services and GitHub Actions automations that auto-add issues to per-org and global Projects, backfill historical issues, and apply partner/overdue labels, reviewer end-dates, and status transitions.</li>
-          <li>Engineered AWS-based CI/CD infrastructure — S3-backed Docker BuildKit cache, devcontainer images mirrored into Amazon ECR, IAM setup, and hardened self-hosted test runners.</li>
+          <li>Designed and run the cross-org backlog-sync platform — a serverless AWS service (Lambda, DynamoDB, EventBridge) that keeps 6,600+ issues in sync across 5 GitHub organizations (Volvo, Daimler, Accenture and partner orgs) and 8 project boards, processing ~19,000 webhook events a month at a 99.99% success rate.</li>
+          <li>Built its automation suite end-to-end: label-gated routing of new issues onto per-org and global Projects, bidirectional field sync across 4 board chains (status, iteration, dates, numbers, text), historical backfills, customer auto-fill, holiday-aware reviewer due-dates, and a daily overdue-label reconciliation sweep.</li>
+          <li>Co-built AWS CI/CD infrastructure — an S3-backed Docker BuildKit cache (per-branch entries, 14-day auto-expiry) that halved devcontainer rebuilds from ~48 to ~24 minutes and unblocked the move to ephemeral runners, plus multi-GB CI images mirrored into Amazon ECR (ECR-first pulls) to keep traffic inside AWS and cut external data-transfer costs.</li>
           <li>Migrated team observability to AWS-hosted Prometheus/Grafana and validated DevSecOps pipelines (Coverity static analysis); drove identity/access onboarding and SSO/SAML integration.</li>
         </ul>
       </div>
@@ -142,7 +142,7 @@
         </div>
         <div class="skill-row">
           <div class="skill-cat">DevOps &amp; Cloud</div>
-          <div class="skill-items"><b>AWS</b> (S3, Lambda, DynamoDB, ECR, IAM) · <b>Docker</b> · GitHub Actions · CI/CD · Prometheus · Grafana · DevSecOps</div>
+          <div class="skill-items"><b>AWS</b> (Lambda, DynamoDB, EventBridge, S3, ECR, IAM) · <b>Docker</b> · GitHub Actions · CI/CD · Prometheus · Grafana · DevSecOps</div>
         </div>
         <div class="skill-row">
           <div class="skill-cat">ML &amp; Deep Learning</div>

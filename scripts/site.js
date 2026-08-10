@@ -14,8 +14,8 @@
 
   var stored = null;
   try { stored = localStorage.getItem("theme"); } catch (e) {}
-  var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-  applyTheme(stored || (prefersDark ? "dark" : "light"));
+  // Light is the default; dark only when the visitor has chosen it.
+  applyTheme(stored || "light");
 
   function bindToggle() {
     var btn = document.querySelector(".theme-toggle");
