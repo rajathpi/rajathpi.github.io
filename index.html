@@ -72,8 +72,10 @@
           <div class="entry-date">Mar 2026 — Present</div>
         </div>
         <ul>
-          <li>Designed and run the cross-org backlog-sync platform — a serverless AWS service (Lambda, DynamoDB, EventBridge) that keeps 6,600+ issues in sync across 5 GitHub organizations and 8 project boards, processing ~19,000 webhook events a month at a 99.99% success rate.</li>
+          <li>Designed and run the cross-org backlog-sync platform — a serverless AWS service (Lambda, DynamoDB, EventBridge) that keeps 7,000+ issues in sync across 5 GitHub organizations, 6 repositories, and 8 project boards, processing ~28,500 webhook events a month at a 99.99% steady-state success rate.</li>
           <li>Built its automation suite end-to-end: label-gated routing of new issues onto per-org and global Projects, bidirectional field sync across 4 board chains (status, iteration, dates, numbers, text), historical backfills, customer auto-fill, holiday-aware reviewer due-dates, and a daily overdue-label reconciliation sweep.</li>
+          <li>Hardened the platform through two production incidents — traced silently dropped syncs to a 5,000-item pagination cap and added payload and negative caching, GraphQL retry with backoff, and reverse pagination, cutting cold-path sync from 23.5s to 0.89s and average invocation from 2.9s to 0.20s; then root-caused a GraphQL rate-limit exhaustion to lazy absence discovery and cut latent scan cost from 352,440 to 477 API points. A DynamoDB-backed pending-sync queue now parks and replays failed writes — zero errors since, across 3,800+ invocations.</li>
+          <li>Delivered canary testing for the pilot customer environment as epic owner — re-based canary branches onto the true integrated codebase and made integration-branch sync per-branch and on-demand, then ran the real platform build and test workflows in canary alongside the legacy string scan, so a change that breaks a customer is caught before it reaches an OEM. Replicated multi-GB devcontainer images into a customer-side ECR (checksum tags, lifecycle expiry, OIDC pull role) to keep per-PR pulls in-account.</li>
           <li>Engineered AWS CI/CD infrastructure — migrated the CI Docker BuildKit cache from Artifactory to S3 (per-branch entries, 14-day auto-expiry), halving devcontainer rebuilds from ~48 to ~24 minutes and unblocking the move to ephemeral runners, and mirrored multi-GB CI images into Amazon ECR (ECR-first pulls) to keep traffic inside AWS and cut external data-transfer costs.</li>
           <li>Migrated team observability to AWS-hosted Prometheus/Grafana and validated DevSecOps pipelines (Coverity static analysis).</li>
           <li>Automated partner onboarding end-to-end with a Python tool built on Microsoft Graph and MSAL — bulk Azure AD guest invitations parsed straight from access sheets, with dry-run mode, audit logs, and CSV reports — provisioning access for 80+ partner engineers.</li>
@@ -143,7 +145,7 @@
         </div>
         <div class="skill-row">
           <div class="skill-cat">DevOps &amp; Cloud</div>
-          <div class="skill-items"><b>AWS</b> (Lambda, DynamoDB, EventBridge, S3, ECR, IAM) · Azure AD / Microsoft Graph · <b>Docker</b> · Terraform · <b>GitHub</b> (org admin, Actions, GraphQL API) · Copybara · CI/CD · Prometheus · Grafana · DevSecOps · Jira</div>
+          <div class="skill-items"><b>AWS</b> (Lambda, DynamoDB, EventBridge, S3, ECR, IAM, CloudWatch, Secrets Manager, SSM) · Azure AD / Microsoft Graph · <b>Docker</b> · Terraform · <b>GitHub</b> (org admin, Actions, GraphQL API) · Copybara · CI/CD · Prometheus · Grafana · DevSecOps · Jira</div>
         </div>
         <div class="skill-row">
           <div class="skill-cat">ML &amp; Deep Learning</div>
