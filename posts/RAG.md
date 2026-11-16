@@ -8,7 +8,7 @@ topic: Notes
 list: Building RAG from scratch
 ---
 
-In this notebook we will build a RAG from scratch
+In this notebook we build a RAG pipeline from scratch.
 
 ```
 corpus_of_documents = [
@@ -27,9 +27,9 @@ corpus_of_documents = [
 
 We will use Jaccard similarity here.
 
-**Jaccard Similarty**: It is the intersection divided by the union of "sets" of words (that is, the no of sets of unions).
+**Jaccard similarity**: the size of the intersection divided by the size of the union of the two sets of words.
 
-Preprocessing : We will need to convert the string to a set
+Preprocessing: convert each string to a set of words.
 
 ```
 def jaccard_similarity(query, document):
@@ -40,7 +40,7 @@ def jaccard_similarity(query, document):
     return len(intersection)/len(union)
 ```
 
-Now we define a function that will take in the query and corpus and select the best document to return to the user
+Now we define a function that will take in the query and corpus and select the best document to return to the user.
 
 ```
 def return_response(query, corpus):
@@ -64,9 +64,9 @@ return_response(user_input, corpus_of_documents)
 <pre class="out">'Take a leisurely walk in the park and enjoy the fresh air.'</pre>
 
 
-We have now successfully completed the **R** from the **RAG**
+That completes the **R** in **RAG**.
 
-This retrival has no knowledge of semantics. To solve this, we will bring in an LLM.
+This retrieval has no knowledge of semantics. To solve this, we will bring in an LLM.
 
 Now we move to the Augmentation part.
 
@@ -77,14 +77,14 @@ import requests
 import json
 ```
 
-First we define the inputs. To works with this model, we're going to take
+First we define the inputs. To work with the model, we will:
 
 1. User input.
 2. Fetch the most similar document.
 3. Pass that into a prompt to the language model.
 4. Return the result to the user.
 
-Prompt: It is an instruction that you provide to the LLM.
+Prompt: the instruction you give the LLM.
 
 When you run the code you will see the streaming result. Streaming the result is important for user experience.
 
@@ -104,12 +104,12 @@ Compile a recommendation to the user based on the recommended activity and the u
 """
 ```
 
-We will try two different models
+We will try two different models:
 
 1. **Llama 3**
-2. **Deepseek-R1**
+2. **DeepSeek-R1**
 
-both models have 7B parameters
+Both models have about 7B parameters.
 
 ### Llama 3
 
@@ -148,7 +148,7 @@ Hmm, how can I make this more engaging? Maybe emphasize that hiking isn't just a
 Go for a hike and enjoy the stunning views of nature!Try a new trail!You'll love this!Try a new trail!Try a challenging trail!Go for a longer, more challenging hike!You'll love this one!You'll love this!You'll love this!</pre>
 
 
-### Deepseek-r1
+### DeepSeek-R1
 
 ```
 url = 'http://localhost:11434/api/generate'
@@ -193,7 +193,7 @@ Try hiking again or explore other outdoor activities you enjoy!</pre>
 
 ---
 
-Lets see what happens when you give the wrong input that isnt in the corpus
+Let's see what happens with an input that isn't in the corpus.
 
 ```
 user_input = "I don't like to hike"

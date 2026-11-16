@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Rajath Pai, writing</title>
+  <link>https://rajathpi.github.io/blogs.html</link>
+  <description>Short write-ups of ML competitions and notes, each ending with what to reuse.</description>
+  <item>
+    <title>ARC-AGI-3: I Built the Lab; the Score Came from a Public Notebook</title>
+    <link>https://rajathpi.github.io/blogs/arc-agi-3.html</link>
+    <guid>https://rajathpi.github.io/blogs/arc-agi-3.html</guid>
+    <pubDate>Sun, 01 Nov 2026 00:00:00 +0000</pubDate>
+    <description>31.86 is a public notebook plus my startup fix. Here’s the offline lab I built around it.</description>
+  </item>
+  <item>
+    <title>Kaggriculture: How Switching On One Disabled Setting Beat the Public Bots</title>
+    <link>https://rajathpi.github.io/blogs/kaggriculture.html</link>
+    <guid>https://rajathpi.github.io/blogs/kaggriculture.html</guid>
+    <pubDate>Thu, 01 Oct 2026 00:00:00 +0000</pubDate>
+    <description>786 of 10,148. The whole ladder ran one shared action tape.</description>
+  </item>
+  <item>
+    <title>The Silver Medal I Didn&#x27;t Pick: RSNA Knee</title>
+    <link>https://rajathpi.github.io/blogs/rsna-knee.html</link>
+    <guid>https://rajathpi.github.io/blogs/rsna-knee.html</guid>
+    <pubDate>Thu, 01 Oct 2026 00:00:00 +0000</pubDate>
+    <description>Top 12 %, no medal. An unselected blend was silver; I picked finals by the public board alone.</description>
+  </item>
+  <item>
+    <title>Pokémon TCG AI: Search Can&#x27;t Fix a Bad Value Function</title>
+    <link>https://rajathpi.github.io/blogs/ptcg.html</link>
+    <guid>https://rajathpi.github.io/blogs/ptcg.html</guid>
+    <pubDate>Tue, 01 Sep 2026 00:00:00 +0000</pubDate>
+    <description>Strategy write-up: a search agent beat itself 97 %, then lost 1–15 to a rule bot.</description>
+  </item>
+  <item>
+    <title>Symbolic Search Scored 0 on ARC-AGI-2 Eval</title>
+    <link>https://rajathpi.github.io/blogs/arc-agi.html</link>
+    <guid>https://rajathpi.github.io/blogs/arc-agi.html</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+    <description>Weeks on 19 families of rule-finders: about 6 % of training tasks, none of the evaluation set.</description>
+  </item>
+  <item>
+    <title>Orbit Wars: Self-Play Lied, a Stronger Base Won</title>
+    <link>https://rajathpi.github.io/blogs/orbit-wars.html</link>
+    <guid>https://rajathpi.github.io/blogs/orbit-wars.html</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+    <description>505 of 4,729. Self-play wins failed on the ladder; adopting a stronger public agent didn’t.</description>
+  </item>
+  <item>
+    <title>Docker Layers, Registries and S3, Explained</title>
+    <link>https://rajathpi.github.io/blogs/docker.html</link>
+    <guid>https://rajathpi.github.io/blogs/docker.html</guid>
+    <pubDate>Fri, 01 May 2026 00:00:00 +0000</pubDate>
+    <description>A beginner-friendly explanation of Docker layers, checksums, manifests, registries, and how they compare to storing tarballs in S3.</description>
+  </item>
+  <item>
+    <title>ARC Prize 2025: Solving Puzzles With No Pretraining</title>
+    <link>https://rajathpi.github.io/blogs/arc-prize-2025.html</link>
+    <guid>https://rajathpi.github.io/blogs/arc-prize-2025.html</guid>
+    <pubDate>Sat, 01 Nov 2025 00:00:00 +0000</pubDate>
+    <description>124 of 1,455 (top 9 %) with a per-puzzle CompressARC solver fitted into 12 hours.</description>
+  </item>
+  <item>
+    <title>Teaching DeBERTa to Read Student Math Mistakes</title>
+    <link>https://rajathpi.github.io/blogs/map.html</link>
+    <guid>https://rajathpi.github.io/blogs/map.html</guid>
+    <pubDate>Tue, 01 Jul 2025 00:00:00 +0000</pubDate>
+    <description>Misconception prediction from written explanations; the starter notebook has 105+ upvotes.</description>
+  </item>
+  <item>
+    <title>Finding Data in the Footnotes with Constrained Decoding</title>
+    <link>https://rajathpi.github.io/blogs/make-data-count.html</link>
+    <guid>https://rajathpi.github.io/blogs/make-data-count.html</guid>
+    <pubDate>Sun, 01 Jun 2025 00:00:00 +0000</pubDate>
+    <description>186 of 1,282. Regex finds dataset DOIs; an LLM with one-token decoding classifies them.</description>
+  </item>
+  <item>
+    <title>Building RAG from Scratch</title>
+    <link>https://rajathpi.github.io/blogs/RAG.html</link>
+    <guid>https://rajathpi.github.io/blogs/RAG.html</guid>
+    <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
+    <description>With Llama 3 and DeepSeek-R1.</description>
+  </item>
+</channel>
+</rss>

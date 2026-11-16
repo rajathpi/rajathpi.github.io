@@ -5,6 +5,7 @@
 Reads posts/*.md and writes:
   blogs/<slug>.html   one page per post (from templates/post.html)
   blogs.html          the writing list, grouped by topic (from templates/blogs.html)
+  feed.xml            RSS feed of all posts
   index.html          only the Writing list between <!-- writing:start --> and <!-- writing:end -->
 
 Post file = a small header, then Markdown. Raw HTML (figures from blogs/_figures.html) is allowed.
@@ -29,6 +30,7 @@ import markdown
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TOPICS = ["Reasoning (ARC Prize)", "Game agents", "Applied ML", "Open source", "Notes"]
+SITE = "https://rajathpi.github.io"
 HOME_POSTS = 6  # newest posts with a `home:` line shown on the homepage
 
 
@@ -73,7 +75,7 @@ def main():
     for p in posts:
         archived = '<p class="archived">Archived: an early notebook, kept so old links keep working.</p>\n' if p.get("archived") else ""
         robots = '<meta name="robots" content="noindex">\n' if p.get("archived") else ""
-        page = fill(post_t, TITLE=esc(p["title"]), DESC=esc(p["description"]), ROBOTS=robots, H1=esc(p["title"]),
+        page = fill(post_t, SLUG=p["slug"], TITLE=esc(p["title"]), DESC=esc(p["description"]), ROBOTS=robots, H1=esc(p["title"]),
                     META=esc(p["meta"]), ARCHIVED=archived, BODY=p["body"].strip())
         (ROOT / "blogs" / f"{p['slug']}.html").write_text(page, encoding="utf8", newline="\n")
 
@@ -103,7 +105,29 @@ def main():
     if new == t and "<!-- writing:start -->" not in t:
         sys.exit("index.html: add <!-- writing:start --> and <!-- writing:end --> around the Writing list")
     idx.write_text(new, encoding="utf8", newline="\n")
-    print(f"built {len(posts)} posts, blogs.html, index.html")
+    # RSS feed of every non-archived post
+    def rfc822(d):
+        return datetime.date(int(d[:4]), int(d[5:7]), 1).strftime("%a, %d %b %Y 00:00:00 +0000")
+    items = "".join(
+        f"""  <item>
+    <title>{esc(p['title'])}</title>
+    <link>{SITE}/blogs/{p['slug']}.html</link>
+    <guid>{SITE}/blogs/{p['slug']}.html</guid>
+    <pubDate>{rfc822(p['date'])}</pubDate>
+    <description>{esc(p.get('summary') or p['description'])}</description>
+  </item>
+""" for p in posts if not p.get("archived"))
+    feed = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Rajath Pai, writing</title>
+  <link>{SITE}/blogs.html</link>
+  <description>Short write-ups of ML competitions and notes, each ending with what to reuse.</description>
+{items}</channel>
+</rss>
+"""
+    (ROOT / "feed.xml").write_text(feed, encoding="utf8", newline="\n")
+    print(f"built {len(posts)} posts, blogs.html, index.html, feed.xml")
 
 
 if __name__ == "__main__":
