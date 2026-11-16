@@ -93,7 +93,7 @@ try:
         rel = page.relative_to(ROOT).as_posix()
         for w in (375, 1280):
             harness.write_text(HARNESS.format(src="/" + rel, w=w, check=json.dumps(CHECK)), encoding="utf8")
-            for mode in ("light", "dark"):
+            for mode in ("light", "dark"):  # dark = a reader whose OS is dark; the page must still look light
                 flag = "--force-dark-mode" if mode == "dark" else "--blink-settings=preferredColorScheme=1"
                 dom = subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--window-size=1400,900", f"--user-data-dir={PROFILE}", "--virtual-time-budget=30000",
                                       flag, "--dump-dom", f"http://127.0.0.1:{port}/{harness.name}"],
