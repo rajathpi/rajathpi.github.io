@@ -12,11 +12,12 @@
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
 <h1>Orbit Wars: Self-Play Lied, a Stronger Base Won</h1>
 <p class="meta">Orbit Wars (Kaggle) · 5 min read</p>
-<p>Orbit Wars is a Kaggle real-time-strategy competition where your score is your ship count at step 498. I finished 505 of 4,729, top 11 %. The lesson: my self-play wins did not carry to the ladder, and adopting a stronger public agent beat all my own tuning.</p>
+<p>A tweak that beat my base by 8 points in self-play scored 1129.6 live. The base itself scored 1249.6.</p>
+<p>Orbit Wars is a Kaggle real-time-strategy competition where your score is your ship count at step 498. I finished 505 of 4,729, top 11 %. My self-play wins did not carry to the ladder, and adopting a stronger public agent beat all my own tuning.</p>
 <h2>One number decides the game</h2>
-<p>Planets orbit a sun and each makes 1–5 ships per turn. You launch fleets to capture planets. Only total ships at the end count.</p>
+<p>Planets orbit a sun and each makes 1&ndash;5 ships per turn. You launch fleets to capture planets. Only total ships at the end count.</p>
 <p>Bigger fleets move faster, so a trickle of small fleets loses fights. Games are 2-player duels or 4-player free-for-alls on a TrueSkill ladder. Only your last two submissions stay active.</p>
-<h2>The planner</h2>
+<h2>My planner plateaued</h2>
 <p>Every agent shared one core. Each turn it shortlists targets, scores one launch per source-target pair, and greedily commits a few waves.</p>
 <pre class="mermaid">flowchart TD
   S[Observation] --&gt; SH[Target shortlist]
@@ -25,10 +26,9 @@
   F --&gt; SC[Score by ROI, distance, garrison]
   SC --&gt; G[Greedy select waves]
   G --&gt; M[Emit moves]</pre>
-<p>Almost all the skill sits in how the floors and thresholds are chosen.</p>
-<h2>A stranger's simpler bot won</h2>
-<p>My own line plateaued at about 1141–1157 live. More knobs gave no more score.</p>
-<p>Then I adopted a public agent, <code>light</code> (from <code>alycemiki/light-ver-1200-simple-orbit-intruder</code>). It scored about 1249.6 live and beat my whole line. It was simpler than mine and smarter in four ways:</p>
+<p>Almost all the skill sits in how the floors and thresholds are chosen. My own line stalled at about 1141&ndash;1157 live. More knobs gave no more score.</p>
+<h2>A stranger's simpler bot beat my whole line</h2>
+<p>Then I adopted a public agent, <code>light</code> (from <code>alycemiki/light-ver-1200-simple-orbit-intruder</code>). It scored about 1249.6 live. It was simpler than mine and smarter in four ways:</p>
 <ul>
 <li>It sends one full safe launch, with no multi-fraction search.</li>
 <li>It raises the capture floor for expected enemy reinforcements, so it skips doomed attacks.</li>
@@ -36,8 +36,7 @@
 <li>It stops attacks that cannot repay their cost before step 498.</li>
 </ul>
 <h2>Self-play lied, twice</h2>
-<p>I tested in an arena with seat-rotated 4-player games. A tweak, <code>light_o2</code>, looked +8 points in self-play. Live it scored 1129.6 against 1249.6, and I reverted.</p>
-<p>Earlier, <code>comet3_nfpw</code> looked +12 points in self-play and plateaued at 1141 live.</p>
+<p>I tested in an arena with seat-rotated 4-player games. A tweak, <code>light_o2</code>, looked +8 points in self-play. Live it scored 1129.6 against 1249.6, and I reverted. Earlier, <code>comet3_nfpw</code> looked +12 points in self-play and plateaued at 1141 live.</p>
 <table>
 <thead><tr><th>Change</th><th>Self-play</th><th>Live</th></tr></thead>
 <tbody>
@@ -50,8 +49,8 @@
 <h2>I was tuning the wrong half</h2>
 <p>I mined 61 live replays. My 2-player win rate was healthy at 62.5 %. My 4-player rate was about 28 %, barely above the 25 % random baseline.</p>
 <p>I led by step 40, then collapsed by step 80, because the other three players target the leader. The reinforcement floor in <code>light</code> already handles this. Adding my own overhead on top over-garrisoned it.</p>
-<h2>The ceiling was RL</h2>
-<p>I read all 20 discussion threads. The top tier, 1500–1788, trains transformer policies with PPO self-play. Every heuristic agent of this family clusters at about 1240–1260.</p>
+<h2>The real ceiling was RL, and I had none</h2>
+<p>I read all 20 discussion threads. The top tier, 1500&ndash;1788, trains transformer policies with PPO self-play. Every heuristic agent of this family clusters at about 1240&ndash;1260.</p>
 <p>Cloning the top RL bot lost about 5:1 to a public heuristic. With a week left, no RL pipeline and only CPU, I stopped submitting. Each new submission evicts an active agent that must re-climb from about 700. I kept my two strongest distinct agents.</p>
 <h2>What I'd do differently</h2>
 <ul>

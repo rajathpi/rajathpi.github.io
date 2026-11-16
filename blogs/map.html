@@ -12,7 +12,8 @@
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
 <h1>Teaching DeBERTa to Read Student Math Mistakes</h1>
 <p class="meta">MAP — Charting Student Math Misunderstandings · 4 min read</p>
-<p>The Kaggle MAP competition asks you to predict a student's math misconception from their written explanation. I let DeBERTa-v3 read the text instead of using TF-IDF. The public starter notebook reached LB 0.925 and earned 105+ upvotes, and a blend of four checkpoints finished the work.</p>
+<p>The largest model I trained scored worse than the base one. It still earned its place in the final blend.</p>
+<p>The Kaggle MAP competition asks you to predict a student's math misconception from their written explanation. I let DeBERTa-v3 read the text instead of using TF-IDF. My public starter notebook reached LB 0.925 and earned 105+ upvotes, and a blend of four checkpoints finished the work.</p>
 <h2>A ranking problem on text</h2>
 <p>Each row has a math question, the student's chosen answer and a short explanation. The label is one <code>Category:Misconception</code> string.</p>
 <p>The metric is MAP@3. You submit three labels per row: full credit if the first is right, half for the second, a third for the third. So the job is ranking, not single-label classification.</p>
@@ -24,16 +25,16 @@
   A[Question + answer + explanation] --&gt; B[DeBERTa-v3, max length 256]
   B --&gt; C[Softmax over classes]
   C --&gt; D[Top-3 labels]</pre>
-<h2>Pick checkpoints on the real metric</h2>
+<h2>Choose checkpoints on the real metric</h2>
 <p>I wrote a custom MAP@3 function so the Trainer picks checkpoints on the competition metric, not accuracy. Other settings were learning rate 5e-5, a cosine schedule and dynamic padding.</p>
 <ul>
 <li>DeBERTa-v3-xsmall, 10 epochs: CV 0.920+.</li>
 <li>DeBERTa-v3-base, 6 epochs: CV 0.930+.</li>
 </ul>
-<h2>Bigger was not better</h2>
+<h2>Large lost to base</h2>
 <p>I tried richer prompts with all answer options and a correctness flag. I also trained DeBERTa-v3-large, using gradient accumulation and checkpointing to fit memory. One large run landed near CV 0.926, below base.</p>
-<p>Its value showed up as diversity in the ensemble. I also built a TF-IDF feature notebook for anyone who wants a light model in the blend.</p>
-<h2>Blending four checkpoints</h2>
+<p>Its value showed up later, as diversity in the ensemble. I also built a TF-IDF feature notebook for anyone who wants a light model in the blend.</p>
+<h2>Four checkpoints, one blend</h2>
 <p>An inference-only notebook loads four fine-tuned models and blends their probabilities.</p>
 <table>
 <thead><tr><th>Model</th><th>Reported score</th></tr></thead>
