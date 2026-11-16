@@ -1,137 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Charting Student Math Misunderstandings with DeBERTa — Rajath Pai</title>
-  <meta name="description" content="Turning a student's written math explanation into a top-3 misconception prediction with DeBERTa-v3 — LB 0.925 / CV 0.930+ and a multi-model ensemble.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/main.css">
-  <script src="../scripts/site.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teaching DeBERTa to Read Student Math Mistakes — Rajath Pai</title>
+<meta name="description" content="Turning a student&#x27;s written math explanation into a top-3 misconception prediction with DeBERTa-v3 — LB 0.925 / CV 0.930+ and a multi-model ensemble.">
+<link rel="stylesheet" href="../styles/site.css">
 </head>
 <body>
-  <header class="site-header">
-    <nav class="nav">
-      <a class="brand" href="../index.html">Rajath&nbsp;Pai</a>
-      <div class="nav-links">
-        <a href="../index.html">Home</a>
-        <a href="../blogs.html" aria-current="page">Blog</a>
-        <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-      </div>
-    </nav>
-  </header>
-
-  <article class="article">
-    <header class="article-header">
-      <p class="kicker">Blog · Kaggle</p>
-      <h1>Charting Student Math Misunderstandings with DeBERTa: From a 105-Upvote Starter to a Multi-Model Ensemble</h1>
-      <p class="meta">MAP — Charting Student Math Misunderstandings · 9 min read</p>
-    </header>
-
-    <div class="prose">
-<h2>The problem</h2>
-<p>Kaggle's <strong>MAP — Charting Student Math Misunderstandings</strong> competition asks a deceptively human question: when a student picks a multiple-choice answer and writes a sentence or two explaining <em>why</em>, can we predict the specific misconception behind their reasoning? Each training row gives you a math question, the student's selected answer, and their free-text explanation. The label is a combined <code>Category:Misconception</code> string — for example <code>True_Correct:NA</code> or a false category paired with a named misconception.</p>
-<p>The scoring metric is <strong>MAP@3</strong> (mean average precision at 3). You submit up to three labels per row, and you get full credit if the true label is your first guess, half credit if it's second, and a third of the credit if it's third. That structure completely shapes the solution: it's a ranking problem, not a single-label classification problem, and the model that spreads probability mass sensibly across its top few guesses wins.</p>
-<p>When I started, the top public notebooks leaned on TF-IDF. My bet was that an encoder LLM — DeBERTa-v3 — would earn a better CV score by actually reading the explanation. That bet paid off, and the resulting starter notebook (<em>Deberta Starter - LB 0.925 | CV 0.930+</em>) picked up <strong>105 upvotes</strong> from the community.</p>
-
-<h2>Turning the task into text</h2>
-<p>The core idea is to reframe misconception prediction as sequence classification. I collapse the two label columns into one target and encode it with a <code>LabelEncoder</code>:</p>
-<pre><code>train.Misconception = train.Misconception.fillna('NA')
-train['target'] = train.Category + ":" + train.Misconception
-train['label']  = LabelEncoder().fit_transform(train['target'])</code></pre>
-<p>That single line — <code>Category + ":" + Misconception</code> — is the whole label design. Missing misconceptions become the literal token <code>NA</code>, so a correct answer with no misconception is just another class the model can predict.</p>
-<p>The model's input is a plain formatted string. In the flagship starter I keep it simple:</p>
-<pre><code>def format_input_v2(row):
-    return (
-        f"Question: {row['QuestionText']}\n"
-        f"Answer: {row['MC_Answer']}\n"
-        f"Student Explanation: {row['StudentExplanation']}"
-    )</code></pre>
-<p>One design decision I made deliberately: I <em>removed</em> any explicit "this answer is correct/incorrect" sentence from the training text. I wanted the model to infer correctness from context rather than be spoon-fed it. I still compute a correctness flag though — by finding, per <code>QuestionId</code>, the most frequent answer that appears under a <code>True_*</code> category — because later notebook variants fold it back into the prompt.</p>
-
-<pre class="mermaid">flowchart TD
-  A[QuestionText] --> D[format_input_v2 string]
-  B[MC_Answer + options] --> D
-  C[StudentExplanation] --> D
-  D --> E[DeBERTa-v3 tokenizer, MAX_LEN 256]
-  E --> F[DebertaV2ForSequenceClassification, n_classes]
-  F --> G[Softmax over Category-Misconception classes]
-  G --> H[argsort top-3]
-  H --> I[Top-3 labels joined for submission]</pre>
-
-<h2>The model and training</h2>
-<p>Everything runs through Hugging Face's <code>DebertaV2ForSequenceClassification</code> with a classification head sized to the number of <code>Category:Misconception</code> classes. Tokenization caps at <code>MAX_LEN = 256</code>, which comfortably covers almost every row — a quick token-length histogram showed only a handful of samples getting truncated.</p>
-<p>The starter's headline finding is about model size versus score:</p>
+<main class="post">
+<p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
+<h1>Teaching DeBERTa to Read Student Math Mistakes</h1>
+<p class="meta">MAP — Charting Student Math Misunderstandings · 4 min read</p>
+<p>The Kaggle MAP competition asks you to predict a student's math misconception from their written explanation. I let DeBERTa-v3 read the text instead of using TF-IDF. The public starter notebook reached LB 0.925 and earned 105+ upvotes, and a blend of four checkpoints finished the work.</p>
+<h2>A ranking problem on text</h2>
+<p>Each row has a math question, the student's chosen answer and a short explanation. The label is one <code>Category:Misconception</code> string.</p>
+<p>The metric is MAP@3. You submit three labels per row: full credit if the first is right, half for the second, a third for the third. So the job is ranking, not single-label classification.</p>
+<h2>One string in, three labels out</h2>
+<p>I joined the two label columns into one class and fed DeBERTa a plain string of question, answer and explanation.</p>
+<pre><code>train['target'] = train.Category + ":" + train.Misconception</code></pre>
+<p>Missing misconceptions become the token <code>NA</code>, so a correct answer is just another class. I left correctness out of the starter text so the model had to infer it.</p>
+<pre class="mermaid">flowchart LR
+  A[Question + answer + explanation] --&gt; B[DeBERTa-v3, max length 256]
+  B --&gt; C[Softmax over classes]
+  C --&gt; D[Top-3 labels]</pre>
+<h2>Pick checkpoints on the real metric</h2>
+<p>I wrote a custom MAP@3 function so the Trainer picks checkpoints on the competition metric, not accuracy. Other settings were learning rate 5e-5, a cosine schedule and dynamic padding.</p>
 <ul>
-<li><strong>DeBERTa-v3-xsmall</strong> → CV 0.920+ (I run this for 10 epochs)</li>
-<li><strong>DeBERTa-v3-base</strong> → CV 0.930+ (6 epochs is the sweet spot)</li>
+<li>DeBERTa-v3-xsmall, 10 epochs: CV 0.920+.</li>
+<li>DeBERTa-v3-base, 6 epochs: CV 0.930+.</li>
 </ul>
-<p>Key training choices: learning rate <code>5e-5</code>, cosine LR schedule with a 10% warmup ratio, dynamic padding via <code>DataCollatorWithPadding</code> (no wasteful <code>max_length</code> padding), and — crucially — <code>metric_for_best_model="map@3"</code> with <code>load_best_model_at_end=True</code>. I wrote a custom <code>compute_map3</code> so the Trainer selects checkpoints on the exact competition metric rather than accuracy:</p>
-<pre><code>top3 = np.argsort(-probs, axis=1)[:, :3]
-match = (top3 == labels[:, None])
-# 1.0 if rank-1, 0.5 if rank-2, 1/3 if rank-3</code></pre>
-<p>At inference, the flow mirrors training exactly: same <code>format_input_v2</code>, softmax the logits, take the top-3 class indices with <code>argsort</code>, inverse-transform back to label strings, and join them into the <code>Category:Misconception</code> submission column.</p>
-
-<h2>Scaling up: large models and richer prompts</h2>
-<p>From the starter I pushed in two directions across separate notebooks.</p>
-<p><strong>Richer input.</strong> In the <em>question-options</em> variant I stopped showing only the student's chosen answer and instead injected <em>all</em> the multiple-choice options for that question, plus an explicit correctness flag:</p>
-<pre><code>Question: ...
-Options: (A) ... (B) ... (C) ... (D) ...
-Student Selected Answer: ...
-Correct? Yes/No
-Student Explanation: ...</code></pre>
-<p>The intuition: knowing the full option set and whether the student got it right gives the model far more signal about which misconception is plausible.</p>
-<p><strong>Bigger backbone.</strong> Moving to <strong>DeBERTa-v3-large</strong> meant fighting memory. On a single GPU I dropped per-device batch size to 2 with <code>gradient_accumulation_steps=8</code>, turned on <code>fp16</code> and <code>gradient_checkpointing</code>, and trained 3 epochs. On a 4×L4 setup I could push batch size to 64 (effective 256), switch to <code>bf16</code>, and bring a full training run down to roughly 4 hours. One large fine-tune landed around CV 0.926.</p>
-<p>I also built a dedicated <em>preprocessing and features</em> notebook — math-aware text cleaning (fraction tokenization like <code>1/2</code> → <code>FRAC_1_2</code>), lemmatization, numeric length/ratio features, and a TF-IDF matrix — saved as reusable artifacts. It's the classic-ML complement to the transformer track and useful for anyone wanting to blend a lightweight model in.</p>
-
-<h2>Ensembling</h2>
-<p>The final piece is an inference-only ensemble notebook that loads four fine-tuned checkpoints and blends their probabilities:</p>
+<h2>Bigger was not better</h2>
+<p>I tried richer prompts with all answer options and a correctness flag. I also trained DeBERTa-v3-large, using gradient accumulation and checkpointing to fit memory. One large run landed near CV 0.926, below base.</p>
+<p>Its value showed up as diversity in the ensemble. I also built a TF-IDF feature notebook for anyone who wants a light model in the blend.</p>
+<h2>Blending four checkpoints</h2>
+<p>An inference-only notebook loads four fine-tuned models and blends their probabilities.</p>
 <table>
 <thead><tr><th>Model</th><th>Reported score</th></tr></thead>
 <tbody>
-<tr><td>DeBERTa-v3-xsmall (run 1)</td><td>LB 0.925</td></tr>
-<tr><td>DeBERTa-v3-xsmall (run 2)</td><td>LB 0.931</td></tr>
-<tr><td>DeBERTa-v3-large</td><td>LB 0.927</td></tr>
-<tr><td>DeBERTa-v3-base</td><td>0.920</td></tr>
+<tr><td>xsmall (run 1)</td><td>LB 0.925</td></tr>
+<tr><td>xsmall (run 2)</td><td>LB 0.931</td></tr>
+<tr><td>large</td><td>LB 0.927</td></tr>
+<tr><td>base</td><td>0.920</td></tr>
 </tbody>
 </table>
-<p>I implemented ten blending strategies — simple average, performance-weighted, performance-squared weighting, rank averaging, power averaging, temperature scaling, geometric mean, confidence weighting, best-model-only, and a top-2 blend. The default I ship with is <strong>performance-squared weighting</strong>: it leans on the stronger models while still capturing ensemble diversity. Because the leaderboard enforces a ~9-hour, ~16,000-sample inference budget, the notebook explicitly times itself and confirms it stays inside the limit.</p>
-
-<pre class="mermaid">flowchart LR
-  M1[xsmall run 1 probs] --> W[Weighted-squared blend]
-  M2[xsmall run 2 probs] --> W
-  M3[large probs] --> W
-  M4[base probs] --> W
-  W --> T[Top-3 argsort]
-  T --> S[submission.csv]</pre>
-
-<h2>Results and honest lessons</h2>
-<p>The flagship DeBERTa starter reached <strong>LB 0.925</strong> with <strong>CV 0.930+</strong> and, as a public notebook, earned <strong>105 upvotes</strong> — my main evidence that framing this as "let the encoder read the explanation" resonated with the community over the prevailing TF-IDF approaches.</p>
-<p>A few things I'd underline honestly:</p>
+<p>I tried ten blending rules. The default is performance-squared weighting, which leans on the strong models and keeps some diversity. The notebook times itself to stay inside the roughly 9-hour inference limit.</p>
+<h2>What I'd do differently</h2>
 <ul>
-<li><strong>Optimize for the real metric.</strong> Selecting checkpoints on MAP@3 rather than accuracy directly matters when the metric rewards a good top-3, not just a good top-1.</li>
-<li><strong>Bigger isn't automatically better.</strong> DeBERTa-v3-base at 6 epochs (CV 0.930+) held its own against a far more expensive large model (~CV 0.926); the large model's real value showed up as <em>diversity</em> inside the ensemble.</li>
-<li><strong>Split the workflow.</strong> The most reliable Kaggle pattern here is train in one notebook, save the model to a dataset, and run a separate internet-off inference notebook — which is exactly how the ensemble stage is structured.</li>
-<li><strong>The CV/LB scores above come straight from my notebooks</strong> and the checkpoint configs; treat them as the reported numbers for those specific runs rather than a single tuned final submission.</li>
+<li>Report one tuned final submission. These scores are per-run numbers from my notebooks, not a single final result.</li>
+<li>Test the richer prompt on the base model before scaling to large.</li>
+<li>Keep splitting work: train in one notebook, save the model, run internet-off inference in another.</li>
+<li>Keep choosing checkpoints on MAP@3, since the metric rewards a good top 3.</li>
 </ul>
-<p>The through-line across all five notebooks is the same simple reframing: concatenate the question, the options, and the student's own words; let DeBERTa rank the misconceptions; take the top three. Everything else — richer prompts, larger backbones, ten ways to blend — is refinement on that one idea.</p>
-
-      <a class="back-link" href="../blogs.html">← Back to all posts</a>
-    </div>
-  </article>
-
-  <footer class="site-footer">
-    <p>© <span id="year">2026</span> Rajath Rajendra Pai · Göteborg, Sweden</p>
-  </footer>
-
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
-  </script>
+<p class="crumb" style="margin-top:40px"><a href="../blogs.html">← All writing</a></p>
+</main>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'neutral', fontFamily: 'Georgia, serif' });
+</script>
 </body>
 </html>
