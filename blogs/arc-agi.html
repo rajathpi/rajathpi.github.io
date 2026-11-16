@@ -1,119 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Beating 24% on ARC-AGI-2 — Rajath Pai</title>
-  <meta name="description" content="A three-engine hybrid symbolic + neural solver for the ARC Prize 2026 (ARC-AGI-2), and an honest account of why symbolic search scores zero on it.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/main.css">
-  <script src="../scripts/site.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beating 24% on ARC-AGI-2: A Hybrid Solver, Honestly — Rajath Pai</title>
+<meta name="description" content="A three-engine hybrid symbolic + neural solver for the ARC Prize 2026 (ARC-AGI-2), and an honest account of why symbolic search scores zero on it.">
+<link rel="stylesheet" href="../styles/site.css">
 </head>
 <body>
-  <header class="site-header">
-    <nav class="nav">
-      <a class="brand" href="../index.html">Rajath&nbsp;Pai</a>
-      <div class="nav-links">
-        <a href="../index.html">Home</a>
-        <a href="../blogs.html" aria-current="page">Blog</a>
-        <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-      </div>
-    </nav>
-  </header>
-
-  <article class="article">
-    <header class="article-header">
-      <p class="kicker">Blog · Kaggle</p>
-      <h1>Beating 24% on ARC-AGI-2: A Hybrid Symbolic + Neural Solver, Honestly</h1>
-      <p class="meta">ARC Prize 2026 (ARC-AGI-2) · 11 min read</p>
-    </header>
-
-    <div class="prose">
-<h2>The honest starting point</h2>
-<p>ARC-AGI-2 is an <strong>open research frontier</strong>, and I want to be candid about that from the first sentence. As of the 2025 competition, the best self-contained Kaggle solution scored <strong>24.03%</strong> — that was NVARC, from the NVIDIA Kaggle Grandmasters, using a Qwen3-4B model with a 16-token vocabulary, roughly 100k synthetic tasks, and test-time training. Average <em>human</em> performance on the public eval is about <strong>66%</strong>. The grand prize ($1M) needs <strong>85%</strong>, and nobody is close.</p>
-<p>So "beating the top solution" means beating ~24% inside a brutal set of constraints, not building something that solves ARC. The rules for the ARC-AGI-2 track:</p>
-<ul>
-<li>A Kaggle notebook, <strong>under 12 hours</strong> of runtime, <strong>no internet</strong>, and <strong>no API models</strong> — the model must be fully self-contained and offline (no GPT/Claude API).</li>
-<li>Open source under CC0/MIT-0 to be eligible.</li>
-<li>The metric is <strong>pass@2</strong> per test input, and a task counts only if <em>every</em> test input is solved. (45 of the 120 public-eval tasks have multiple test inputs — a subtle multiplier on difficulty.)</li>
-</ul>
-<p>This post is about the architecture I built toward that target, and — just as importantly — about what I could and couldn't verify without a GPU.</p>
-
-<h2>Two facts that decided the whole design</h2>
-<p>Before writing a line of the neural pipeline, I established two things locally, and both turned out to be load-bearing.</p>
-<p><strong>Fact 1: symbolic search cannot compete on ARC-AGI-2.</strong> I built a battery of 19 inducer families — colormaps, dihedral transforms, scaling, tiling, symmetry repair, boolean panel ops, object selection, fractals, gravity, dedup, plus a compositional search that chains parameter-free ops. Every inducer only ever emits a rule that reproduces <em>all</em> training pairs exactly, so precision is essentially 100%. On the 1000 training tasks it solves about <strong>6%</strong>. On the 120 public-eval tasks it solves <strong>0</strong>. Not a rounding-to-zero — literally none. No eval task admits a single verified symbolic rule. ARC-AGI-2 was explicitly built to defeat this class of solver, and my own numbers reproduce that wall exactly. The neural model has to be the primary scorer.</p>
-<p><strong>Fact 2: the bottleneck is selection, not generation.</strong> The TRM paper reports pass@1 ≈ 18% but pass@128 ≈ 30%. In other words, the model often <em>produces</em> the correct grid but fails to <em>rank</em> it in the top 2. A strong selection layer is worth several points essentially for free.</p>
-<blockquote>Those two facts — symbolic scores zero, and generation beats selection — are the entire justification for a hybrid.</blockquote>
-
-<h2>The architecture: three engines, one selector</h2>
-<p>The system is a hybrid of three engines feeding a single selector that outputs the final two attempts.</p>
+<main class="post">
+<p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
+<h1>Beating 24% on ARC-AGI-2: A Hybrid Solver, Honestly</h1>
+<p class="meta">ARC Prize 2026 (ARC-AGI-2) · 5 min read</p>
+<p>ARC-AGI-2 is an open research frontier. I designed a three-engine hybrid of symbolic and neural solving for ARC Prize 2026, and I have no GPU score yet. The lesson so far: symbolic search scores zero on the eval, so the neural model must carry it.</p>
+<h2>24% is the bar</h2>
+<p>In 2025 the best self-contained Kaggle solution was NVARC at <strong>24.03%</strong>. It used a Qwen3-4B model with a 16-token vocabulary, about 100k synthetic tasks and test-time training. Humans score about 66%. The $1M grand prize needs 85%.</p>
+<p>The rules: a Kaggle notebook under 12 hours, no internet, no API models, open source under CC0/MIT-0. The metric is pass@2, and a task counts only if every test input is solved.</p>
+<h2>Symbolic search scored zero</h2>
+<p>I built 19 inducer families: colormaps, symmetry, tiling, gravity, compositional chains and more. Each only emits a rule that reproduces every training pair, so precision is near 100%. It solves about 6% of the 1000 training tasks and <strong>0</strong> of the 120 public-eval tasks. The neural model has to be the primary scorer.</p>
+<h2>Selection is the bottleneck</h2>
+<p>The TRM paper reports pass@1 of about 18% but pass@128 of about 30%. The model often produces the right grid and fails to rank it in the top 2. A strong selection layer is worth several points.</p>
+<h2>Three engines, one selector</h2>
 <pre class="mermaid">flowchart TD
-  T["Task: train pairs + test input"] --> A["Engine A — Symbolic DSL battery (19 families, CPU, verified rules)"]
-  T --> B["Engine B — Neural TTT model (Qwen-4B, 16-token vocab, LoRA per task)"]
-  T --> C["Engine C — Test-time augmentation (8 dihedral × color perms)"]
-  C --> A
-  C --> B
-  A --> D["Engine D — Selector (verify + consensus + likelihood)"]
-  B --> D
-  D --> E["Final: pass@2 attempts"]</pre>
+  T["Task: train pairs + test input"] --&gt; A["A: Symbolic DSL battery (19 families, verified rules)"]
+  T --&gt; B["B: Neural TTT model (Qwen-4B, 16-token vocab, LoRA per task)"]
+  T --&gt; C["C: Test-time augmentation (8 dihedral × color perms)"]
+  C --&gt; A
+  C --&gt; B
+  A --&gt; D["D: Selector (verify + consensus + likelihood)"]
+  B --&gt; D
+  D --&gt; E["Final: pass@2 attempts"]</pre>
+<p>Engine A rarely fires on eval, but each hit is a near-certain slot at no GPU cost. Engine B fine-tunes a LoRA on each task's own augmented pairs, then samples. Engine C is shared: it expands the training data and gives A and B diverse frames. Engine D picks the final two attempts.</p>
+<h2>Synthetic tasks with a difficulty dial</h2>
+<p>I run my DSL primitives generatively: sample a program, sample random input grids, apply the program. Every task is correct by construction, at 0.5 ms per task. I pointed my symbolic solver at these tasks to measure difficulty. It recovers the rule 81% of the time at program depth 1, then 14%, 3% and 1% at depths 2 to 4.</p>
+<p>Depth is what defeats pattern-matching, which is why eval sits at 0% for symbolic search. So I skew the curriculum toward depth 3 and 4 to force the model to learn composition.</p>
+<h2>Consensus picks the answer</h2>
+<p>I sample many candidates across the 8 dihedral frames and colour permutations, map each back to the original frame, and pick the grid produced most consistently. The aim is to turn the pass@128 ceiling into real pass@2. The logic is unit-tested.</p>
+<h2>Symbolic can only help</h2>
+<p>If the symbolic battery finds a rule that fits all train pairs, it takes attempt slot 1 and neural consensus fills slot 2. I checked locally that a symbolic rule rescues a task even when a mock neural model votes mostly wrong.</p>
+<h2>An earlier attempt</h2>
+<p>My 2025 kernel was a different design: per-puzzle, no pretraining, in the CompressARC lineage. The work there was throughput. It profiled each puzzle's memory and packed about 2300 steps per puzzle on 120 tasks into 12 hours. It has no synthetic pretraining, symbolic layer or consensus.</p>
+<h2>What I'd do differently</h2>
 <ul>
-<li><strong>Engine A — symbolic battery</strong> (<code>arc/solvers.py</code>): only emits hypotheses that reproduce all train pairs, giving ~100% precision. It rarely fires on eval, but each hit is a near-certain pass@2 slot at ~zero GPU cost.</li>
-<li><strong>Engine B — neural test-time training</strong> (<code>kaggle/arc_agi2_pipeline.py</code>): the primary scorer. Per task, it LoRA-fine-tunes a 16-token causal LM on the task's own augmented train pairs, then samples.</li>
-<li><strong>Engine C — augmentation</strong> (<code>arc/augment.py</code>): the 8 dihedral symmetries times N color permutations. It's shared — it expands the TTT data <em>and</em> creates diverse inference frames for both A and B.</li>
-<li><strong>Engine D — selector</strong> (<code>arc/ensemble.py</code>): fuses symbolic verification, augmentation consensus, and model likelihood into the final two attempts.</li>
+<li><strong>Get a GPU number first.</strong> Engines A and C alone score about 0% on eval. Whether Edges 1 and 2 add points can only be shown by Kaggle GPU runs, not on my Mac.</li>
+<li><strong>Check candidate diversity before trusting consensus.</strong> If the neural candidates are all alike, consensus adds little.</li>
+<li><strong>Budget time early.</strong> Test-time training a 4B model on 120 tasks in 12 hours is tight, so keep LoRA, few steps and a symbolic-only fallback.</li>
+<li><strong>Aim to approach 24%, not beat it.</strong> That is the realistic floor once the pipeline runs.</li>
 </ul>
-<p>Everything CPU-checkable is unit-tested locally. The GPU engine lives in <code>kaggle/</code> and is designed to run inside a Kaggle kernel — offline, under 12 hours.</p>
-
-<h2>Edge 1: DSL-grounded synthetic data with verified difficulty control</h2>
-<p>NVARC built ~100k tasks by LLM-combining ~800 seed task <em>descriptions</em>, then filtering by code-agreement (≥8/20 implementations must agree) — expensive and noisy. I went the other way. I run my forward DSL primitives <strong>generatively</strong> (<code>arc/generate.py</code>): sample a program (a pipeline of k primitives with fixed parameters), sample k random input grids, and apply the program to each. Every task is therefore <strong>verified-by-construction</strong> — the rule is identical across all pairs by definition. Measured cost: <strong>0.5 ms/task</strong> (100k tasks in under a minute, millions in minutes), with zero invalid tasks.</p>
-<p>The real prize is difficulty control with empirical validation. I pointed my own symbolic solver at the generated tasks and measured how often it recovers the true rule as a function of program depth:</p>
-<table>
-<thead><tr><th>Program depth</th><th>Symbolic recovery</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>81%</td></tr>
-<tr><td>2</td><td>14%</td></tr>
-<tr><td>3</td><td>3%</td></tr>
-<tr><td>4</td><td>1%</td></tr>
-</tbody>
-</table>
-<p>This is the mechanism in miniature. <strong>Compositional depth is exactly what defeats pattern-matching</strong> — the same reason eval sits at 0% for symbolic search. So I skew the training curriculum toward depth 3–4 to <em>force</em> the model to learn composition, the ARC-AGI-2 differentiator, rather than memorizing single transforms. And because the generator is mine, I can also match eval's hard surface statistics directly: large inputs to small outputs, many colors, legend/key indirection.</p>
-
-<h2>Edge 2: selection-first inference</h2>
-<p>This edge attacks the pass@1 ≪ pass@k gap head-on. Instead of trusting one greedy decode, I generate <em>many</em> candidates — sampling across the 8 dihedral frames times color permutations — de-augment each back into the original frame, and then pick the final two by <strong>augmentation consensus</strong>: the grid the model produces <em>consistently across frames</em> is far more likely correct than any single decode. The logic lives in <code>arc.ensemble.consensus_rank</code>, and it's unit-tested.</p>
-<p>Conceptually, this converts the documented pass@128 ≈ 30% generation ceiling into realized pass@2 — points NVARC left on the table by prioritizing a single model decode under the time budget. If the model already <em>can</em> produce the answer, consensus is how you surface it.</p>
-
-<h2>Edge 3: the hybrid verified ensemble</h2>
-<p>Here's where the three engines pay their rent together. When the symbolic battery finds a rule that fits all train pairs, it takes <strong>attempt slot 1</strong> — a near-certain point at ~zero GPU cost — and the neural consensus fills slot 2. I verified locally that a symbolic rule rescues a task even when a (mock) neural model votes mostly wrong (<code>arc.ensemble.select_pass2</code>). The selection priority is: symbolic-verified answer first, neural consensus second, remaining symbolic candidates as backfill. It's a strict upgrade: symbolic can only ever help, never hurt.</p>
-
-<h2>An earlier attempt worth naming</h2>
-<p>My 2025 Kaggle kernel (<code>improved-arc-agi-without-pretraining</code>) was a genuinely different beast: a per-puzzle, <strong>no-pretraining</strong> approach in the CompressARC lineage. The engineering focus there was pure throughput — profiling each puzzle's memory in a 2-step probe, finding the optimal puzzle-parallelization under the memory ceiling, then packing as many optimization steps as possible into 12 hours (roughly 2300 steps per puzzle on 120 tasks) across all available CPUs and GPUs. It taught me the budget discipline that shows up in the 2026 pipeline's time-budget guard, but it's architecturally distinct — no synthetic pretraining, no symbolic layer, no cross-frame consensus. The 2026 hybrid is a clean break toward the NVARC-class recipe plus my three edges.</p>
-
-<h2>Honest status and risks</h2>
-<p>I'll end where I started — candidly.</p>
-<ul>
-<li><strong>Engines A + C alone, no GPU: ~0% on eval.</strong> The local symbolic-only submission is a placeholder-grid baseline, and that's the whole point of ARC-AGI-2. The symbolic layer is valuable only as the precision slot in the ensemble.</li>
-<li><strong>Engine B (an NVARC-class reproduction): the realistic floor is "approach ~24%"</strong> once the GPU pipeline runs. Beating it depends on Edges 1–2 actually adding points, which can only be confirmed by Kaggle GPU runs — not on my Mac.</li>
-<li><strong>Biggest risk:</strong> the selection gains are empirical. If neural candidates are low-diversity, consensus adds little. Mitigation: tune sampling temperature and augmentation count to maximize candidate diversity before selection.</li>
-<li><strong>Compute risk:</strong> test-time training a 4B model within 12 hours for 120 tasks is tight. LoRA, small step counts, and batching are mandatory, and the pipeline falls back to symbolic-only if it runs out of budget.</li>
-</ul>
-<p>The verified scaffolding is done: the grid library, the exact pass@2 scorer, the 19-family battery, the augmentation round-trips, the 0.5 ms/task generator with difficulty control, and the unit-tested selector. What remains is the honest part I can't fake — pretraining the 16-token model and getting the first real neural number from inside Kaggle. ARC-AGI-2 doesn't hand out points for a good architecture diagram. But if I'm going to chase a genuine research result, I'd rather build it on measurements than on hope.</p>
-
-      <a class="back-link" href="../blogs.html">← Back to all posts</a>
-    </div>
-  </article>
-
-  <footer class="site-footer">
-    <p>© <span id="year">2026</span> Rajath Rajendra Pai · Göteborg, Sweden</p>
-  </footer>
-
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose', fontFamily: 'Inter, system-ui, sans-serif' });
-  </script>
+<p class="crumb" style="margin-top:40px"><a href="../blogs.html">← All writing</a></p>
+</main>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'neutral', fontFamily: 'Georgia, serif' });
+</script>
 </body>
 </html>

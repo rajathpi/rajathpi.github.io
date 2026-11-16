@@ -1,108 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog — Rajath Pai</title>
-  <meta name="description" content="Kaggle competition write-ups and notes on machine learning, LLMs, MLOps, and infrastructure by Rajath Rajendra Pai.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/main.css">
-  <script src="scripts/site.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing — Rajath Pai</title>
+<meta name="description" content="Kaggle competition write-ups and notes by Rajath Pai: what worked, what didn't, and why.">
+<link rel="stylesheet" href="styles/site.css">
 </head>
 <body>
-  <header class="site-header">
-    <nav class="nav">
-      <a class="brand" href="index.html">Rajath&nbsp;Pai</a>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="blogs.html" aria-current="page">Blog</a>
-        <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-      </div>
-    </nav>
-  </header>
+<main>
+  <p class="crumb"><a href="index.html">Rajath Pai</a> / Writing</p>
+  <h1>Writing</h1>
+  <p class="dim">Short write-ups of the competitions I enter, including what didn’t work. Each one starts with the result and ends with what I’d do differently.</p>
 
-  <main>
-    <section class="hero wrap">
-      <h1>Blog</h1>
-      <p class="lede">Two kinds of writing: deep-dives into my Kaggle competition solutions, and notes on the ideas I break down while learning in public.</p>
-    </section>
+  <h2>Reasoning (ARC Prize)</h2>
+  <ul class="plain">
+    <li><span class="d">Nov 2026</span> <a href="blogs/arc-agi-3.html">ARC-AGI-3: I built the lab; the score came from a public notebook</a><span class="s">31.86 is a public notebook plus my startup fix. Here’s the offline lab I built around it.</span></li>
+    <li><span class="d">Jun 2026</span> <a href="blogs/arc-agi.html">Beating 24 % on ARC-AGI-2: a hybrid solver, honestly</a><span class="s">A symbolic and neural solver design. Symbolic search scores zero on the evaluation set.</span></li>
+    <li><span class="d">Nov 2025</span> <a href="blogs/arc-prize-2025.html">ARC Prize 2025: solving puzzles with no pretraining</a><span class="s">124 of 1,455 (top 9 %) with a per-puzzle CompressARC solver fitted into 12 hours.</span></li>
+  </ul>
 
-    <!-- KAGGLE SOLUTIONS -->
-    <section class="section wrap reveal">
-      <p class="section-label">Competitions</p>
-      <h2 class="section-title">Kaggle Solutions</h2>
-      <p class="lead-note">In-depth write-ups of my competition approaches — the architecture, what actually worked, and honest post-mortems.</p>
-      <div class="post-list">
-        <a class="post-item" href="blogs/arc-agi.html">
-          <div class="post-title">Beating 24% on ARC-AGI-2: A Hybrid Symbolic + Neural Solver, Honestly</div>
-          <div class="post-date">June 2026</div>
-          <p class="post-desc">A three-engine hybrid solver for the ARC Prize 2026 (ARC-AGI-2) — and an honest look at why symbolic search scores exactly zero on the benchmark built to defeat it.</p>
-        </a>
-        <a class="post-item" href="blogs/arc-prize-2025.html">
-          <div class="post-title">ARC Prize 2025: Solving Puzzles With No Pretraining</div>
-          <div class="post-date">June 2025</div>
-          <p class="post-desc">A per-puzzle CompressARC solver that trains a tiny network from scratch on each puzzle at test time — plus the systems engineering to pack thousands of steps into Kaggle's 12-hour limit.</p>
-        </a>
-        <a class="post-item" href="blogs/orbit-wars.html">
-          <div class="post-title">Orbit Wars: How Adopting Someone Else's Bot Beat My Own</div>
-          <div class="post-date">June 2026</div>
-          <p class="post-desc">A candid RTS write-up: how the live ladder kept demolishing my self-play "improvements", and why adopting a stronger base agent was the real win.</p>
-        </a>
-        <a class="post-item" href="blogs/map.html">
-          <div class="post-title">Charting Student Math Misunderstandings with DeBERTa</div>
-          <div class="post-date">July 2025</div>
-          <p class="post-desc">Turning a student's written math explanation into a top-3 misconception prediction with DeBERTa-v3 — LB 0.925 / CV 0.930+ and a multi-model ensemble (105-upvote starter).</p>
-        </a>
-        <a class="post-item" href="blogs/make-data-count.html">
-          <div class="post-title">Finding Data in the Footnotes: LLMs + Constrained Decoding</div>
-          <div class="post-date">June 2025</div>
-          <p class="post-desc">From regex + random forests to a Qwen-32B pipeline that extracts dataset DOIs from papers and forces a Primary/Secondary call with logits-processor-zoo.</p>
-        </a>
-      </div>
-    </section>
+  <h2>Game agents</h2>
+  <ul class="plain">
+    <li><span class="d">Oct 2026</span> <a href="blogs/kaggriculture.html">Kaggriculture: how switching on one disabled setting beat the public bots</a><span class="s">786 of 10,148. The whole ladder ran one shared action tape.</span></li>
+    <li><span class="d">Sep 2026</span> <a href="blogs/ptcg.html">Pokémon TCG AI: search can’t fix a bad value function</a><span class="s">Strategy write-up: a search agent beat itself 97 %, then lost 1–15 to a rule bot.</span></li>
+    <li><span class="d">Jun 2026</span> <a href="blogs/orbit-wars.html">Orbit Wars: self-play lied, a stronger base won</a><span class="s">505 of 4,729. Self-play wins failed on the ladder; adopting a stronger public agent didn’t.</span></li>
+  </ul>
 
-    <!-- NOTES & TUTORIALS -->
-    <section class="section wrap reveal">
-      <p class="section-label">Learning in public</p>
-      <h2 class="section-title">Notes &amp; Tutorials</h2>
-      <p class="lead-note">Concepts I’ve broken down while learning — infrastructure, MLOps, and ML fundamentals.</p>
-      <div class="post-list">
-        <a class="post-item" href="blogs/docker.html">
-          <div class="post-title">Docker Images, Layers &amp; Registries — Explained Simply</div>
-          <div class="post-date">May 12, 2026</div>
-          <p class="post-desc">A beginner-friendly walk through layers, checksums, manifests, registries, and why they beat dumping tarballs in S3.</p>
-        </a>
-        <a class="post-item" href="blogs/RAG.html">
-          <div class="post-title">Building RAG from Scratch</div>
-          <div class="post-date">January 24, 2025</div>
-          <p class="post-desc">Let’s build a RAG pipeline from scratch using Llama 3 and DeepSeek-R1.</p>
-        </a>
-        <a class="post-item" href="blogs/mlflow_tutorial.html">
-          <div class="post-title">MLflow</div>
-          <div class="post-date">January 16, 2025</div>
-          <p class="post-desc">A step-by-step guide to using MLflow for managing ML experiments and deployments.</p>
-        </a>
-        <a class="post-item" href="blogs/KFold.html">
-          <div class="post-title">KFold</div>
-          <div class="post-date">January 16, 2025</div>
-          <p class="post-desc">Let’s understand how to use KFold cross-validation.</p>
-        </a>
-        <a class="post-item" href="blogs/llms.html">
-          <div class="post-title">Understanding Large Language Models (LLMs)</div>
-          <div class="post-date">November 26, 2024</div>
-          <p class="post-desc">A deep dive into the world of Large Language Models, their architecture, and real-world applications.</p>
-        </a>
-      </div>
-    </section>
-  </main>
+  <h2>Applied ML</h2>
+  <ul class="plain">
+    <li><span class="d">Oct 2026</span> <a href="blogs/rsna-knee.html">The silver medal I didn’t pick: RSNA Knee</a><span class="s">Top 12 %, no medal. An unselected blend was silver; I picked finals by the public board alone.</span></li>
+    <li><span class="d">Jul 2025</span> <a href="blogs/map.html">Teaching DeBERTa to read student math mistakes</a><span class="s">Misconception prediction from written explanations; the starter notebook has 105+ upvotes.</span></li>
+    <li><span class="d">Jun 2025</span> <a href="blogs/make-data-count.html">Finding data in the footnotes with constrained decoding</a><span class="s">186 of 1,282. Regex finds dataset DOIs; an LLM with one-token decoding classifies them.</span></li>
+  </ul>
 
-  <footer class="site-footer">
-    <p>© <span id="year">2026</span> Rajath Rajendra Pai · Göteborg, Sweden</p>
-  </footer>
+  <h2>Notes</h2>
+  <ul class="plain">
+    <li><span class="d">May 2026</span> <a href="blogs/docker.html">Docker layers, registries and S3, explained</a></li>
+    <li><span class="d">Jan 2025</span> <a href="blogs/RAG.html">Building RAG from scratch</a> <span class="dim">with Llama 3 and DeepSeek-R1</span></li>
+  </ul>
+
+  <p class="dim" style="margin-top:36px;font-size:15px">Archived early notebooks: <a href="blogs/KFold.html">K-fold cross-validation</a>, <a href="blogs/mlflow_tutorial.html">MLflow</a>.</p>
+</main>
 </body>
 </html>

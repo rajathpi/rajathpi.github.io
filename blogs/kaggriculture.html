@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kaggriculture: How Switching On One Disabled Setting Beat the Public Bots — Rajath Pai</title>
+<meta name="description" content="A Kaggle farming-bot competition where the whole ladder ran one shared action tape, and the only edge I found was a sale-timing gate everyone else shipped switched off.">
+<link rel="stylesheet" href="../styles/site.css">
+</head>
+<body>
+<main class="post">
+<p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
+<h1>Kaggriculture: How Switching On One Disabled Setting Beat the Public Bots</h1>
+<p class="meta">Kaggriculture (Kaggle) · 5 min read</p>
+<p>Kaggriculture is a Kaggle contest where you submit a farming bot that plays other bots on a ladder. I finished 786th of 10,148, the top 8 percent. I never wrote a farm plan that beat the public ones. What worked was finding one sale-timing setting that every public bot shipped switched off.</p>
+<h2>The game</h2>
+<p>Two players each get a 10&times;10 farm. A season is 30 days of 24 turns. Each turn you plant, water, feed, harvest, hire or place market orders. The player with more coins at the end wins.</p>
+<p>Only wins count. A 1-coin win equals a 20,000-coin win. The market is shared, so your rival's sales lower your prices. The engine is deterministic apart from weeds, so a recorded ladder game can be replayed to the coin.</p>
+<h2>The ladder was one bot</h2>
+<p>I started by mining 3,322 top replays, or 6,644 player-games. Almost everyone replayed the same action tape. I found five dominant variants, and one was shared by 22 of 114 teams.</p>
+<p>The median build was identical at every score level: 9 cows, 5 sheep, 12 melon tiles, about 290 hires. Rank 1 to 20 and rank 401 and up looked the same in what a bot controls. The top and bottom fifths of games by coins even had identical sell schedules. Their means were 125k and 53k. The gap came from the opponent and the shop's random draw.</p>
+<p>So I set two rules. Optimise win rate, never coins. And treat the live rating as noisy: two byte-identical submissions of mine read 170 points apart.</p>
+<h2>Four ideas that lost</h2>
+<p>I tested four edge hypotheses in my local arena. All four were refuted.</p>
+<ul>
+<li>Geese for the "untouched" egg market: arena win rate fell from 33 percent to 0.</li>
+<li>Cornering wheat to starve the rival's herd: 50 percent to 0.</li>
+<li>Selling fertilizer early: 50 percent to 12.</li>
+<li>Tuning the clone front-run horizon: it fired 0 times in 717 turns.</li>
+</ul>
+<p>My first four home-grown agents, tweaks of the shared tape tuned for coins, all lost rating too.</p>
+<h2>The gate everyone left off</h2>
+<p>From 12 September I stopped designing and started measuring. Each day I forked the strongest public notebook and swept one constant. I proved the fork tied its parent on every seed first. A value only counted if it won on two seed blocks, weeds on, from both seats, and was not worse against any single opponent.</p>
+<pre class="mermaid">flowchart LR
+  A["Fork strongest public bot"] --> B["Prove it ties its parent"]
+  B --> C["Sweep one constant"]
+  C --> D{"Wins on two seed blocks, both seats?"}
+  D -- yes --> E["Submit"]
+  D -- no --> A</pre>
+<p>The newest public builds all contained a "sale-now gate". When the rival's estimated stock of a premium product reaches K units, it pulls my planned sales of that product forward into this turn. I bank the money before the rival's sales hit the price curve.</p>
+<p>Eight public frontier agents in a row shipped it with K = 0, which turns it off. My guess is that authors tune against clones of themselves, where selling early looks bad. Against a field that is not running it, selling early is worth thousands of coins a game.</p>
+<p>At K = 6 with a 48-turn horizon it beat its own raw chassis 82 to 90 percent of the time, on every chassis I tried. K = 6 beat K = 8, 88 to 12. It paid on nine public chassis in a row. My final two submissions won the mirror 74 to 46 over two fresh blocks and never lost a game against the wider field.</p>
+<h2>Test setups lied more than ideas did</h2>
+<ul>
+<li>A weeds-off, one-seat screen showed exact draws where the weeds-on, both-seat truth was 65 to 35 against me.</li>
+<li>One 60-seed block swings a win rate by about 7 points. Two candidates showed +12 on one block and a draw on the next.</li>
+<li>On 28 September both new slots sank overnight. The old agent replayed against the same live opponents did no better. The field had moved, not my agent.</li>
+<li>Two byte-identical slots won 76 percent and 56 percent over 300 games each.</li>
+</ul>
+<h2>What it cost me</h2>
+<p>My peak was rank 85 on 20 September. The day before the deadline I read rank 641 of 10,207. I finished 786th after the post-deadline tournament. I can't prove why I slid.</p>
+<p>Two likely reasons. New submissions start with high uncertainty, so lucky early wins inflate the score. And by the last day, 72 of my 80 most recent opponents played my own route tile for tile, so my edge had been copied.</p>
+<p>I also decoded a wheat buy-and-sell-back trick that 7 of those 80 opponents used. It won the mirror 106 to 14 but gave back 7 of 480 field games, so I did not ship it. The gap to the top was not a setting. Rivals bought four to eight more animals before day 10 and out-earned me by six to nine thousand coins every three days. I never built that planner.</p>
+<p>I built on public Apache-2.0 notebooks and kept every upstream notice. The organisers confirmed that was allowed. Their habit of shipping the gate off was the whole opening.</p>
+<h2>What I'd do differently</h2>
+<ul>
+<li>Build the early-herd planner. It is the durable edge. A one-line setting is rented, not owned.</li>
+<li>Ask what the field switched off, before asking what to add.</li>
+<li>Prove the fork matches its parent before sweeping anything.</li>
+<li>Never trust one seed block or one seat.</li>
+<li>Don't retire your last proven slot on the day a challenger goes in.</li>
+</ul>
+<p class="crumb" style="margin-top:40px"><a href="../blogs.html">← All writing</a></p>
+</main>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'neutral', fontFamily: 'Georgia, serif' });
+</script>
+</body>
+</html>

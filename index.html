@@ -1,238 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rajath Pai — Software Engineer</title>
-  <meta name="description" content="Rajath Rajendra Pai — software engineer building developer-experience platforms and automation, with a data science & AI background.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/main.css">
-  <script src="scripts/site.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rajath Pai</title>
+<meta name="description" content="Rajath Rajendra Pai — software engineer in Göteborg building developer platforms on AWS; M.Sc. Data Science & AI; Kaggle write-ups and side projects.">
+<link rel="stylesheet" href="styles/site.css">
 </head>
 <body>
-  <header class="site-header">
-    <nav class="nav">
-      <a class="brand" href="index.html">Rajath&nbsp;Pai</a>
-      <div class="nav-links">
-        <a href="index.html" aria-current="page">Home</a>
-        <a href="blogs.html">Blog</a>
-        <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <!-- HERO -->
-    <section class="hero wrap">
-      <img class="avatar" src="assets/headshot_circle.png" alt="Rajath Rajendra Pai">
+<main>
+  <div class="top">
+    <img src="assets/headshot_circle.png" alt="Rajath Pai">
+    <div>
       <h1>Rajath Rajendra Pai</h1>
-      <p class="title">Software Engineer</p>
-      <p class="lede">I build developer-experience platforms and automation — backed by a data science &amp; AI background I bring to tooling, analytics, and machine learning.</p>
-      <div class="socials">
-        <a href="https://github.com/rajathpi" target="_blank" rel="noopener" aria-label="GitHub">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.44-.78-3.46 0 0-1.09-.35-3.56 1.05-.28-.73-1.04-1.4-1.98-1.49-1.2-.11-2.4-.11-3.6 0-1.03.09-1.79.76-2.07 1.49C6 9 3 11 3 14.5c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-5-2"/></svg>
-        </a>
-        <a href="https://www.linkedin.com/in/rajath-pai/" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-        </a>
-        <a href="mailto:rajathpai2000@gmail.com" aria-label="Email">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-        </a>
-        <a href="https://www.kaggle.com/rajathrpai" target="_blank" rel="noopener" aria-label="Kaggle">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
-        </a>
-      </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section class="section wrap reveal">
-      <p class="section-label">About</p>
-      <h2 class="section-title">A little about me</h2>
-      <p style="margin-bottom:16px;">
-        I’m a software engineer at <strong style="color:var(--ink)">Coretura</strong> — an automotive software joint venture — where I build the developer-experience platform for engineering teams across partner organizations: GitHub Projects and cross-org backlog automation, AWS CI/CD, observability, and DevSecOps pipelines.
-      </p>
-      <p>
-        That work builds on an M.Sc. in Data Science &amp; AI, which I bring to analytics, automation, and machine learning. Outside of work I compete on <a href="https://www.kaggle.com/rajathrpai" target="_blank" rel="noopener">Kaggle</a> across LLM reasoning, AI security, and model optimization — and I swim and cycle. Feel free to reach out if you’d like to connect.
-      </p>
-    </section>
-
-    <!-- EXPERIENCE -->
-    <section class="section wrap reveal">
-      <p class="section-label">Experience</p>
-      <h2 class="section-title">Where I’ve worked</h2>
-
-      <div class="entry">
-        <div class="entry-head">
-          <div class="entry-role">DevOps / DevSecOps Engineer · <span class="entry-org">Coretura</span></div>
-          <div class="entry-date">Mar 2026 — Present</div>
-        </div>
-        <ul>
-          <li>Designed and run the cross-org backlog-sync platform — a serverless AWS service (Lambda, DynamoDB, EventBridge) that keeps 7,000+ issues in sync across 5 GitHub organizations, 6 repositories, and 8 project boards, processing ~28,500 webhook events a month at a 99.99% steady-state success rate.</li>
-          <li>Built its automation suite end-to-end: label-gated routing of new issues onto per-org and global Projects, bidirectional field sync across 4 board chains (status, iteration, dates, numbers, text), historical backfills, customer auto-fill, holiday-aware reviewer due-dates, and a daily overdue-label reconciliation sweep.</li>
-          <li>Hardened the platform through two production incidents — traced silently dropped syncs to a 5,000-item pagination cap and added payload and negative caching, GraphQL retry with backoff, and reverse pagination, cutting cold-path sync from 23.5s to 0.89s and average invocation from 2.9s to 0.20s; then root-caused a GraphQL rate-limit exhaustion to lazy absence discovery and cut latent scan cost from 352,440 to 477 API points. A DynamoDB-backed pending-sync queue now parks and replays failed writes — zero errors since, across 3,800+ invocations.</li>
-          <li>Delivered canary testing for the pilot customer environment as epic owner — re-based canary branches onto the true integrated codebase and made integration-branch sync per-branch and on-demand, then ran the real platform build and test workflows in canary alongside the legacy string scan, so a change that breaks a customer is caught before it reaches an OEM. Replicated multi-GB devcontainer images into a customer-side ECR (checksum tags, lifecycle expiry, OIDC pull role) to keep per-PR pulls in-account.</li>
-          <li>Engineered AWS CI/CD infrastructure — migrated the CI Docker BuildKit cache from Artifactory to S3 (per-branch entries, 14-day auto-expiry), halving devcontainer rebuilds from ~48 to ~24 minutes and unblocking the move to ephemeral runners, and mirrored multi-GB CI images into Amazon ECR (ECR-first pulls) to keep traffic inside AWS and cut external data-transfer costs.</li>
-          <li>Migrated team observability to AWS-hosted Prometheus/Grafana and validated DevSecOps pipelines (Coverity static analysis).</li>
-          <li>Automated partner onboarding end-to-end with a Python tool built on Microsoft Graph and MSAL — bulk Azure AD guest invitations parsed straight from access sheets, with dry-run mode, audit logs, and CSV reports — provisioning access for 80+ partner engineers.</li>
-        </ul>
-      </div>
-
-      <div class="entry">
-        <div class="entry-head">
-          <div class="entry-role">Associate Data Scientist · <span class="entry-org">Volvo Group</span></div>
-          <div class="entry-date">Mar 2025 — Mar 2026</div>
-        </div>
-        <ul>
-          <li>Built and maintained the Position Management application — one of the most widely used Power Platform solutions in the organization — enabling managers to create positions through a multi-level VP/SVP approval workflow.</li>
-          <li>Designed a Python people-analytics dashboard surfacing turnover, hiring, and diversity metrics; automated certificate generation and built an Employee Flexibility app to support workforce planning.</li>
-        </ul>
-      </div>
-
-      <div class="entry">
-        <div class="entry-head">
-          <div class="entry-role">People Data Analyst · <span class="entry-org">Volvo Group</span></div>
-          <div class="entry-date">Aug — Nov 2024</div>
-        </div>
-        <ul>
-          <li>Optimized ETL pipelines and Power BI (PowerQuery/DAX) performance, and automated data workflows in Python.</li>
-        </ul>
-      </div>
-
-      <div class="entry">
-        <div class="entry-head">
-          <div class="entry-role">Master’s Thesis Worker — Vehicle Data · <span class="entry-org">Volvo Group</span></div>
-          <div class="entry-date">Jan — Jun 2024</div>
-        </div>
-        <ul>
-          <li>Built a multivariate time-series model on truck-sensor, weather, and road-type data to predict drivers’ deactivation of ADAS functions, informing system design and usability.</li>
-        </ul>
-      </div>
-
-      <div class="entry">
-        <div class="entry-head">
-          <div class="entry-role">Data Science Intern — People Analytics &amp; Production Logistics · <span class="entry-org">Volvo Group</span></div>
-          <div class="entry-date">Summers 2023 &amp; 2024</div>
-        </div>
-        <ul>
-          <li>Developed regression models for HR estimation and improved Power BI reporting; applied PySpark/Databricks fuzzy-matching and ML to raise data-matching accuracy on production-logistics datasets within an agile team.</li>
-        </ul>
-      </div>
-
-      <div class="entry">
-        <div class="entry-head">
-          <div class="entry-role">Research Assistant — Vehicle Safety · <span class="entry-org">Chalmers University of Technology</span></div>
-          <div class="entry-date">Feb — Jun 2023</div>
-        </div>
-        <ul>
-          <li>Analyzed e-scooter ride data for the e-SAFER project to identify usage patterns and safety improvements.</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- SKILLS -->
-    <section class="section wrap reveal">
-      <p class="section-label">Toolkit</p>
-      <h2 class="section-title">Technologies I work with</h2>
-      <div class="skill-groups">
-        <div class="skill-row">
-          <div class="skill-cat">Languages</div>
-          <div class="skill-items"><b>Python</b> · SQL · C++ · Bash</div>
-        </div>
-        <div class="skill-row">
-          <div class="skill-cat">DevOps &amp; Cloud</div>
-          <div class="skill-items"><b>AWS</b> (Lambda, DynamoDB, EventBridge, S3, ECR, IAM, CloudWatch, Secrets Manager, SSM) · Azure AD / Microsoft Graph · <b>Docker</b> · Terraform · <b>GitHub</b> (org admin, Actions, GraphQL API) · Copybara · CI/CD · Prometheus · Grafana · DevSecOps · Jira</div>
-        </div>
-        <div class="skill-row">
-          <div class="skill-cat">ML &amp; Deep Learning</div>
-          <div class="skill-items"><b>PyTorch</b> · TensorFlow · Hugging Face · ONNX Runtime · MLflow</div>
-        </div>
-        <div class="skill-row">
-          <div class="skill-cat">LLMs &amp; GenAI</div>
-          <div class="skill-items"><b>RAG</b> · LangChain · LLM fine-tuning &amp; evaluation</div>
-        </div>
-        <div class="skill-row">
-          <div class="skill-cat">Data</div>
-          <div class="skill-items"><b>Databricks</b> · PySpark · PostgreSQL · SQL Server</div>
-        </div>
-        <div class="skill-row">
-          <div class="skill-cat">BI &amp; Low-code</div>
-          <div class="skill-items"><b>Power BI</b> · Power Platform</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- KAGGLE -->
-    <section class="section wrap reveal">
-      <p class="section-label">Competitions</p>
-      <h2 class="section-title">On Kaggle</h2>
-      <p class="lead-note">Active competitor across LLM reasoning, AI security, NLP, and model optimization; author of a public starter notebook adopted by the community (105+ upvotes).</p>
-      <div class="cards">
-        <div class="card">
-          <h3>AI Agent Security — Multi-Step Tool Attacks</h3>
-          <p>Designed a red-team attack that probes LLM tool-use guardrails (gpt-oss, Gemma) and reverse-engineers the scoring pipeline to surface data-exfiltration and confused-deputy vulnerabilities.</p>
-        </div>
-        <div class="card">
-          <h3>NeuroGolf Championship 2026</h3>
-          <p>Optimized 400 per-task ONNX networks against an exact memory/parameter budget; reproduced the official scorer locally and applied graph-level domain-reduction rewrites plus onnxsim to cut cost while preserving verified correctness.</p>
-        </div>
-        <div class="card">
-          <h3>ARC Prize 2026 (ARC-AGI-2)</h3>
-          <p>Building a hybrid symbolic + neural reasoning solver: a DSL-grounded synthetic-task generator with a LoRA-fine-tuned Qwen model (Unsloth), test-time training, and selection-first inference, fully offline within the 12-hour limit.</p>
-        </div>
-        <div class="card">
-          <h3>MAP — Charting Student Math Misunderstandings</h3>
-          <p>NLP misconception classification with DeBERTa/Qwen + LoRA ensembles; shared a starter notebook adopted by the community (public LB 0.925, 105+ upvotes).</p>
-        </div>
-      </div>
-      <p class="note">Also competed in NVIDIA Nemotron (LLM SFT/LoRA), Make Data Count ($100k LLM text-mining), CMI (wrist-sensor time-series), and Orbit Wars (RTS agent + self-play simulator).</p>
-    </section>
-
-    <!-- PROJECTS -->
-    <section class="section wrap reveal">
-      <p class="section-label">Projects</p>
-      <h2 class="section-title">Things I’ve built</h2>
-      <div class="cards">
-        <div class="card">
-          <h3><a href="blogs/RAG.html" target="_blank" rel="noopener">RAG from Scratch ↗</a></h3>
-          <p>A retrieval-augmented generation pipeline built from the ground up with Llama 3 and DeepSeek-R1.</p>
-        </div>
-        <div class="card">
-          <h3><a href="https://github.com/rajathpi/automatic-report-generator" target="_blank" rel="noopener">Medical Report Generation from Chest X-Rays ↗</a></h3>
-          <p>CNN (CheXNet) feature extraction with LSTM/RNN decoding to generate radiology reports from frontal and lateral images.</p>
-        </div>
-        <div class="card">
-          <h3><a href="https://github.com/rajathpi/Scattering-parameter-parameterization" target="_blank" rel="noopener">Scattering Parameters Parameterization ↗</a></h3>
-          <p>Neural networks (Basic, LSTM, GRU) in TensorFlow/Keras predicting input parameters of a human head–antenna system; the GRU model performed best.</p>
-        </div>
-        <div class="card">
-          <h3><a href="https://github.com/rajathpi/flappy-bird" target="_blank" rel="noopener">AI Learns to Play Flappy Bird ↗</a></h3>
-          <p>An agent trained via NEAT (neuroevolution of augmenting topologies); game and AI built end-to-end in Python.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="socials">
-      <a href="https://github.com/rajathpi" target="_blank" rel="noopener" aria-label="GitHub">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.44-.78-3.46 0 0-1.09-.35-3.56 1.05-.28-.73-1.04-1.4-1.98-1.49-1.2-.11-2.4-.11-3.6 0-1.03.09-1.79.76-2.07 1.49C6 9 3 11 3 14.5c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-5-2"/></svg>
-      </a>
-      <a href="https://www.linkedin.com/in/rajath-pai/" target="_blank" rel="noopener" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-      </a>
-      <a href="mailto:rajathpai2000@gmail.com" aria-label="Email">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-      </a>
-      <a href="https://www.kaggle.com/rajathrpai" target="_blank" rel="noopener" aria-label="Kaggle">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
-      </a>
+      <p>I’m a software engineer at Coretura (Volvo Group × Daimler Truck) in Göteborg, where I build and run developer platforms on AWS. Before that I was a data scientist at Volvo Group, after an M.Sc. in Data Science &amp; AI at Chalmers.</p>
+      <p>In my own time I enter machine-learning competitions, mostly reasoning (ARC Prize) and game agents, and <a href="blogs.html">write up</a> what worked and what didn’t.</p>
+      <div class="links"><a href="https://github.com/rajathpi">GitHub</a><a href="https://www.kaggle.com/rajathrpai">Kaggle</a><a href="https://www.linkedin.com/in/rajath-pai/">LinkedIn</a><a href="mailto:rajathpai2000@gmail.com">Email</a></div>
     </div>
-    <p>© <span id="year">2026</span> Rajath Rajendra Pai · Göteborg, Sweden</p>
-  </footer>
+  </div>
+
+  <h2>News</h2>
+  <ul class="plain">
+    <li><span class="d">Nov 2026</span> Entered ARC Prize 2026 with an ARC-AGI-3 game agent on an offline harness I built. <a href="blogs/arc-agi-3.html">Write-up</a>.</li>
+    <li><span class="d">Oct 2026</span> Kaggriculture finished: 786 / 10,148 (top 8 %). <a href="blogs/kaggriculture.html">Write-up</a>.</li>
+    <li><span class="d">Oct 2026</span> Leverage Lens, my browser extension, published on the Edge store.</li>
+    <li><span class="d">Aug 2026</span> First merged PR in <a href="https://github.com/vllm-project/vllm/pull/52622">vLLM</a>.</li>
+    <li><span class="d">Mar 2026</span> Joined Coretura, Developer Experience team.</li>
+    <li><span class="d">Nov 2025</span> ARC Prize 2025: 124 / 1,455 (top 9 %). <a href="blogs/arc-prize-2025.html">Write-up</a>.</li>
+    <li><span class="d">Jan 2025</span> Master’s thesis on ADAS driver behaviour <a href="https://odr.chalmers.se/items/0f7486be-c23b-49d1-80ee-8e011be86243">published</a>.</li>
+  </ul>
+
+  <h2>Writing</h2>
+  <ul class="plain">
+    <li><a href="blogs/arc-agi-3.html">ARC-AGI-3: I built the lab; the score came from a public notebook</a><span class="s">An offline lab for interactive games, and an honest account of the 31.86. 2026</span></li>
+    <li><a href="blogs/kaggriculture.html">Kaggriculture: how switching on one disabled setting beat the public bots</a><span class="s">The whole ladder ran one shared action tape. 2026</span></li>
+    <li><a href="blogs/rsna-knee.html">The silver medal I didn’t pick: RSNA Knee</a><span class="s">How I chose my final submissions, and why that cost a medal. 2026</span></li>
+    <li><a href="blogs/orbit-wars.html">Orbit Wars: self-play lied, a stronger base won</a><span class="s">The live ladder vs. my self-play “improvements”. 2026</span></li>
+    <li><a href="blogs/ptcg.html">Pokémon TCG AI: search can’t fix a bad value function</a><span class="s">97 % against itself, 1–15 against a rule bot. 2026</span></li>
+    <li><a href="blogs/arc-prize-2025.html">ARC Prize 2025: solving puzzles with no pretraining</a><span class="s">A tiny network trained per puzzle at test time. 2025</span></li>
+  </ul>
+  <p><a href="blogs.html">All writing →</a></p>
+
+  <h2>Work</h2>
+  <ul class="plain">
+    <li><span class="d">2026 –</span> <b>Coretura</b>, software engineer, Developer Experience<span class="s">Built and run a serverless AWS service that keeps 10,500+ tickets in step across six companies’ GitHub organizations (0 errors in ~70,000 runs a month). Halved CI image rebuilds; co-own pre-release testing for a pilot customer.</span></li>
+    <li><span class="d">2023 – 26</span> <b>Volvo Group</b>, associate data scientist, people data analyst, thesis worker and intern<span class="s">HR approval and rating systems on Power Platform and Python; master’s thesis on predicting when drivers switch off ADAS functions.</span></li>
+    <li><span class="d">2023</span> <b>Chalmers</b>, research assistant, vehicle safety<span class="s">E-scooter ride data for the e-SAFER project.</span></li>
+  </ul>
+
+  <h2>Competitions</h2>
+  <ul class="plain">
+    <li><span class="d">top 5 %</span> Biohub Cell Tracking, 194 / 3,947</li>
+    <li><span class="d">top 8 %</span> Kaggriculture, 786 / 10,148</li>
+    <li><span class="d">top 9 %</span> ARC Prize 2025, 124 / 1,455</li>
+    <li><span class="d">top 11 %</span> Orbit Wars, 505 / 4,729</li>
+    <li><span class="d">105+ ▲</span> Public starter notebook, MAP Student Math Misconceptions</li>
+  </ul>
+
+  <h2>Open source</h2>
+  <ul class="plain">
+    <li><a href="https://github.com/vllm-project/vllm/pull/52622">vLLM #52622</a> — bad <code>/detokenize</code> requests get a 4xx instead of a 500.</li>
+    <li><a href="https://github.com/AMAP-ML/LongHorizon-Harness/pull/31">LongHorizon-Harness #31</a> and <a href="https://github.com/bojieli/ai-agent-book/pull/186">ai-agent-book #186</a> — small fixes in two agent projects.</li>
+  </ul>
+
+  <h2>Projects</h2>
+  <ul class="plain">
+    <li><a href="https://rajathpi.github.io/repo-atlas">repo-atlas</a> — explore any codebase in one HTML file: treemap, dependency graph, grep.</li>
+    <li><a href="https://rajathpi.github.io/studio-hub/">studio-hub</a> — offline developer tools that run in a browser tab.</li>
+    <li><a href="https://github.com/rajathpi/leverage-lens">Leverage Lens</a> — browser extension for Avanza: leverage, stop distance, a buy/sell planner.</li>
+    <li><a href="https://rajathpi.github.io/bikeloop/">bikeloop</a> — cycling round trips of a chosen distance from your door.</li>
+    <li><a href="https://rajathpi.github.io/sverige-live/">sverige-live</a> — dashboards on Swedish open data.</li>
+    <li><a href="https://github.com/rajathpi/automatic-report-generator">Chest X-ray report generation</a> — CheXNet features and an LSTM decoder (2022).</li>
+  </ul>
+
+  <h2>Education</h2>
+  <ul class="plain">
+    <li><span class="d">2022 – 24</span> M.Sc. Data Science &amp; AI, Chalmers University of Technology</li>
+    <li><span class="d">2018 – 22</span> B.E. Computer Science &amp; Engineering, NMAM Institute of Technology</li>
+  </ul>
+
+  <footer>Göteborg, Sweden · updated November 2026</footer>
+</main>
 </body>
 </html>

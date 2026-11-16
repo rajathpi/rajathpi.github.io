@@ -1,0 +1,48 @@
+/* rajathpi.github.io: one plain stylesheet for every page. */
+:root { --bg:#fff; --ink:#222; --dim:#6b6b6b; --line:#e2e2e2; --link:#1a0dab; --code:#f6f6f4; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#161616; --ink:#e4e4e2; --dim:#9a9a96; --line:#333; --link:#8ab4f8; --code:#202020; }
+}
+* { box-sizing:border-box; }
+body { background:var(--bg); color:var(--ink); font:17px/1.6 Georgia, "Times New Roman", serif; margin:0; }
+main { max-width:760px; margin:0 auto; padding:48px 20px 80px; }
+a { color:var(--link); }
+img { max-width:100%; }
+h1 { font-size:30px; font-weight:normal; line-height:1.25; margin:0 0 6px; }
+h2 { font-size:20px; font-weight:normal; border-bottom:1px solid var(--line); padding-bottom:4px; margin:36px 0 12px; }
+h3 { font-size:18px; font-weight:bold; margin:26px 0 8px; }
+ul.plain { padding-left:0; list-style:none; margin:0; }
+ul.plain li { margin:0 0 10px; }
+.d { color:var(--dim); display:inline-block; min-width:82px; }
+.s { color:var(--dim); font-size:15px; display:block; }
+.dim { color:var(--dim); }
+footer { color:var(--dim); font-size:14px; margin-top:48px; }
+
+/* home */
+.top { display:flex; gap:28px; align-items:flex-start; }
+.top img { width:150px; height:150px; border-radius:4px; object-fit:cover; flex:none; }
+.top p { margin:0 0 10px; }
+.links a { margin-right:12px; }
+
+/* top line on inner pages */
+.crumb { font-size:15px; color:var(--dim); margin:0 0 28px; }
+
+/* posts */
+.meta { color:var(--dim); font-size:15px; margin:0 0 28px; }
+.post p, .post li { margin:0 0 14px; }
+.post ul, .post ol { padding-left:22px; }
+.post blockquote { margin:0 0 14px; padding-left:16px; border-left:3px solid var(--line); color:var(--dim); }
+code { font:14px/1.5 Consolas, Menlo, monospace; background:var(--code); padding:1px 4px; }
+pre { background:var(--code); padding:12px 14px; overflow-x:auto; margin:0 0 16px; }
+pre code { padding:0; background:none; }
+pre.out { background:none; border-left:3px solid var(--line); padding:4px 12px; color:var(--dim); }
+pre.mermaid { background:none; text-align:center; }
+.archived { border-left:3px solid var(--line); padding-left:12px; color:var(--dim); font-style:italic; }
+table { border-collapse:collapse; margin:0 0 16px; font-size:15px; }
+th, td { border-bottom:1px solid var(--line); padding:5px 12px 5px 0; text-align:left; vertical-align:top; }
+
+@media (max-width:560px) {
+  body { font-size:16px; }
+  .top { flex-direction:column; }
+  .d { display:block; }
+}
