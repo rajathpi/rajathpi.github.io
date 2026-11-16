@@ -12,7 +12,7 @@
 <main class="post">
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
 <h1>Kaggriculture: How Switching On One Disabled Setting Beat the Public Bots</h1>
-<p class="meta">Kaggriculture (Kaggle) · 5 min read</p>
+<p class="meta">Kaggriculture (Kaggle) · 6 min read</p>
 <p>Two byte-identical submissions of mine scored 170 points apart. After that I treated the live rating as noise.</p>
 <p>Kaggriculture is a Kaggle contest where you submit a farming bot that plays other bots on a ladder. I finished 786th of 10,148, the top 8 percent. I never wrote a farm plan that beat the public ones. What worked was one sale-timing setting that every public bot shipped switched off.</p>
 <h2>A farm game where only wins count</h2>
@@ -57,11 +57,29 @@
 <p>Two likely reasons. New submissions start with high uncertainty, so lucky early wins inflate the score. And by the last day, 72 of my 80 most recent opponents played my own route tile for tile, so my edge had been copied.</p>
 <p>I also decoded a wheat buy-and-sell-back trick that 7 of those 80 opponents used. It won the mirror 106 to 14 but gave back 7 of 480 field games, so I did not ship it. The gap to the top was not a setting. Rivals bought four to eight more animals before day 10 and out-earned me by six to nine thousand coins every three days. I never built that planner.</p>
 <p>I built on public Apache-2.0 notebooks and kept every upstream notice. The organisers confirmed that was allowed. Their habit of shipping the gate off was the whole opening.</p>
+<h2>Use this yourself: Prove a fork ties its parent, then sweep one constant</h2>
+<p>This applies when a contest ships strong public notebooks and the ladder rating is too noisy to judge small changes.</p>
+<ol>
+<li>Mine the top replays first. Find what every high-scoring bot does the same, and what only the opponent or luck explains.</li>
+<li>Fork the strongest public bot unchanged.</li>
+<li>Run the fork against its parent on many fixed seeds, from both seats. Do not touch anything until the gap is zero.</li>
+<li>Change one constant. Run the same seeds again and compare per seed, not as two separate averages.</li>
+<li>Keep the value only if the confidence interval of the paired difference stays above zero on a second, fresh block of seeds.</li>
+</ol>
+<p>Pairing cancels the seed luck, so a small edge shows up with far fewer games.</p>
+<pre><code>def paired_diff(a, b):
+    """a[i], b[i]: 1 if bot A / bot B won seed i (same seeds, same seat)."""
+    d = [x - y for x, y in zip(a, b)]
+    n = len(d)
+    m = sum(d) / n
+    var = sum((x - m) ** 2 for x in d) / (n - 1)
+    se = (var / n) ** 0.5
+    return m, m - 1.96 * se, m + 1.96 * se</code></pre>
+<p>It does not help when your opponents change under you. A paired test says nothing about a field that moves, as mine did on 28 September.</p>
 <h2>What I'd do differently</h2>
 <ul>
 <li>Build the early-herd planner. It is the durable edge. A one-line setting is rented, not owned.</li>
 <li>Ask what the field switched off, before asking what to add.</li>
-<li>Prove the fork matches its parent before sweeping anything.</li>
 <li>Never trust one seed block or one seat.</li>
 <li>Don't retire your last proven slot on the day a challenger goes in.</li>
 </ul>

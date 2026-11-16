@@ -12,7 +12,7 @@
 <main class="post">
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
 <h1>Orbit Wars: Self-Play Lied, a Stronger Base Won</h1>
-<p class="meta">Orbit Wars (Kaggle) · 5 min read</p>
+<p class="meta">Orbit Wars (Kaggle) · 6 min read</p>
 <p>A tweak that beat my base by 8 points in self-play scored 1129.6 live. The base itself scored 1249.6.</p>
 <p>Orbit Wars is a Kaggle real-time-strategy competition where your score is your ship count at step 498. I finished 505 of 4,729, top 11 %. My self-play wins did not carry to the ladder, and adopting a stronger public agent beat all my own tuning.</p>
 <h2>One number decides the game</h2>
@@ -58,10 +58,25 @@
 <h2>The real ceiling was RL, and I had none</h2>
 <p>I read all 20 discussion threads. The top tier, 1500&ndash;1788, trains transformer policies with PPO self-play. Every heuristic agent of this family clusters at about 1240&ndash;1260.</p>
 <p>Cloning the top RL bot lost about 5:1 to a public heuristic. With a week left, no RL pipeline and only CPU, I stopped submitting. Each new submission evicts an active agent that must re-climb from about 700. I kept my two strongest distinct agents.</p>
+<h2>Use this yourself: Rank ideas on the ladder, not in self-play</h2>
+<p>This applies when you can play your own agent locally but the real opponents are a different, changing field.</p>
+<ol>
+<li>Use self-play only as a regression screen. If a change loses to your old version, drop it.</li>
+<li>Passing the screen proves nothing. Rank ideas by live ladder score.</li>
+<li>Before you read a win-rate gap, work out the games needed. Run that many or admit it is noise.</li>
+<li>Submit one change at a time, so a live score has one cause.</li>
+<li>Judge it only after the score settles, because a new submission starts with high uncertainty.</li>
+</ol>
+<pre><code>from math import sqrt
+
+def games_needed(p, diff, z=1.96):
+    """Games per version before a win-rate gap of `diff` beats noise."""
+    se_per_game = sqrt(2 * p * (1 - p))   # std error of A-minus-B, times sqrt(n)
+    return (z * se_per_game / diff) ** 2</code></pre>
+<p>A gap of 8 points at a 50 percent win rate needs about 300 games per version, and 2 points needs about 4,800. This is a noise check only. It does not fix the bigger problem that a clone of your own base is the wrong opponent, so a clean result can still be wrong live.</p>
 <h2>What I'd do differently</h2>
 <ul>
 <li>Adopt the strongest public base in week one, not week four.</li>
-<li>Judge every change on the ladder, with self-play only as a regression screen.</li>
 <li>Fix the 4-player game first, since it is half the matches.</li>
 <li>Start an RL pipeline early, or accept the heuristic ceiling.</li>
 </ul>

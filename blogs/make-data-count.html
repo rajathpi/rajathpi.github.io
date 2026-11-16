@@ -49,6 +49,27 @@ llm.generate(prompts, vllm.SamplingParams(max_tokens=1,
 <h2>Confidence came for free</h2>
 <p>The three logprobs give a margin between the top two choices. I drop <code>None</code> predictions with a margin under 0.5.</p>
 <p>I then dedup on article and dataset id. Rows with data-keyword context and higher confidence win ties.</p>
+<h2>Use this yourself: Constrain the answer to one token</h2>
+<p>This applies when an LLM must pick from a small fixed set of answers and a parse failure costs you a row.</p>
+<ol>
+<li>Rewrite the task as a multiple choice with short labels: A, B, C.</li>
+<li>Allow only those tokens at the first generation step. Take one token and stop.</li>
+<li>Read the log-probabilities of the allowed tokens, not just the winner.</li>
+<li>Use the gap between the top two as a confidence. Drop or flag low-margin answers.</li>
+<li>Choose the margin cutoff on a labelled sample, not by feel.</li>
+</ol>
+<p>With vLLM a logits processor does the masking. The core of the decision is small:</p>
+<pre><code>import math
+
+def pick(logprobs, allowed=("A", "B", "C")):
+    """logprobs: token -&gt; logprob from the model's last step. Returns (choice, margin)."""
+    ranked = sorted(((t, logprobs[t]) for t in allowed if t in logprobs),
+                    key=lambda x: -x[1])
+    if not ranked:
+        return None, 0.0
+    margin = ranked[0][1] - ranked[1][1] if len(ranked) &gt; 1 else math.inf
+    return ranked[0][0], margin</code></pre>
+<p>This does not suit open-ended answers, such as extracting a string. There you still need free text or a grammar.</p>
 <h2>What I'd do differently</h2>
 <ul>
 <li>Bring back the accession patterns (GEO, SRA, PDB, UniProt). The final notebook only chases DOIs, which costs recall.</li>

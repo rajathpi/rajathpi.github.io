@@ -54,6 +54,37 @@
 <p>Symbolic can only help. If the battery finds a rule that fits all train pairs, it takes attempt slot 1 and neural consensus fills slot 2. I checked locally that a symbolic rule rescues a task even when a mock neural model votes mostly wrong.</p>
 <h2>The 2025 attempt was a different animal</h2>
 <p>My 2025 kernel was per-puzzle, no pretraining, in the CompressARC lineage. The work there was throughput. It profiled each puzzle's memory and packed about 2300 steps per puzzle on 120 tasks into 12 hours. It has no synthetic pretraining, symbolic layer or consensus.</p>
+<h2>Use this yourself: measure your solver on eval, by depth</h2>
+<p>This applies when you build a hand-written solver for a benchmark whose train and eval sets differ in difficulty.</p>
+<ol>
+<li>Never judge the solver by its train-set solve rate. Run it on the eval split as early as you can, even on a handful of tasks.</li>
+<li>Generate synthetic tasks from your own primitives at known program depth 1, 2, 3 and more.</li>
+<li>Run the solver on each depth and print the solve rate per depth.</li>
+<li>If the rate collapses after depth 1, the solver is pattern-matching, and eval tasks that need composition will score near zero.</li>
+<li>Move your effort to what covers deeper tasks, such as a learned model trained on deep synthetic data.</li>
+</ol>
+<pre><code>import random
+
+PRIMS = [lambda g: [list(r) for r in zip(*g[::-1])],        # rotate 90
+         lambda g: [[(c + 1) % 10 for c in r] for r in g],  # recolour
+         lambda g: g[1:] + g[:1]]                           # roll rows
+
+def make_task(depth, n_pairs=3):
+    prog = [random.choice(PRIMS) for _ in range(depth)]
+    pairs = []
+    for _ in range(n_pairs):
+        g = [[random.randrange(10) for _ in range(5)] for _ in range(5)]
+        out = g
+        for p in prog:
+            out = p(out)
+        pairs.append((g, out))
+    return pairs
+
+def coverage(solver, max_depth=4, n=200):
+    for d in range(1, max_depth + 1):
+        hits = sum(solver(make_task(d)) for _ in range(n))
+        print(f"depth {d}: {hits / n:.0%}")  # solver(pairs) returns True if solved</code></pre>
+<p>This only measures depth, not whether your primitives match the real eval tasks, so it cannot replace a real eval number.</p>
 <h2>What I'd do differently</h2>
 <ul>
 <li><strong>Get a GPU number first.</strong> Engines A and C alone score about 0% on eval. Whether Edges 1 and 2 add points can only be shown by Kaggle GPU runs, not on my Mac.</li>
