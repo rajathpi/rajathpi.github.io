@@ -6,6 +6,7 @@
 <title>Teaching DeBERTa to Read Student Math Mistakes — Rajath Pai</title>
 <meta name="description" content="Turning a student&#x27;s written math explanation into a top-3 misconception prediction with DeBERTa-v3 — LB 0.925 / CV 0.930+ and a multi-model ensemble.">
 <link rel="stylesheet" href="../styles/site.css">
+<script src="../scripts/figs.js"></script>
 </head>
 <body>
 <main class="post">
@@ -21,10 +22,14 @@
 <p>I joined the two label columns into one class and fed DeBERTa a plain string of question, answer and explanation.</p>
 <pre><code>train['target'] = train.Category + ":" + train.Misconception</code></pre>
 <p>Missing misconceptions become the token <code>NA</code>, so a correct answer is just another class. I left correctness out of the starter text so the model had to infer it.</p>
-<pre class="mermaid">flowchart LR
-  A[Question + answer + explanation] --&gt; B[DeBERTa-v3, max length 256]
-  B --&gt; C[Softmax over classes]
-  C --&gt; D[Top-3 labels]</pre>
+<figure class="fig">
+  <ol class="flow">
+    <li><b>Question + answer + explanation</b><span>one plain string</span></li>
+    <li><b>DeBERTa-v3</b><span>max length 256</span></li>
+    <li><b>Softmax</b><span>over classes</span></li>
+    <li class="hot"><b>Top-3 labels</b><span>scored by MAP@3</span></li>
+  </ol>
+</figure>
 <h2>Choose checkpoints on the real metric</h2>
 <p>I wrote a custom MAP@3 function so the Trainer picks checkpoints on the competition metric, not accuracy. Other settings were learning rate 5e-5, a cosine schedule and dynamic padding.</p>
 <ul>
@@ -33,6 +38,12 @@
 </ul>
 <h2>Large lost to base</h2>
 <p>I tried richer prompts with all answer options and a correctness flag. I also trained DeBERTa-v3-large, using gradient accumulation and checkpointing to fit memory. One large run landed near CV 0.926, below base.</p>
+<figure class="fig">
+  <div class="vs">
+    <div><b class="k">Base, CV 0.930+</b><p>Scored higher on its own.</p></div>
+    <div class="hot"><b class="k">Large, CV ~0.926</b><p>Scored lower, but added diversity to the blend.</p></div>
+  </div>
+</figure>
 <p>Its value showed up later, as diversity in the ensemble. I also built a TF-IDF feature notebook for anyone who wants a light model in the blend.</p>
 <h2>Four checkpoints, one blend</h2>
 <p>An inference-only notebook loads four fine-tuned models and blends their probabilities.</p>
@@ -55,10 +66,5 @@
 </ul>
 <p class="crumb" style="margin-top:40px"><a href="../blogs.html">← All writing</a></p>
 </main>
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';
-  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'neutral', fontFamily: 'Georgia, serif' });
-</script>
 </body>
 </html>

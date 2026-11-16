@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Figure kit — Rajath Pai</title>
+<meta name="description" content="Reference for the flat figure parts used in posts. Not a post.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../styles/site.css">
+<script src="../scripts/figs.js"></script>
+</head>
+<body>
+<main class="post">
+<p class="crumb"><a href="../index.html">Rajath Pai</a> / figure kit</p>
+<h1>Figure kit</h1>
+<p class="meta">Copy a block into a post. Add <code>&lt;script src="../scripts/figs.js"&gt;&lt;/script&gt;</code> in the head. Mark the one thing that matters with <code>class="hot"</code>.</p>
+
+<h2>Flow (steps in order; add a loopback line if it repeats)</h2>
+<figure class="fig">
+  <ol class="flow">
+    <li><b>Seen</b><span>every revealed card</span></li>
+    <li><b>Guess</b><span>the rest, from real decklists</span></li>
+    <li><b>Deal K worlds</b><span>each a full game state</span></li>
+    <li><b>Play every move</b><span>real engine, every world</span></li>
+    <li class="hot"><b>Score</b><span>a hand-written guess</span></li>
+  </ol>
+  <p class="loopback">next turn: repeat</p>
+  <figcaption>The search loop. The highlighted step was the weak link.</figcaption>
+</figure>
+
+<h2>Bars (set --v from 0 to 100)</h2>
+<figure class="fig">
+  <div class="bars">
+    <div class="bar"><span class="l">vs. itself</span><span class="b" style="--v:97"></span><span class="n">97 %</span></div>
+    <div class="bar hot"><span class="l">vs. public rule bot</span><span class="b" style="--v:6.25"></span><span class="n">1 of 16</span></div>
+  </div>
+  <figcaption>Win rate of the search agent.</figcaption>
+</figure>
+
+<h2>Versus (expected vs actual)</h2>
+<figure class="fig">
+  <div class="vs">
+    <div><b class="k">What I did</b><p>Picked both finals by the public board.</p></div>
+    <div class="hot"><b class="k">What I should have done</b><p>One final from each ruler.</p></div>
+  </div>
+</figure>
+
+<h2>Stats (big numbers)</h2>
+<figure class="fig">
+  <div class="stats">
+    <div><b>0.942</b><span>both picked finals</span></div>
+    <div class="hot"><b>0.944</b><span>the blend I didn’t pick (silver)</span></div>
+    <div><b>127</b><span>submissions</span></div>
+  </div>
+</figure>
+
+<h2>Timeline</h2>
+<figure class="fig">
+  <ol class="timeline">
+    <li><span class="t">29 Aug</span>First submission: 0.936</li>
+    <li><span class="t">25 Sep</span>Public fork: 0.943</li>
+    <li class="hot"><span class="t">Mid-Oct</span>Best: 0.958, tied with hundreds of teams</li>
+  </ol>
+</figure>
+</main>
+</body>
+</html>

@@ -6,6 +6,7 @@
 <title>Orbit Wars: Self-Play Lied, a Stronger Base Won — Rajath Pai</title>
 <meta name="description" content="An honest write-up of a Kaggle RTS competition where the ladder repeatedly demolished my self-play improvements, and the best move was adopting a stronger base agent.">
 <link rel="stylesheet" href="../styles/site.css">
+<script src="../scripts/figs.js"></script>
 </head>
 <body>
 <main class="post">
@@ -19,13 +20,10 @@
 <p>Bigger fleets move faster, so a trickle of small fleets loses fights. Games are 2-player duels or 4-player free-for-alls on a TrueSkill ladder. Only your last two submissions stay active.</p>
 <h2>My planner plateaued</h2>
 <p>Every agent shared one core. Each turn it shortlists targets, scores one launch per source-target pair, and greedily commits a few waves.</p>
-<pre class="mermaid">flowchart TD
-  S[Observation] --&gt; SH[Target shortlist]
-  SH --&gt; D[safe_drain: ships each planet can spare]
-  D --&gt; F[capture_floor: minimum fleet to take target]
-  F --&gt; SC[Score by ROI, distance, garrison]
-  SC --&gt; G[Greedy select waves]
-  G --&gt; M[Emit moves]</pre>
+<figure class="fig">
+<ol class="flow"><li><b>Observe</b><span></span></li><li><b>Shortlist targets</b><span></span></li><li class="hot"><b>Find spare ships, set floors</b><span>safe_drain, capture_floor</span></li><li><b>Score by ROI</b><span>distance, garrison</span></li><li><b>Greedy waves</b><span>emit moves</span></li></ol>
+<figcaption>My planner each turn. Most of the skill sits in the highlighted step.</figcaption>
+</figure>
 <p>Almost all the skill sits in how the floors and thresholds are chosen. My own line stalled at about 1141&ndash;1157 live. More knobs gave no more score.</p>
 <h2>A stranger's simpler bot beat my whole line</h2>
 <p>Then I adopted a public agent, <code>light</code> (from <code>alycemiki/light-ver-1200-simple-orbit-intruder</code>). It scored about 1249.6 live. It was simpler than mine and smarter in four ways:</p>
@@ -45,9 +43,17 @@
 <tr><td><code>comet3_nfpw</code></td><td>+12 pp</td><td>1141</td></tr>
 </tbody>
 </table>
+<figure class="fig">
+<div class="stats"><div><b>+8 pp</b><span>light_o2 in self-play</span></div><div class="hot"><b>1129.6</b><span>light_o2 live</span></div><div><b>1249.6</b><span>the base, live</span></div></div>
+<figcaption>Self-play ranked the ideas wrong.</figcaption>
+</figure>
 <p>Beating a clone of your own base is not beating the ladder. I now use self-play only to catch regressions, never to rank ideas. New submissions also start with high uncertainty, so an early peak that fades does not mean the agent got worse.</p>
 <h2>I was tuning the wrong half</h2>
 <p>I mined 61 live replays. My 2-player win rate was healthy at 62.5 %. My 4-player rate was about 28 %, barely above the 25 % random baseline.</p>
+<figure class="fig">
+<div class="bars"><div class="bar"><span class="l">2-player</span><span class="b" style="--v:62.5"></span><span class="n">62.5 %</span></div><div class="bar hot"><span class="l">4-player</span><span class="b" style="--v:28"></span><span class="n">28 %</span></div><div class="bar"><span class="l">Random baseline</span><span class="b" style="--v:25"></span><span class="n">25 %</span></div></div>
+<figcaption>My win rate across 61 live replays.</figcaption>
+</figure>
 <p>I led by step 40, then collapsed by step 80, because the other three players target the leader. The reinforcement floor in <code>light</code> already handles this. Adding my own overhead on top over-garrisoned it.</p>
 <h2>The real ceiling was RL, and I had none</h2>
 <p>I read all 20 discussion threads. The top tier, 1500&ndash;1788, trains transformer policies with PPO self-play. Every heuristic agent of this family clusters at about 1240&ndash;1260.</p>
@@ -61,10 +67,5 @@
 </ul>
 <p class="crumb" style="margin-top:40px"><a href="../blogs.html">← All writing</a></p>
 </main>
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';
-  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'neutral', fontFamily: 'Georgia, serif' });
-</script>
 </body>
 </html>

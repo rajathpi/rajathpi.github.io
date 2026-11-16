@@ -1,7 +1,7 @@
 /* rajathpi.github.io: one plain stylesheet for every page. */
-:root { --bg:#fff; --ink:#222; --dim:#6b6b6b; --line:#e2e2e2; --link:#1a0dab; --code:#f6f6f4; }
+:root { --bg:#fff; --ink:#222; --dim:#6b6b6b; --line:#e2e2e2; --link:#1a0dab; --code:#f6f6f4; --hot:#c98a1e; --hot-ink:#8a5a00; --hot-bg:#fdf1dc; --bar:#9a9a96; }
 @media (prefers-color-scheme: dark) {
-  :root { --bg:#161616; --ink:#e4e4e2; --dim:#9a9a96; --line:#333; --link:#8ab4f8; --code:#202020; }
+  :root { --bg:#161616; --ink:#e4e4e2; --dim:#9a9a96; --line:#333; --link:#8ab4f8; --code:#202020; --hot:#d9a24a; --hot-ink:#e8b665; --hot-bg:#3a2e17; --bar:#77776f; }
 }
 * { box-sizing:border-box; }
 body { background:var(--bg); color:var(--ink); font:17px/1.6 Georgia, "Times New Roman", serif; margin:0; }
@@ -38,8 +38,64 @@ pre code { padding:0; background:none; }
 pre.out { background:none; border-left:3px solid var(--line); padding:4px 12px; color:var(--dim); }
 pre.mermaid { background:none; text-align:center; }
 .archived { border-left:3px solid var(--line); padding-left:12px; color:var(--dim); font-style:italic; }
-table { border-collapse:collapse; margin:0 0 16px; font-size:15px; }
+table { border-collapse:collapse; margin:0 0 16px; font-size:15px; display:block; overflow-x:auto; }
 th, td { border-bottom:1px solid var(--line); padding:5px 12px 5px 0; text-align:left; vertical-align:top; }
+
+/* ---- flat figures (see blogs/_figures.html) ---- */
+.fig { margin:26px 0 30px; }
+.fig figcaption { font-size:14px; color:var(--dim); margin-top:10px; }
+.fig .k { display:block; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--dim); margin-bottom:4px; }
+.hot { --edge:var(--hot); }
+/* flow: steps in order; horizontal when wide, vertical on phones */
+.flow { list-style:none; padding:0 !important; margin:0; display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); gap:30px; }
+.flow > li { position:relative; margin:0 !important; background:var(--code); border:1px solid var(--edge, var(--line)); border-radius:6px; padding:10px 12px; font-size:15px; line-height:1.4; overflow-wrap:anywhere; }
+.flow > li > b { display:block; font-weight:bold; }
+.flow > li > span { display:block; color:var(--dim); font-size:14px; margin-top:2px; }
+.flow > li.hot { background:var(--hot-bg); }
+.flow > li + li::before { content:"→"; position:absolute; left:-24px; top:50%; transform:translateY(-50%); color:var(--dim); font-size:18px; }
+.loopback { font-size:14px; color:var(--dim); margin:10px 0 0 !important; }
+.loopback::before { content:"↩ "; }
+/* bars: label | bar | value. Set --v (0-100) on .b */
+.bars { display:grid; grid-template-columns:minmax(0,max-content) minmax(80px,1fr) max-content; gap:8px 12px; align-items:center; font-size:15px; }
+.bars > .bar { display:contents; }
+.bars .l { overflow-wrap:anywhere; }
+.bars .b { height:12px; background:var(--line); border-radius:2px; position:relative; overflow:hidden; }
+.bars .b::after { content:""; position:absolute; inset:0 auto 0 0; width:calc(var(--v) * 1%); min-width:3px; background:var(--bar); transform-origin:left; }
+.bars .hot .b::after { background:var(--hot); }
+.bars .n { font-variant-numeric:tabular-nums; color:var(--dim); }
+.bars .hot .n, .bars .hot .l { color:var(--ink); font-weight:bold; }
+/* vs: two (or three) panels side by side */
+.vs { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:14px; }
+.vs > div { border:1px solid var(--edge, var(--line)); border-radius:6px; padding:12px 14px; font-size:15px; line-height:1.45; }
+.vs > div.hot { background:var(--hot-bg); }
+.vs p { margin:0 !important; }
+/* stats: big numbers */
+.stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:14px; }
+.stats > div { border-top:2px solid var(--edge, var(--line)); padding-top:8px; }
+.stats b { display:block; font-size:28px; font-weight:normal; line-height:1.1; font-variant-numeric:tabular-nums; }
+.stats .hot b { color:var(--hot-ink); }
+.stats span { font-size:14px; color:var(--dim); line-height:1.35; display:block; margin-top:4px; }
+/* timeline: dated steps down a line */
+.timeline { list-style:none; padding:0 0 0 18px !important; margin:0; border-left:2px solid var(--line); }
+.timeline > li { position:relative; margin:0 0 12px !important; font-size:15px; line-height:1.45; }
+.timeline > li::before { content:""; position:absolute; left:-25px; top:6px; width:10px; height:10px; border-radius:50%; background:var(--bg); border:2px solid var(--bar); }
+.timeline > li.hot::before { border-color:var(--hot); background:var(--hot); }
+.timeline .t { display:block; font-size:13px; color:var(--dim); }
+/* motion: only when JS is on and the figure scrolls into view */
+.js .fig .flow > li, .js .fig .vs > div, .js .fig .stats > div, .js .fig .timeline > li { opacity:0; transform:translateY(8px); }
+.js .fig .bars .b::after { transform:scaleX(0); }
+.js .fig.in .flow > li, .js .fig.in .vs > div, .js .fig.in .stats > div, .js .fig.in .timeline > li { opacity:1; transform:none; transition:opacity .45s ease, transform .45s ease; transition-delay:calc(var(--i, 0) * 140ms); }
+.js .fig.in .bars .b::after { transform:none; transition:transform .8s cubic-bezier(.2,.7,.2,1); transition-delay:calc(var(--i, 0) * 120ms); }
+.js .fig.in .hot { animation:hotpulse 1.4s ease calc(var(--i, 0) * 140ms + .5s) 1; }
+@keyframes hotpulse { 0%,100% { box-shadow:0 0 0 0 transparent; } 40% { box-shadow:0 0 0 4px var(--hot-bg); } }
+@media (prefers-reduced-motion: reduce) {
+  .js .fig * { opacity:1 !important; transform:none !important; transition:none !important; animation:none !important; }
+}
+
+@media (max-width:640px) {
+  .flow { grid-auto-flow:row; grid-auto-columns:auto; gap:26px; }
+  .flow > li + li::before { content:"↓"; left:50%; top:-23px; transform:translateX(-50%); }
+}
 
 @media (max-width:560px) {
   body { font-size:16px; }
