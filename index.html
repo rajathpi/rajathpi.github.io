@@ -54,10 +54,10 @@
       <p class="section-label">About</p>
       <h2 class="section-title">A little about me</h2>
       <p style="margin-bottom:16px;">
-        I’m a software engineer at <strong style="color:var(--ink)">Coretura</strong> — an automotive software joint venture — where I build the developer-experience platform for engineering teams across partner organizations: GitHub Projects and cross-org backlog automation, AWS CI/CD, observability, and DevSecOps pipelines.
+        I’m a software engineer at <strong style="color:var(--ink)">Coretura</strong>, the Volvo Group × Daimler Truck software joint venture, in the Developer Experience team. I build and run the systems other engineers rely on — cross-company backlog automation on AWS, CI build speed, and pre-release (canary) testing for a pilot customer — and I like owning them end to end: design, launch, measure, and fix them when they break.
       </p>
       <p>
-        That work builds on an M.Sc. in Data Science &amp; AI, which I bring to analytics, automation, and machine learning. Outside of work I compete on <a href="https://www.kaggle.com/rajathrpai" target="_blank" rel="noopener">Kaggle</a> across LLM reasoning, AI security, and model optimization — and I swim and cycle. Feel free to reach out if you’d like to connect.
+        Before that I was a data scientist at Volvo Group, after an M.Sc. in Data Science &amp; AI at Chalmers. Outside work I compete on <a href="https://www.kaggle.com/rajathrpai" target="_blank" rel="noopener">Kaggle</a> (top 10 % in three competitions), send small fixes to open-source ML infrastructure, build browser tools, and cycle around Göteborg.
       </p>
     </section>
 
@@ -68,58 +68,57 @@
 
       <div class="entry">
         <div class="entry-head">
-          <div class="entry-role">DevOps / DevSecOps Engineer · <span class="entry-org">Coretura</span></div>
+          <div class="entry-role">Software Engineer, Developer Experience · <span class="entry-org">Coretura</span></div>
           <div class="entry-date">Mar 2026 — Present</div>
         </div>
         <ul>
-          <li>Designed and run the cross-org backlog-sync platform — a serverless AWS service (Lambda, DynamoDB, EventBridge) that keeps 7,000+ issues in sync across 5 GitHub organizations, 6 repositories, and 8 project boards, processing ~28,500 webhook events a month at a 99.99% steady-state success rate.</li>
-          <li>Built its automation suite end-to-end: label-gated routing of new issues onto per-org and global Projects, bidirectional field sync across 4 board chains (status, iteration, dates, numbers, text), historical backfills, customer auto-fill, holiday-aware reviewer due-dates, and a daily overdue-label reconciliation sweep.</li>
-          <li>Hardened the platform through two production incidents — traced silently dropped syncs to a 5,000-item pagination cap and added payload and negative caching, GraphQL retry with backoff, and reverse pagination, cutting cold-path sync from 23.5s to 0.89s and average invocation from 2.9s to 0.20s; then root-caused a GraphQL rate-limit exhaustion to lazy absence discovery and cut latent scan cost from 352,440 to 477 API points. A DynamoDB-backed pending-sync queue now parks and replays failed writes — zero errors since, across 3,800+ invocations.</li>
-          <li>Delivered canary testing for the pilot customer environment as epic owner — re-based canary branches onto the true integrated codebase and made integration-branch sync per-branch and on-demand, then ran the real platform build and test workflows in canary alongside the legacy string scan, so a change that breaks a customer is caught before it reaches an OEM. Replicated multi-GB devcontainer images into a customer-side ECR (checksum tags, lifecycle expiry, OIDC pull role) to keep per-PR pulls in-account.</li>
-          <li>Engineered AWS CI/CD infrastructure — migrated the CI Docker BuildKit cache from Artifactory to S3 (per-branch entries, 14-day auto-expiry), halving devcontainer rebuilds from ~48 to ~24 minutes and unblocking the move to ephemeral runners, and mirrored multi-GB CI images into Amazon ECR (ECR-first pulls) to keep traffic inside AWS and cut external data-transfer costs.</li>
-          <li>Migrated team observability to AWS-hosted Prometheus/Grafana and validated DevSecOps pipelines (Coverity static analysis).</li>
-          <li>Automated partner onboarding end-to-end with a Python tool built on Microsoft Graph and MSAL — bulk Azure AD guest invitations parsed straight from access sheets, with dry-run mode, audit logs, and CSV reports — provisioning access for 80+ partner engineers.</li>
+          <li><strong>Cross-company backlog sync.</strong> Designed, built and run a serverless AWS service (API Gateway, Lambda, DynamoDB) that keeps 9 project boards in 6 GitHub organizations in step both ways — status, sprint, dates and every other field, which GitHub can’t do on its own. Measured Oct 2026: 10,500+ tickets, ~70,000 runs in 30 days, 0 errors.</li>
+          <li><strong>Two production incidents.</strong> Traced silently lost updates to a 5,000-item board-search cap; caching, retries and newest-first reads cut first sync from 23.5 s to 0.89 s. Then root-caused a GitHub API rate-limit exhaustion and cut that scan cost from 352,440 to 477 API points; failed writes now queue and replay.</li>
+          <li><strong>Pre-release testing.</strong> Co-own canary testing for a pilot customer: tests now run on the customer’s real integrated codebase, one branch per change. Rehearsing a proposed PR gate, I found it copied the whole branch instead of the change — one run restored 14,016 deleted files — before it shipped.</li>
+          <li><strong>Faster builds.</strong> Moved the CI Docker BuildKit cache to S3 with Terraform (per-branch, 14-day expiry): developer-image rebuilds went from ~48 to ~24 minutes, making throwaway CI runners practical. Mirrored multi-GB images into ECR to keep traffic inside AWS.</li>
+          <li><strong>Checking the code scanner.</strong> Validated the Coverity static-analysis pipeline in three partner environments by planting 8 known defects; traced the 4 misses to the enabled checker set and documented the fix.</li>
+          <li><strong>Automation across companies.</strong> Python tool on Microsoft Graph for bulk guest onboarding (dry run, audit log) — 80+ partner engineers given access. Two-way Jira comment and attachment sync between two companies (Exalate, Groovy), 113 comments backfilled with no duplicates. Now leading the rollout of customer issue reporting after auditing it end to end.</li>
         </ul>
       </div>
 
       <div class="entry">
         <div class="entry-head">
           <div class="entry-role">Associate Data Scientist · <span class="entry-org">Volvo Group</span></div>
-          <div class="entry-date">Mar 2025 — Mar 2026</div>
+          <div class="entry-date">Mar 2025 — Feb 2026</div>
         </div>
         <ul>
-          <li>Built and maintained the Position Management application — one of the most widely used Power Platform solutions in the organization — enabling managers to create positions through a multi-level VP/SVP approval workflow.</li>
-          <li>Designed a Python people-analytics dashboard surfacing turnover, hiring, and diversity metrics; automated certificate generation and built an Employee Flexibility app to support workforce planning.</li>
+          <li>Maintained and documented the Power Platform system managers use to open new positions (multi-level approval: manager, VP, SVP, recruiting), and migrated it — with approvals still in flight — to a new organization after a reorganization.</li>
+          <li>Built an app, daily Python data pipeline and access model for rating external consultants, plus a time-boxed stand-in access app; wrote a Python generator that produced ~30 near-identical flows from one template; automated personal HR documents from spreadsheets.</li>
         </ul>
       </div>
 
       <div class="entry">
         <div class="entry-head">
           <div class="entry-role">People Data Analyst · <span class="entry-org">Volvo Group</span></div>
-          <div class="entry-date">Aug — Nov 2024</div>
+          <div class="entry-date">Sep — Nov 2024</div>
         </div>
         <ul>
-          <li>Optimized ETL pipelines and Power BI (PowerQuery/DAX) performance, and automated data workflows in Python.</li>
+          <li>Made data pipelines and Power BI reports faster (Power Query, DAX); automated data workflows in Python.</li>
         </ul>
       </div>
 
       <div class="entry">
         <div class="entry-head">
-          <div class="entry-role">Master’s Thesis Worker — Vehicle Data · <span class="entry-org">Volvo Group</span></div>
+          <div class="entry-role">Master’s Thesis — Vehicle Data · <span class="entry-org">Volvo Group</span></div>
           <div class="entry-date">Jan — Jun 2024</div>
         </div>
         <ul>
-          <li>Built a multivariate time-series model on truck-sensor, weather, and road-type data to predict drivers’ deactivation of ADAS functions, informing system design and usability.</li>
+          <li>With a co-author, modelled truck-sensor, weather and road-type time series to predict when drivers switch off ADAS functions. Key finding: about a quarter of recorded switch-offs were likely logging errors, so we advised fixing the logging first. <a href="https://odr.chalmers.se/items/0f7486be-c23b-49d1-80ee-8e011be86243" target="_blank" rel="noopener">Published thesis ↗</a></li>
         </ul>
       </div>
 
       <div class="entry">
         <div class="entry-head">
-          <div class="entry-role">Data Science Intern — People Analytics &amp; Production Logistics · <span class="entry-org">Volvo Group</span></div>
+          <div class="entry-role">Summer roles — Production Logistics &amp; People Analytics · <span class="entry-org">Volvo Group</span></div>
           <div class="entry-date">Summers 2023 &amp; 2024</div>
         </div>
         <ul>
-          <li>Developed regression models for HR estimation and improved Power BI reporting; applied PySpark/Databricks fuzzy-matching and ML to raise data-matching accuracy on production-logistics datasets within an agile team.</li>
+          <li>Matched shipping records that shared no clean ID with fuzzy matching and a CatBoost model (PySpark on Azure Databricks); built a Power BI regression forecasting workforce make-up at one site.</li>
         </ul>
       </div>
 
@@ -129,8 +128,26 @@
           <div class="entry-date">Feb — Jun 2023</div>
         </div>
         <ul>
-          <li>Analyzed e-scooter ride data for the e-SAFER project to identify usage patterns and safety improvements.</li>
+          <li>Analyzed and labelled e-scooter ride data for the e-SAFER safety project.</li>
         </ul>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="section wrap reveal">
+      <p class="section-label">Education</p>
+      <h2 class="section-title">Where I studied</h2>
+      <div class="entry">
+        <div class="entry-head">
+          <div class="entry-role">M.Sc. Data Science &amp; AI · <span class="entry-org">Chalmers University of Technology</span></div>
+          <div class="entry-date">2022 — 2024</div>
+        </div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <div class="entry-role">B.E. Computer Science &amp; Engineering · <span class="entry-org">NMAM Institute of Technology</span></div>
+          <div class="entry-date">2018 — 2022</div>
+        </div>
       </div>
     </section>
 
@@ -141,27 +158,23 @@
       <div class="skill-groups">
         <div class="skill-row">
           <div class="skill-cat">Languages</div>
-          <div class="skill-items"><b>Python</b> · SQL · C++ · Bash</div>
+          <div class="skill-items"><b>Python</b> · SQL · Bash · C++</div>
         </div>
         <div class="skill-row">
-          <div class="skill-cat">DevOps &amp; Cloud</div>
-          <div class="skill-items"><b>AWS</b> (Lambda, DynamoDB, EventBridge, S3, ECR, IAM, CloudWatch, Secrets Manager, SSM) · Azure AD / Microsoft Graph · <b>Docker</b> · Terraform · <b>GitHub</b> (org admin, Actions, GraphQL API) · Copybara · CI/CD · Prometheus · Grafana · DevSecOps · Jira</div>
+          <div class="skill-cat">Cloud &amp; CI</div>
+          <div class="skill-items"><b>AWS</b> (Lambda, API Gateway, DynamoDB, EventBridge, S3, ECR, IAM, CloudWatch, IoT Core) · <b>Terraform</b> · <b>Docker</b> / BuildKit · devcontainers · <b>GitHub</b> (org admin, Actions, GraphQL API, Projects) · Copybara · Prometheus · Grafana · Coverity</div>
         </div>
         <div class="skill-row">
-          <div class="skill-cat">ML &amp; Deep Learning</div>
-          <div class="skill-items"><b>PyTorch</b> · TensorFlow · Hugging Face · ONNX Runtime · MLflow</div>
+          <div class="skill-cat">Automation</div>
+          <div class="skill-items">Microsoft Graph / Entra ID · Power Apps · Power Automate · SharePoint · Jira · Exalate (Groovy)</div>
         </div>
         <div class="skill-row">
-          <div class="skill-cat">LLMs &amp; GenAI</div>
-          <div class="skill-items"><b>RAG</b> · LangChain · LLM fine-tuning &amp; evaluation</div>
+          <div class="skill-cat">ML &amp; LLMs</div>
+          <div class="skill-items"><b>PyTorch</b> · Hugging Face · LoRA (Unsloth) · vLLM · ONNX Runtime · MLflow · RAG</div>
         </div>
         <div class="skill-row">
-          <div class="skill-cat">Data</div>
-          <div class="skill-items"><b>Databricks</b> · PySpark · PostgreSQL · SQL Server</div>
-        </div>
-        <div class="skill-row">
-          <div class="skill-cat">BI &amp; Low-code</div>
-          <div class="skill-items"><b>Power BI</b> · Power Platform</div>
+          <div class="skill-cat">Data &amp; BI</div>
+          <div class="skill-items">pandas · <b>PySpark</b> · Databricks · PostgreSQL · SQL Server · <b>Power BI</b></div>
         </div>
       </div>
     </section>
@@ -170,26 +183,42 @@
     <section class="section wrap reveal">
       <p class="section-label">Competitions</p>
       <h2 class="section-title">On Kaggle</h2>
-      <p class="lead-note">Active competitor across LLM reasoning, AI security, NLP, and model optimization; author of a public starter notebook adopted by the community (105+ upvotes).</p>
+      <p class="lead-note">Top 10 % in three finished competitions. Public starter notebook for MAP — Student Math Misconceptions with 105+ upvotes.</p>
       <div class="cards">
         <div class="card">
-          <h3>AI Agent Security — Multi-Step Tool Attacks</h3>
-          <p>Designed a red-team attack that probes LLM tool-use guardrails (gpt-oss, Gemma) and reverse-engineers the scoring pipeline to surface data-exfiltration and confused-deputy vulnerabilities.</p>
+          <h3>ARC Prize 2025 — top 9 %</h3>
+          <p>124 of 1,455 teams on abstract reasoning (ARC-AGI-2): a test-time-compression solver with easiest-first ordering. <a href="blogs/arc-prize-2025.html">Write-up</a>.</p>
         </div>
         <div class="card">
-          <h3>NeuroGolf Championship 2026</h3>
-          <p>Optimized 400 per-task ONNX networks against an exact memory/parameter budget; reproduced the official scorer locally and applied graph-level domain-reduction rewrites plus onnxsim to cut cost while preserving verified correctness.</p>
+          <h3>Biohub Cell Tracking — top 5 %</h3>
+          <p>194 of 3,947. Improved a tracking pipeline and caught a coordinate bug in the local scoring bench.</p>
         </div>
         <div class="card">
-          <h3>ARC Prize 2026 (ARC-AGI-2)</h3>
-          <p>Building a hybrid symbolic + neural reasoning solver: a DSL-grounded synthetic-task generator with a LoRA-fine-tuned Qwen model (Unsloth), test-time training, and selection-first inference, fully offline within the 12-hour limit.</p>
+          <h3>Kaggriculture — top 8 %</h3>
+          <p>786 of 10,148. Mined 3,322 top replays and showed the whole ladder ran on one shared strategy; shipped a bot that beats its base in 80–90 % of games.</p>
         </div>
         <div class="card">
-          <h3>MAP — Charting Student Math Misunderstandings</h3>
-          <p>NLP misconception classification with DeBERTa/Qwen + LoRA ensembles; shared a starter notebook adopted by the community (public LB 0.925, 105+ upvotes).</p>
+          <h3>Orbit Wars — top 11 %</h3>
+          <p>505 of 4,729. Heuristic RTS agent plus a bit-exact game simulator and self-play harness for offline tuning. <a href="blogs/orbit-wars.html">Write-up</a>.</p>
         </div>
       </div>
-      <p class="note">Also competed in NVIDIA Nemotron (LLM SFT/LoRA), Make Data Count ($100k LLM text-mining), CMI (wrist-sensor time-series), and Orbit Wars (RTS agent + self-play simulator).</p>
+      <p class="note">Also: ARC Prize 2026 (ARC-AGI-3 game agent on an offline harness I built), NeuroGolf (400 ONNX networks under a parameter budget), AI Agent Security red-teaming, Make Data Count, and more.</p>
+    </section>
+
+    <!-- OPEN SOURCE -->
+    <section class="section wrap reveal">
+      <p class="section-label">Open source</p>
+      <h2 class="section-title">Merged upstream</h2>
+      <div class="cards">
+        <div class="card">
+          <h3><a href="https://github.com/vllm-project/vllm/pull/52622" target="_blank" rel="noopener">vLLM #52622 ↗</a></h3>
+          <p>The <code>/detokenize</code> endpoint now answers bad requests with a 4xx instead of a 500, so a user’s mistake no longer looks like a server outage.</p>
+        </div>
+        <div class="card">
+          <h3>LongHorizon-Harness #31 · ai-agent-book #186</h3>
+          <p>Small fixes in two agent projects: a test that failed without a built frontend, and a Windows startup crash in a coding-agent example.</p>
+        </div>
+      </div>
     </section>
 
     <!-- PROJECTS -->
@@ -198,20 +227,36 @@
       <h2 class="section-title">Things I’ve built</h2>
       <div class="cards">
         <div class="card">
+          <h3><a href="https://rajathpi.github.io/studio-hub/" target="_blank" rel="noopener">studio-hub ↗</a></h3>
+          <p>Single-file developer tools that run entirely in the browser — diff checker, regex playground, Mermaid editor, PDF toolkit, OCR. Offline; nothing leaves your machine.</p>
+        </div>
+        <div class="card">
+          <h3><a href="https://rajathpi.github.io/repo-atlas" target="_blank" rel="noopener">repo-atlas ↗</a></h3>
+          <p>Codebase explorer in one HTML file: treemap, dependency graph, instant grep and a code viewer for any repo.</p>
+        </div>
+        <div class="card">
+          <h3><a href="https://github.com/rajathpi/leverage-lens" target="_blank" rel="noopener">Leverage Lens ↗</a></h3>
+          <p>Browser extension showing live leverage, distance to stop and a buy/sell planner on Avanza product pages. Published on the Edge store.</p>
+        </div>
+        <div class="card">
+          <h3><a href="https://rajathpi.github.io/bikeloop/" target="_blank" rel="noopener">bikeloop ↗</a></h3>
+          <p>Generates cycling round trips of a chosen distance that start and end at your door, with GPX export.</p>
+        </div>
+        <div class="card">
+          <h3><a href="https://rajathpi.github.io/sverige-live/" target="_blank" rel="noopener">sverige-live ↗</a></h3>
+          <p>Dashboards on Swedish open data — the economy (auto-updated by GitHub Actions), Göteborg now, and all 290 kommuner compared.</p>
+        </div>
+        <div class="card">
           <h3><a href="blogs/RAG.html" target="_blank" rel="noopener">RAG from Scratch ↗</a></h3>
           <p>A retrieval-augmented generation pipeline built from the ground up with Llama 3 and DeepSeek-R1.</p>
         </div>
         <div class="card">
           <h3><a href="https://github.com/rajathpi/automatic-report-generator" target="_blank" rel="noopener">Medical Report Generation from Chest X-Rays ↗</a></h3>
-          <p>CNN (CheXNet) feature extraction with LSTM/RNN decoding to generate radiology reports from frontal and lateral images.</p>
-        </div>
-        <div class="card">
-          <h3><a href="https://github.com/rajathpi/Scattering-parameter-parameterization" target="_blank" rel="noopener">Scattering Parameters Parameterization ↗</a></h3>
-          <p>Neural networks (Basic, LSTM, GRU) in TensorFlow/Keras predicting input parameters of a human head–antenna system; the GRU model performed best.</p>
+          <p>CNN (CheXNet) feature extraction with an LSTM decoder that writes radiology reports from frontal and lateral images.</p>
         </div>
         <div class="card">
           <h3><a href="https://github.com/rajathpi/flappy-bird" target="_blank" rel="noopener">AI Learns to Play Flappy Bird ↗</a></h3>
-          <p>An agent trained via NEAT (neuroevolution of augmenting topologies); game and AI built end-to-end in Python.</p>
+          <p>An agent trained with NEAT neuroevolution; game and AI built end-to-end in Python.</p>
         </div>
       </div>
     </section>
