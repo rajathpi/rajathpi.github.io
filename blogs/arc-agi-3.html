@@ -6,6 +6,7 @@
 <title>ARC-AGI-3: I Built the Lab; the Score Came from a Public Notebook — Rajath Pai</title>
 <meta name="description" content="What I built for ARC Prize 2026&#x27;s interactive-games track: an offline harness, a planner, one recording format and a journal. And the honest story of why my best score (31.86) rests on a public notebook.">
 <link rel="stylesheet" href="../styles/site.css">
+<script src="../scripts/figs.js"></script>
 </head>
 <body>
 <main class="post">
@@ -29,15 +30,27 @@
 <p>My own experiments each had a pass/fail gate written before the run. Prefix caching did nothing: a hardcoded profile reset my setting, and the gate caught a smoke score of 6.77 that would have looked like a win. A bigger KV cache scored 4.42, but ten hidden draws of that model family had mean 2.86 and sd 0.75, so 4.42 was luck. The "4.33 target" was the best of about 40 runs of someone else's notebook.</p>
 <h2>Then one notebook moved the whole field</h2>
 <p>On 2 October a competitor, <code>dfranzen</code>, published a notebook that showed 31.47 on its public page. It used a newer 4-bit model, a quantised draft model for speculative decoding, and an SGLang server running 10 games at once. The whole field jumped within days.</p>
-<pre class="mermaid">flowchart LR
-  A[My explorer: 0.16 to 0.17] --&gt; B[Public 27B fork: 1.99 to 4.62]
-  B --&gt; C[Public notebook by dfranzen: copies at 24 to 29]
-  C --&gt; D[My kernel v4: that notebook plus my startup fix = 31.86]
-  C --&gt; E[My 14-stream, 88K window variant: 21.26]</pre>
+<figure class="fig">
+<ol class="flow">
+<li><b>My explorer</b><span>0.16 to 0.17</span></li>
+<li><b>Public 27B fork</b><span>1.99 to 4.62</span></li>
+<li><b>dfranzen notebook</b><span>copies at 24 to 29</span></li>
+<li class="hot"><b>My kernel v4</b><span>that plus my startup fix: 31.86</span></li>
+</ol>
+<figcaption>Where my scores came from. My 14-stream variant of the notebook drew 21.26.</figcaption>
+</figure>
 <p><strong>My best score, 31.86, is a public notebook plus a startup fix.</strong> The agent, model, serving stack and patch are Franzen's. The startup fix is the one thing I changed. It was small, and not a better idea about how to play games.</p>
 <p>For two weeks I submitted copies of public notebooks, one per day. Five identical copies scored 26.89, 27.67, 29.08, 26.24 and 27.87. At one run per day, small changes drown in that noise. Most public "improvements" came without a before-and-after number.</p>
 <h2>The missing points are unfinished levels</h2>
 <p>A public audit of 100 trajectories, which I recomputed, is my best map. The mean was 46.5 against a completion ceiling of 49.1. Of the 53.5 missing points, 50.9 were unfinished levels and only 2.6 were inefficiency. The constraint is compute per game.</p>
+<figure class="fig">
+<div class="stats">
+<div><b>49.1</b><span>completion ceiling</span></div>
+<div class="hot"><b>50.9</b><span>points lost to unfinished levels</span></div>
+<div><b>2.6</b><span>points lost to inefficiency</span></div>
+</div>
+<figcaption>Of the 53.5 missing points in 100 audited trajectories (mean 46.5).</figcaption>
+</figure>
 <p>So I cut the harness window from 128 Ki to 112 Ki tokens to fit 12 streams. Tokens per second rose from 566 to 614. The aggressive version, 14 streams and an 88K window, scored 21.26, below the 24 to 29 band. My guess is that games lost history before the window trimmed it. I can't prove that with one submission a day.</p>
 <h2>What I'd do differently</h2>
 <ul>
@@ -50,10 +63,5 @@
 <p>I'm not claiming a final rank. The code, journal and a paper draft are in a private repo.</p>
 <p class="crumb" style="margin-top:40px"><a href="../blogs.html">← All writing</a></p>
 </main>
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';
-  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'neutral', fontFamily: 'Georgia, serif' });
-</script>
 </body>
 </html>

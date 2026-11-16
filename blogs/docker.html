@@ -6,6 +6,7 @@
 <title>Docker Layers, Registries and S3, Explained — Rajath Pai</title>
 <meta name="description" content="A beginner-friendly explanation of Docker layers, checksums, manifests, registries, and how they compare to storing tarballs in S3.">
 <link rel="stylesheet" href="../styles/site.css">
+<script src="../scripts/figs.js"></script>
 </head>
 <body>
 <main class="post">
@@ -20,6 +21,14 @@ RUN pip install flask      # Step 2
 COPY app.py /app/          # Step 3
 CMD ["python", "/app/app.py"]</code></pre>
 <p>Each step makes a layer, a snapshot of filesystem changes. Here that is Python (~900 MB), Flask (~5 MB) and your <code>app.py</code> (~2 KB). Docker stacks them into the container filesystem.</p>
+<figure class="fig">
+  <div class="bars">
+    <div class="bar"><span class="l">Python</span><span class="b" style="--v:100"></span><span class="n">~900 MB</span></div>
+    <div class="bar"><span class="l">Flask</span><span class="b" style="--v:0.56"></span><span class="n">~5 MB</span></div>
+    <div class="bar hot"><span class="l">app.py</span><span class="b" style="--v:0.0002"></span><span class="n">~2 KB</span></div>
+  </div>
+  <figcaption>Layer sizes, to scale. Only the last one changes.</figcaption>
+</figure>
 <h2>A digest names each layer</h2>
 <p>Each layer gets a SHA256 digest of its contents, like <code>sha256:9f2c1b3e8a...</code>. Same contents give the same digest.</p>
 <p>So if Docker already holds a digest, it never downloads or uploads that layer again.</p>
@@ -34,6 +43,13 @@ CMD ["python", "/app/app.py"]</code></pre>
 <p>ECR often keeps layer blobs in S3 underneath, but you talk to the registry, not S3.</p>
 <h2>Push and pull move only what is missing</h2>
 <p>On <code>docker push</code>, Docker asks the registry whether it has each digest. It uploads only the missing layers, then the manifest last. If only <code>app.py</code> changed, about 2 KB goes up.</p>
+<figure class="fig">
+  <ol class="flow">
+    <li><b>Ask registry</b><span>does it have this digest?</span></li>
+    <li class="hot"><b>Upload missing layers</b><span>skip the ones it has</span></li>
+    <li><b>Upload manifest</b><span>last</span></li>
+  </ol>
+</figure>
 <p>On <code>docker pull</code>, Docker fetches the manifest, checks its local cache, and downloads only the layers it lacks.</p>
 <h2>A raw S3 tarball loses all of this</h2>
 <p>If you run <code>docker save</code> and copy the tarball to S3, S3 sees one big file. It has no layers, no manifest and no dedup.</p>

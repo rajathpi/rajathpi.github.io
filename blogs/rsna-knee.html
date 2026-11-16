@@ -6,6 +6,7 @@
 <title>The Silver Medal I Didn&#x27;t Pick: RSNA Knee — Rajath Pai</title>
 <meta name="description" content="A near-miss write-up of the RSNA Knee MRI competition: one of my unselected submissions would have been silver, because I picked my final two by the public leaderboard alone.">
 <link rel="stylesheet" href="../styles/site.css">
+<script src="../scripts/figs.js"></script>
 </head>
 <body>
 <main class="post">
@@ -20,17 +21,26 @@
 <p>The visible test set is only 3 studies, so two different methods can write identical output files. I read each run's log to confirm the extra model really ran. Three "extra model" runs had silently fallen back to the base model after a missing checkpoint.</p>
 <h2>Other people's models moved the board, not mine</h2>
 <p>My first score, on 29 August, was 0.936. My own tweaks to the fork (re-weighting arms, flip augmentation, extra backbones) read 0.940 to 0.941 or worse. What moved the board was stronger public models, which I blended in. By mid-October my best was 0.958, tied with hundreds of teams at three decimals.</p>
+<figure class="fig">
+  <ol class="timeline">
+    <li><span class="t">29 Aug</span>First submission: 0.936</li>
+    <li><span class="t">Mid-Oct</span>Best on the public board: 0.958</li>
+    <li class="hot"><span class="t">Final</span>Private board, both picks: 0.942</li>
+  </ol>
+</figure>
 <h2>I had a second ruler, and I overruled it</h2>
 <p>The public board scores about 390 hidden studies, roughly 30 % of the test set. My second ruler was a 58-study holdout with radiologist labels that no public model had trained on. Everything else trains on labels parsed from reports, which are noisy.</p>
 <p>The holdout correctly vetoed ideas that were also flat on the board. On blend weights it disagreed. The board read my weight variants at 0.955 to 0.958 against a 0.958 base, and the holdout showed gains of up to +0.0048.</p>
 <p>I wrote that the holdout was "wrong-signed" and "a veto, never a compass". Then I picked both finals by the public board.</p>
-<pre class="mermaid">flowchart TD
-  A[Candidate blends] --&gt; P[Public board: 390 studies, 3 decimals]
-  A --&gt; G[Gold set: 58 expert studies]
-  P --&gt; D{They disagree}
-  G --&gt; D
-  D --&gt; X[What I did: both finals by the public board]
-  D --&gt; Y[What I should have done: one final from each]</pre>
+<figure class="fig">
+  <ol class="flow">
+    <li><b>Candidate blends</b><span>scored on two rulers</span></li>
+    <li><b>Public board</b><span>390 studies, 3 decimals</span></li>
+    <li><b>Gold set</b><span>58 expert-labelled studies</span></li>
+    <li class="hot"><b>They disagree</b><span>I picked both finals by the board</span></li>
+  </ol>
+  <figcaption>Should have been: one final from each ruler.</figcaption>
+</figure>
 <h2>The private board sided with the holdout</h2>
 <p>The private board scores the other 910 studies. Both my finals scored 0.942. Silver started at 0.943 (top 321), gold at 0.954.</p>
 <table>
@@ -53,10 +63,5 @@
 </ul>
 <p class="crumb" style="margin-top:40px"><a href="../blogs.html">← All writing</a></p>
 </main>
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';
-  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'neutral', fontFamily: 'Georgia, serif' });
-</script>
 </body>
 </html>

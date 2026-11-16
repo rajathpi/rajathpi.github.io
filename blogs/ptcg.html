@@ -6,6 +6,7 @@
 <title>Pokémon TCG AI: Search Can&#x27;t Fix a Bad Value Function — Rajath Pai</title>
 <meta name="description" content="Notes from my Kaggle Pokémon TCG strategy write-up: a search agent that beat itself 97% of the time, lost 1–15 to a simple rule bot, and what 4,650 real games say about deck, pilot and luck.">
 <link rel="stylesheet" href="../styles/site.css">
+<script src="../scripts/figs.js"></script>
 </head>
 <body>
 <main class="post">
@@ -24,13 +25,11 @@
 <p>I held the pilot fixed (my agent on both sides) and played six deck pairings, 80 games each. Among top teams Dragapult beats Alakazam 67 % of the time. With my agent, Alakazam won 55 games to 25. Matchup tables belong to a (deck, pilot) pair. So I picked the deck my pilot could drive: a single-prize Alakazam list.</p>
 <h2>Guess the hidden cards, then search</h2>
 <p>I used Perfect Information Monte Carlo. Guess a full world that fits what you have seen, play each move out in it with the real rules, repeat over several worlds, and pick the best average.</p>
-<pre class="mermaid">flowchart TD
-  O[Observe the game] --&gt; B[Track every revealed card]
-  B --&gt; G[Guess hidden cards from real decklists]
-  G --&gt; W[Sample K possible worlds]
-  W --&gt; S[Try each move in each world with the real engine]
-  S --&gt; E[Score the result with a hand-written evaluation]
-  E --&gt; P[Pick the best move on average]</pre>
+<figure class="fig">
+<ol class="flow"><li><b>Track revealed cards</b><span></span></li><li><b>Guess hidden cards</b><span>from real decklists</span></li><li><b>Sample K worlds</b><span></span></li><li><b>Try each move</b><span>real engine, every world</span></li><li class="hot"><b>Score</b><span>hand-written evaluation</span></li></ol>
+<p class="loopback">then pick the best move on average</p>
+<figcaption>One turn of search. The highlighted step was the weak link.</figcaption>
+</figure>
 <p>The guess is the clever part. I match the opponent's revealed cards against the 150 most-played final-day decklists and deal the rest into their hidden zones. A few turns in, the archetype is usually pinned down.</p>
 <h2>Search crushed its own no-search twin</h2>
 <p>I compared the agent against the identical agent with search off, over 60 games per setting.</p>
@@ -44,6 +43,10 @@
 <tr><td>8</td><td>57</td><td>30.0 s</td></tr>
 </tbody>
 </table>
+<figure class="fig">
+<div class="bars"><div class="bar"><span class="l">No search</span><span class="b" style="--v:46.7"></span><span class="n">28 of 60</span></div><div class="bar"><span class="l">K = 1</span><span class="b" style="--v:86.7"></span><span class="n">52 of 60</span></div><div class="bar hot"><span class="l">K = 2</span><span class="b" style="--v:96.7"></span><span class="n">58 of 60</span></div><div class="bar"><span class="l">K = 4</span><span class="b" style="--v:96.7"></span><span class="n">58 of 60</span></div><div class="bar"><span class="l">K = 8</span><span class="b" style="--v:95.0"></span><span class="n">57 of 60</span></div></div>
+<figcaption>Wins against the no-search twin. Most of the gain comes by K = 2.</figcaption>
+</figure>
 <p>One or two worlds do almost all the work. Going second also wins more with my pilot (58 % over 160 mirror games), so the agent goes second when it can.</p>
 <h2>Then a rule bot beat it 15&ndash;1</h2>
 <p>I pointed the same agent, piloting Dragapult, at the strongest public rule bot, a hand-coded Alakazam player. It lost 1&ndash;15. It never set up Dragapult's key attack, which takes about three turns, and search only looks a turn or so ahead. My evaluation also liked a growing opponent hand, which is exactly what that Alakazam deck turns into damage.</p>
@@ -58,6 +61,10 @@
 </tbody>
 </table>
 <p>The best I could do was parity, by overriding almost never. A 30-game run of the proof-only version showed 60 %. At 100 games it was 49 wins to 51 losses.</p>
+<figure class="fig">
+<div class="bars"><div class="bar"><span class="l">Override freely</span><span class="b" style="--v:17"></span><span class="n">17 %</span></div><div class="bar"><span class="l">Override when sure</span><span class="b" style="--v:33"></span><span class="n">33 %</span></div><div class="bar hot"><span class="l">Override on proof</span><span class="b" style="--v:49"></span><span class="n">49 %</span></div></div>
+<figcaption>Win rate against the rule bot. Less search trust, more wins.</figcaption>
+</figure>
 <h2>Luck alone gives one agent a threefold rank range</h2>
 <p>I simulated the ladder with 3,000 agents. A single agent of fixed strength ended up with a rating spread of about &plusmn;32 points. An agent whose true rank is about 140 finishes anywhere from roughly 78th to 241st (90 % interval) from match order alone.</p>
 <h2>What I'd do differently</h2>
@@ -70,10 +77,5 @@
 <p><em>Pokémon and all related elements are © Pokémon/Nintendo/Creatures/GAME FREAK, used here only in connection with the competition.</em></p>
 <p class="crumb" style="margin-top:40px"><a href="../blogs.html">← All writing</a></p>
 </main>
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';
-  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-  mermaid.initialize({ startOnLoad: true, theme: dark ? 'dark' : 'neutral', fontFamily: 'Georgia, serif' });
-</script>
 </body>
 </html>

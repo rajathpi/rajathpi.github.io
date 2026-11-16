@@ -6,6 +6,7 @@
 <title>ARC Prize 2025: Solving Puzzles With No Pretraining — Rajath Pai</title>
 <meta name="description" content="My ARC Prize 2025 entry trained a tiny network from scratch on each puzzle at test time — a per-puzzle CompressARC solver engineered to fit thousands of steps into Kaggle&#x27;s 12-hour limit.">
 <link rel="stylesheet" href="../styles/site.css">
+<script src="../scripts/figs.js"></script>
 </head>
 <body>
 <main class="post">
@@ -20,10 +21,25 @@
 <p>The <a href="https://www.kaggle.com/competitions/arc-prize-2025">competition</a> runs a Kaggle notebook offline, within 12 hours, scored pass@2. CompressARC's original setup solved puzzles in series, underused a single GPU and, as the notebook admits, "blew past the time budget". A per-puzzle method is parallel only if you schedule it that way.</p>
 <p>So the notebook is a scheduler. The network internals live in imported modules from the <code>compressarc</code> dataset. The notebook calls <code>solve_task.solve_task(...)</code> once per puzzle and handles memory probing, parallelism, timing and <code>submission.json</code>. One model-side change was rewriting <code>layers.direction_share()</code>, for a 5 to 10% speedup.</p>
 <h2>Probe, then pack</h2>
+<figure class="fig">
+<ol class="flow">
+<li><b>Memory probe</b><span>2 steps of every puzzle</span></li>
+<li><b>Timing probe</b><span>10 steps at chosen parallelism</span></li>
+<li class="hot"><b>Pick step budget</b><span>largest that fits 12 hours</span></li>
+<li><b>Launch puzzles</b><span>while memory and CPU allow</span></li>
+</ol>
+<figcaption>The planned scheduler.</figcaption>
+</figure>
 <p>First a memory probe runs 2 steps of every puzzle to measure its GPU memory. Then a timing probe runs 10 steps at the chosen parallelism to measure seconds per step. The main run picks the largest step budget that fits 12 hours. For 120 puzzles the plan estimates about 2300 steps each.</p>
 <p>The scheduler reads free GPU memory, subtracts a 6 GB buffer, and launches puzzles while memory and CPU count allow. A 600 s timeout kills runaway puzzles, and a global end-time check stops the run before the deadline.</p>
 <h2>What the notebook actually ran</h2>
 <p>The active cell is more conservative than the plan. It runs a 5-step estimate and a 20-step main run with a flat 1 GB per task, far below the 2300-step target. It is safe, but it costs fit quality.</p>
+<figure class="fig">
+<div class="vs">
+<div><b class="k">The plan</b><p>Probe memory and timing, then about 2300 steps per puzzle.</p></div>
+<div class="hot"><b class="k">What ran</b><p>A 5-step estimate, then a 20-step main run.</p></div>
+</div>
+</figure>
 <p>I won't dress the rest up. The notebook prints no score; for calibration, CompressARC reports about 20% on ARC-AGI-1 eval and about 4% on ARC-AGI-2. Augmentation and the two predictions come from the imported <code>solve_task</code>, not from cells I wrote, so I describe them only at the method level.</p>
 <h2>What I'd do differently</h2>
 <ul>
