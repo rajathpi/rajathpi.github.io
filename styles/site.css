@@ -1,8 +1,6 @@
-/* rajathpi.github.io: one plain stylesheet for every page. */
+/* rajathpi.github.io: one plain stylesheet for every page. Light only, on purpose. */
+:root { color-scheme: light; }
 :root { --bg:#fff; --ink:#222; --dim:#6b6b6b; --line:#e2e2e2; --link:#1a0dab; --code:#f6f6f4; --hot:#c98a1e; --hot-ink:#8a5a00; --hot-bg:#fdf1dc; --bar:#9a9a96; }
-@media (prefers-color-scheme: dark) {
-  :root { --bg:#161616; --ink:#e4e4e2; --dim:#9a9a96; --line:#333; --link:#8ab4f8; --code:#202020; --hot:#d9a24a; --hot-ink:#e8b665; --hot-bg:#3a2e17; --bar:#77776f; }
-}
 * { box-sizing:border-box; }
 body { background:var(--bg); color:var(--ink); font:17px/1.6 Georgia, "Times New Roman", serif; margin:0; }
 main { max-width:760px; margin:0 auto; padding:48px 20px 80px; }
