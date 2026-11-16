@@ -12,17 +12,18 @@
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
 <h1>The Silver Medal I Didn&#x27;t Pick: RSNA Knee</h1>
 <p class="meta">RSNA Knee Abnormality Detection (Kaggle) · 3 min read</p>
-<p>RSNA Knee Abnormality Detection asks for a probability for each of 12 findings on knee MRI studies, scored by mean AUC. I finished 730th of 6,299 teams (top 12 %) at 0.942, no medal. An unselected 0.944 blend would have been silver, because I picked both finals by the public leaderboard alone.</p>
-<h2>The setup</h2>
+<p>Both of my final submissions scored 0.942. One I left unselected scored 0.944, which was silver.</p>
+<p>RSNA Knee Abnormality Detection asks for a probability for each of 12 findings on knee MRI studies, scored by mean AUC. I finished 730th of 6,299 teams (top 12 %), no medal. I had picked both finals by the public leaderboard alone.</p>
+<h2>A public notebook, then 127 submissions</h2>
 <p>It is a code competition. Kaggle re-ran my notebook on a hidden test set of about 1,300 studies, which took 5 to 7 hours of the 9-hour GPU budget. Only the ranking of studies matters, not calibration.</p>
-<h2>One branch and one PR per experiment</h2>
 <p>I started from a public 0.943 notebook and treated everything after it as an experiment. Each one got a branch, a README (what, why, results) and a PR. A script listed all 127 submissions with date, description and public score.</p>
 <p>The visible test set is only 3 studies, so two different methods can write identical output files. I read each run's log to confirm the extra model really ran. Three "extra model" runs had silently fallen back to the base model after a missing checkpoint.</p>
 <h2>Other people's models moved the board, not mine</h2>
 <p>My first score, on 29 August, was 0.936. My own tweaks to the fork (re-weighting arms, flip augmentation, extra backbones) read 0.940 to 0.941 or worse. What moved the board was stronger public models, which I blended in. By mid-October my best was 0.958, tied with hundreds of teams at three decimals.</p>
-<h2>Two rulers disagreed</h2>
+<h2>I had a second ruler, and I overruled it</h2>
 <p>The public board scores about 390 hidden studies, roughly 30 % of the test set. My second ruler was a 58-study holdout with radiologist labels that no public model had trained on. Everything else trains on labels parsed from reports, which are noisy.</p>
-<p>The holdout correctly vetoed ideas that were also flat on the board. On blend weights it disagreed. The board read my weight variants at 0.955 to 0.958 against a 0.958 base, and the holdout showed gains of up to +0.0048. I wrote that the holdout was "wrong-signed" and "a veto, never a compass". Then I picked both finals by the public board.</p>
+<p>The holdout correctly vetoed ideas that were also flat on the board. On blend weights it disagreed. The board read my weight variants at 0.955 to 0.958 against a 0.958 base, and the holdout showed gains of up to +0.0048.</p>
+<p>I wrote that the holdout was "wrong-signed" and "a veto, never a compass". Then I picked both finals by the public board.</p>
 <pre class="mermaid">flowchart TD
   A[Candidate blends] --&gt; P[Public board: 390 studies, 3 decimals]
   A --&gt; G[Gold set: 58 expert studies]

@@ -12,13 +12,14 @@
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
 <h1>Pokémon TCG AI: Search Can&#x27;t Fix a Bad Value Function</h1>
 <p class="meta">Pokémon TCG AI Battle Challenge, strategy write-up (Kaggle) · 4 min read</p>
-<p>Kaggle's Pokémon TCG competition had a simulation ladder and a strategy write-up track. I entered only the write-up, so I have no ladder rank. My search agent beat its own no-search version 97 % of the time, then lost 1–15 to a simple rule bot. The lesson: search amplifies whatever value function you give it.</p>
-<h2>Deck × pilot × luck</h2>
+<p>My search agent beat its own no-search version 97 % of the time. Then it lost 1&ndash;15 to a simple rule bot.</p>
+<p>Kaggle's Pokémon TCG competition had a simulation ladder and a strategy write-up track. I entered only the write-up, so I have no ladder rank. The lesson: search amplifies whatever value function you give it.</p>
+<h2>I split a result into deck, pilot and luck</h2>
 <p>I framed a ladder result as deck strength × piloting × rating luck, and tried to measure each. I used the competition's public export of top-band games and the official engine, run headless. Everything ran on a laptop CPU, about nine core-hours, with no learned weights.</p>
 <h2>The endgame meta was a triangle</h2>
 <p>I parsed all 4,650 games from the final rating day. Three decks had taken over: Dragapult ex (32.0 % of games), Mega Kangaskhan ex / Slowking (23.7 %) and Hydrapple ex / Teal Mask Ogerpon (19.0 %). They beat each other in a loop, and no popular deck won more than about 54 % against the field.</p>
 <p>The best win rates belonged to rare decks, but each was played almost entirely by one strong team. Win rate mixes up the deck and the person playing it.</p>
-<h2>The pilot mattered more</h2>
+<h2>The pilot mattered more than the deck</h2>
 <p>The first-place team played the most popular deck, Dragapult, and won 69.9 % of its final-day games with it. Same cards, very different results.</p>
 <p>I held the pilot fixed (my agent on both sides) and played six deck pairings, 80 games each. Among top teams Dragapult beats Alakazam 67 % of the time. With my agent, Alakazam won 55 games to 25. Matchup tables belong to a (deck, pilot) pair. So I picked the deck my pilot could drive: a single-prize Alakazam list.</p>
 <h2>Guess the hidden cards, then search</h2>
@@ -31,7 +32,7 @@
   S --&gt; E[Score the result with a hand-written evaluation]
   E --&gt; P[Pick the best move on average]</pre>
 <p>The guess is the clever part. I match the opponent's revealed cards against the 150 most-played final-day decklists and deal the rest into their hidden zones. A few turns in, the archetype is usually pinned down.</p>
-<h2>Search beat its own no-search version</h2>
+<h2>Search crushed its own no-search twin</h2>
 <p>I compared the agent against the identical agent with search off, over 60 games per setting.</p>
 <table>
 <thead><tr><th>Worlds sampled (K)</th><th>Wins out of 60</th><th>Time per game</th></tr></thead>
@@ -44,9 +45,9 @@
 </tbody>
 </table>
 <p>One or two worlds do almost all the work. Going second also wins more with my pilot (58 % over 160 mirror games), so the agent goes second when it can.</p>
-<h2>Then it lost 1–15</h2>
-<p>I pointed the same agent, piloting Dragapult, at the strongest public rule bot, a hand-coded Alakazam player. It lost 1–15. It never set up Dragapult's key attack, which takes about three turns, and search only looks a turn or so ahead. My evaluation also liked a growing opponent hand, which is exactly what that Alakazam deck turns into damage.</p>
-<h2>Every bit of trust in my score cost wins</h2>
+<h2>Then a rule bot beat it 15&ndash;1</h2>
+<p>I pointed the same agent, piloting Dragapult, at the strongest public rule bot, a hand-coded Alakazam player. It lost 1&ndash;15. It never set up Dragapult's key attack, which takes about three turns, and search only looks a turn or so ahead. My evaluation also liked a growing opponent hand, which is exactly what that Alakazam deck turns into damage.</p>
+<h2>Every bit of trust I gave search cost wins</h2>
 <p>To separate search from evaluation, I let the rule bot play and let search override its moves at three confidence levels.</p>
 <table>
 <thead><tr><th>Search overrides the rule bot</th><th>Decisions overridden</th><th>Win rate vs rule bot</th></tr></thead>
@@ -57,13 +58,13 @@
 </tbody>
 </table>
 <p>The best I could do was parity, by overriding almost never. A 30-game run of the proof-only version showed 60 %. At 100 games it was 49 wins to 51 losses.</p>
-<h2>Luck gave one agent a threefold rank range</h2>
-<p>I simulated the ladder with 3,000 agents. A single agent of fixed strength ended up with a rating spread of about ±32 points. An agent whose true rank is about 140 finishes anywhere from roughly 78th to 241st (90 % interval) from match order alone.</p>
+<h2>Luck alone gives one agent a threefold rank range</h2>
+<p>I simulated the ladder with 3,000 agents. A single agent of fixed strength ended up with a rating spread of about &plusmn;32 points. An agent whose true rank is about 140 finishes anywhere from roughly 78th to 241st (90 % interval) from match order alone.</p>
 <h2>What I'd do differently</h2>
 <ul>
 <li><strong>Learn the evaluation.</strong> It is the bottleneck. Distil search decisions and top teams' public games into a small value network, then widen the override gate as it earns it.</li>
 <li><strong>Use the clue my guesser ignores.</strong> Cards a player didn't play suggest cards they may not hold.</li>
-<li><strong>Never judge a change on fewer than a few hundred games.</strong> In my tests, 60 games moved the win rate about ±12 points on noise alone.</li>
+<li><strong>Never judge a change on fewer than a few hundred games.</strong> In my tests, 60 games moved the win rate about &plusmn;12 points on noise alone.</li>
 <li><strong>Prefer the lower-variance deck at equal strength.</strong> Spend your last slots on configurations you have already tested.</li>
 </ul>
 <p><em>Pokémon and all related elements are © Pokémon/Nintendo/Creatures/GAME FREAK, used here only in connection with the competition.</em></p>

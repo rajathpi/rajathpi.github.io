@@ -12,29 +12,22 @@
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
 <h1>ARC-AGI-3: I Built the Lab; the Score Came from a Public Notebook</h1>
 <p class="meta">ARC Prize 2026, ARC-AGI-3 (Kaggle) · 5 min read</p>
-<p>ARC-AGI-3 is the interactive-games track of ARC Prize 2026: a 64×64 grid, a few actions, no instructions. My best score, 31.86, is a public notebook plus a small startup fix of mine. What I built was the lab around it. The lesson: know which part is yours.</p>
-<h2>No instructions, squared efficiency</h2>
-<p>You press buttons, watch what changes, work out the rules and win. The next level quietly changes them. (The static-puzzle half, ARC-AGI-2, has <a href="arc-agi.html">its own post</a>.)</p>
+<p>My best ARC-AGI-3 score, 31.86, is mostly someone else's work. It is a public notebook by dfranzen plus a small startup fix of mine. What I actually built was the lab around it. The lesson: know which part is yours.</p>
+<h2>A game with no instructions</h2>
+<p>ARC-AGI-3 is the interactive-games track of ARC Prize 2026. You get a 64×64 grid and a few buttons. You press them, watch what changes, work out the rules and win. The next level quietly changes them. (The static-puzzle half, ARC-AGI-2, has <a href="arc-agi.html">its own post</a>.)</p>
 <p>The competition ships 25 public games and scores on 110 hidden ones. A completed level scores <code>min((human_actions / agent_actions)², 1)</code>; a failed level scores zero. Using twice the human's actions throws away 75% of a level. You get one submission per day, and the deadline was 2 November 2026.</p>
-<h2>The lab was mine</h2>
-<p>The competition bundles an offline engine, so I built tools around it to see the games myself.</p>
-<ul>
-<li><strong>Game server.</strong> A small Flask app that owns one session. Human or model, it is the single source of truth.</li>
-<li><strong>Perception tools.</strong> Object finding, frame diffs, board geometry. I once hardcoded one level's geometry and missed a whole row, including a refuel item. Geometry is now detected per frame.</li>
-<li><strong>BFS planner.</strong> It was perfect for a four-way grid, until one level turned on gravity. The planner kept producing routes the game would never follow. A validator now predicts where a move lands and flags the mismatch.</li>
-<li><strong>Verified walker.</strong> One step, check the avatar moved, re-plan if not. Batched actions got dropped while animations played.</li>
-<li><strong>One recording format.</strong> Every session, human or model, goes to the same JSONL file with notes interleaved.</li>
-<li><strong>A journal.</strong> An append-only log of every experiment, so I can say which conclusions were wrong.</li>
-</ul>
+<h2>First I built a lab to see the games myself</h2>
+<p>The competition bundles an offline engine, so I wrapped tools around it. A small Flask server owns one session, human or model, as the single source of truth. Perception tools find objects, diff frames and measure the board. A BFS planner and a verified walker move the avatar one step at a time and re-plan if it did not move. Every session goes to one JSONL recording format, and an append-only journal logs every experiment, so I can say which conclusions were wrong.</p>
+<p>Each tool exists because something broke. I once hardcoded one level's geometry and missed a whole row, including a refuel item, so geometry is now detected per frame. The planner was perfect for a four-way grid until one level turned on gravity and it kept producing routes the game would never follow. A validator now predicts where a move lands and flags the mismatch. Batched actions got dropped while animations played, hence the one-step walker.</p>
 <h2>Every hard error was a bad reading</h2>
 <p>A language model played the first game, <code>ls20</code>, through these tools. It solved level 1 in 15 moves while learning the rules, then in 13. Its mistakes were measurement mistakes: hardcoded geometry, a yellow item counted as move budget, a rotator assumed never to respawn (it does). The reasoning on top of each bad reading was sound and confidently wrong.</p>
-<h2>My explorer scored 0.17</h2>
+<h2>My own explorer scored 0.17</h2>
 <p>I wrote a general explorer that calibrates actions, drops no-ops and prefers unseen frames. Offline on the 25 public games it averaged 6.80 levels. Two obvious ideas hurt: action momentum (5 levels against 8) and coverage by position (2.80 against 6.80).</p>
 <p>The real submission scored 0.16. Raising the action cap from 4,000 to 100,000 gave 0.17. In the real run 110 games share one wall clock, so each runs out of time long before it runs out of actions. Offline, each game ran alone, so more budget helped. That did not transfer.</p>
-<h2>Public notebooks took over</h2>
+<h2>Public notebooks overtook it</h2>
 <p>By 8 September the board was led by a 27B model on a 96 GB GPU, with a public harness. I forked a public notebook and scored between 1.99 and 4.62 on the hidden set. That is about fifteen times my explorer, and not my work.</p>
 <p>My own experiments each had a pass/fail gate written before the run. Prefix caching did nothing: a hardcoded profile reset my setting, and the gate caught a smoke score of 6.77 that would have looked like a win. A bigger KV cache scored 4.42, but ten hidden draws of that model family had mean 2.86 and sd 0.75, so 4.42 was luck. The "4.33 target" was the best of about 40 runs of someone else's notebook.</p>
-<h2>One notebook changed everything</h2>
+<h2>Then one notebook moved the whole field</h2>
 <p>On 2 October a competitor, <code>dfranzen</code>, published a notebook that showed 31.47 on its public page. It used a newer 4-bit model, a quantised draft model for speculative decoding, and an SGLang server running 10 games at once. The whole field jumped within days.</p>
 <pre class="mermaid">flowchart LR
   A[My explorer: 0.16 to 0.17] --&gt; B[Public 27B fork: 1.99 to 4.62]
@@ -43,7 +36,7 @@
   C --&gt; E[My 14-stream, 88K window variant: 21.26]</pre>
 <p><strong>My best score, 31.86, is a public notebook plus a startup fix.</strong> The agent, model, serving stack and patch are Franzen's. The startup fix is the one thing I changed. It was small, and not a better idea about how to play games.</p>
 <p>For two weeks I submitted copies of public notebooks, one per day. Five identical copies scored 26.89, 27.67, 29.08, 26.24 and 27.87. At one run per day, small changes drown in that noise. Most public "improvements" came without a before-and-after number.</p>
-<h2>Where the points are</h2>
+<h2>The missing points are unfinished levels</h2>
 <p>A public audit of 100 trajectories, which I recomputed, is my best map. The mean was 46.5 against a completion ceiling of 49.1. Of the 53.5 missing points, 50.9 were unfinished levels and only 2.6 were inefficiency. The constraint is compute per game.</p>
 <p>So I cut the harness window from 128 Ki to 112 Ki tokens to fit 12 streams. Tokens per second rose from 566 to 614. The aggressive version, 14 streams and an 88K window, scored 21.26, below the 24 to 29 band. My guess is that games lost history before the window trimmed it. I can't prove that with one submission a day.</p>
 <h2>What I'd do differently</h2>

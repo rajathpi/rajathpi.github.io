@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Beating 24% on ARC-AGI-2: A Hybrid Solver, Honestly — Rajath Pai</title>
+<title>Symbolic Search Scored 0 on ARC-AGI-2 Eval — Rajath Pai</title>
 <meta name="description" content="A three-engine hybrid symbolic + neural solver for the ARC Prize 2026 (ARC-AGI-2), and an honest account of why symbolic search scores zero on it.">
 <link rel="stylesheet" href="../styles/site.css">
 </head>
 <body>
 <main class="post">
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
-<h1>Beating 24% on ARC-AGI-2: A Hybrid Solver, Honestly</h1>
+<h1>Symbolic Search Scored 0 on ARC-AGI-2 Eval</h1>
 <p class="meta">ARC Prize 2026 (ARC-AGI-2) · 5 min read</p>
-<p>ARC-AGI-2 is an open research frontier. I designed a three-engine hybrid of symbolic and neural solving for ARC Prize 2026, and I have no GPU score yet. The lesson so far: symbolic search scores zero on the eval, so the neural model must carry it.</p>
-<h2>24% is the bar</h2>
+<p>I spent weeks on 19 families of symbolic rule-finders for ARC-AGI-2. They solve about 6% of the 1,000 training tasks and <strong>0</strong> of the 120 public-eval tasks. So the ARC Prize 2026 solver I designed is a three-engine hybrid where the neural model carries the score. I have no GPU score yet.</p>
+<h2>The bar is 24%</h2>
 <p>In 2025 the best self-contained Kaggle solution was NVARC at <strong>24.03%</strong>. It used a Qwen3-4B model with a 16-token vocabulary, about 100k synthetic tasks and test-time training. Humans score about 66%. The $1M grand prize needs 85%.</p>
 <p>The rules: a Kaggle notebook under 12 hours, no internet, no API models, open source under CC0/MIT-0. The metric is pass@2, and a task counts only if every test input is solved.</p>
-<h2>Symbolic search scored zero</h2>
-<p>I built 19 inducer families: colormaps, symmetry, tiling, gravity, compositional chains and more. Each only emits a rule that reproduces every training pair, so precision is near 100%. It solves about 6% of the 1000 training tasks and <strong>0</strong> of the 120 public-eval tasks. The neural model has to be the primary scorer.</p>
-<h2>Selection is the bottleneck</h2>
+<h2>Why the symbolic zero</h2>
+<p>Each inducer only emits a rule that reproduces every training pair, so precision is near 100%. The families cover colormaps, symmetry, tiling, gravity, compositional chains and more. Eval still sits at 0%.</p>
+<p>Depth explains it. I run my DSL primitives generatively: sample a program, sample random input grids, apply the program. Every task is correct by construction, at 0.5 ms per task. My symbolic solver recovers the rule 81% of the time at program depth 1, then 14%, 3% and 1% at depths 2 to 4. Depth is what defeats pattern-matching, so I skew the synthetic curriculum toward depth 3 and 4 to force the neural model to learn composition.</p>
+<h2>The model knows more than it says</h2>
 <p>The TRM paper reports pass@1 of about 18% but pass@128 of about 30%. The model often produces the right grid and fails to rank it in the top 2. A strong selection layer is worth several points.</p>
 <h2>Three engines, one selector</h2>
 <pre class="mermaid">flowchart TD
@@ -31,15 +32,10 @@
   B --&gt; D
   D --&gt; E["Final: pass@2 attempts"]</pre>
 <p>Engine A rarely fires on eval, but each hit is a near-certain slot at no GPU cost. Engine B fine-tunes a LoRA on each task's own augmented pairs, then samples. Engine C is shared: it expands the training data and gives A and B diverse frames. Engine D picks the final two attempts.</p>
-<h2>Synthetic tasks with a difficulty dial</h2>
-<p>I run my DSL primitives generatively: sample a program, sample random input grids, apply the program. Every task is correct by construction, at 0.5 ms per task. I pointed my symbolic solver at these tasks to measure difficulty. It recovers the rule 81% of the time at program depth 1, then 14%, 3% and 1% at depths 2 to 4.</p>
-<p>Depth is what defeats pattern-matching, which is why eval sits at 0% for symbolic search. So I skew the curriculum toward depth 3 and 4 to force the model to learn composition.</p>
-<h2>Consensus picks the answer</h2>
-<p>I sample many candidates across the 8 dihedral frames and colour permutations, map each back to the original frame, and pick the grid produced most consistently. The aim is to turn the pass@128 ceiling into real pass@2. The logic is unit-tested.</p>
-<h2>Symbolic can only help</h2>
-<p>If the symbolic battery finds a rule that fits all train pairs, it takes attempt slot 1 and neural consensus fills slot 2. I checked locally that a symbolic rule rescues a task even when a mock neural model votes mostly wrong.</p>
-<h2>An earlier attempt</h2>
-<p>My 2025 kernel was a different design: per-puzzle, no pretraining, in the CompressARC lineage. The work there was throughput. It profiled each puzzle's memory and packed about 2300 steps per puzzle on 120 tasks into 12 hours. It has no synthetic pretraining, symbolic layer or consensus.</p>
+<p>Selection works by consensus. I sample many candidates across the 8 dihedral frames and colour permutations, map each back to the original frame, and pick the grid produced most consistently. The aim is to turn the pass@128 ceiling into real pass@2. The logic is unit-tested.</p>
+<p>Symbolic can only help. If the battery finds a rule that fits all train pairs, it takes attempt slot 1 and neural consensus fills slot 2. I checked locally that a symbolic rule rescues a task even when a mock neural model votes mostly wrong.</p>
+<h2>The 2025 attempt was a different animal</h2>
+<p>My 2025 kernel was per-puzzle, no pretraining, in the CompressARC lineage. The work there was throughput. It profiled each puzzle's memory and packed about 2300 steps per puzzle on 120 tasks into 12 hours. It has no synthetic pretraining, symbolic layer or consensus.</p>
 <h2>What I'd do differently</h2>
 <ul>
 <li><strong>Get a GPU number first.</strong> Engines A and C alone score about 0% on eval. Whether Edges 1 and 2 add points can only be shown by Kaggle GPU runs, not on my Mac.</li>

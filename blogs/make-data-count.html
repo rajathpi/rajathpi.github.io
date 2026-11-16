@@ -12,17 +12,18 @@
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
 <h1>Finding Data in the Footnotes with Constrained Decoding</h1>
 <p class="meta">Make Data Count — Finding Data References · 4 min read</p>
+<p>My LLM kept breaking its own JSON, so I let it answer with one letter. That fixed it.</p>
 <p>Make Data Count asks which datasets a scientific paper cites, and whether each is Primary (the authors made it) or Secondary (reused). I finished 186 of 1,282. The one lesson: a multiple-choice answer forced to a single token beat free-form JSON from an LLM.</p>
-<h2>The task</h2>
+<h2>Exact tuples, no partial credit</h2>
 <p>For each paper you emit <code>(article_id, dataset_id, type)</code> tuples. The id is a DOI or an accession such as GEO or PDB. Scoring is F1 on exact tuples, so a wrong type or a malformed id costs as much as a miss.</p>
 <p>It is hard because dataset references look like ordinary citations. Primary versus Secondary also depends on phrasing like "we collected" versus "obtained from".</p>
-<h2>Regex plus a classic classifier</h2>
-<p>My first versions used no LLM. Regex patterns mined candidate ids from the XML or PDF text. A voting ensemble classified each one from cue phrases in a 500-character window.</p>
+<h2>First, no LLM at all</h2>
+<p>My first versions used regex and a classic classifier. Regex patterns mined candidate ids from the XML or PDF text. A voting ensemble classified each one from cue phrases in a 500-character window.</p>
 <p>The useful step was negative sampling. I labelled every regex hit that was not a true citation as <code>Not_A_Citation</code>. That taught the classifier to reject the flood of false positives.</p>
-<h2>Features hit a ceiling</h2>
-<p>Primary versus Secondary is reading comprehension, so I added an LLM. I cut the text at the references heading, found DOIs by regex, and gave Qwen-3 8B a short context for each. It returned JSON with the DOI and a class.</p>
+<h2>Then the JSON broke</h2>
+<p>Primary versus Secondary is reading comprehension, so features hit a ceiling and I added an LLM. I cut the text at the references heading, found DOIs by regex, and gave Qwen-3 8B a short context for each. It returned JSON with the DOI and a class.</p>
 <p>I dropped any id that appeared in three or more papers, since those are journal and license links. But free-form JSON is fragile. One stray token breaks the parse and the citation is silently lost.</p>
-<h2>Constrained decoding fixed it</h2>
+<h2>So I let it say one letter</h2>
 <p>The final pipeline keeps regex for candidates and uses Qwen2.5-32B-Instruct (AWQ) on vLLM to decide.</p>
 <pre class="mermaid">flowchart LR
   A[PDF text, cut at references] --&gt; B[Regex DOI candidates]
@@ -35,7 +36,7 @@
 llm.generate(prompts, vllm.SamplingParams(max_tokens=1,
     logits_processors=[mclp], logprobs=3, temperature=0))</code></pre>
 <p>There is no JSON to parse and nothing to drop. vLLM's V1 engine rejects logits processors, so I set <code>VLLM_USE_V1="0"</code>.</p>
-<h2>Confidence for free</h2>
+<h2>Confidence came for free</h2>
 <p>The three logprobs give a margin between the top two choices. I drop <code>None</code> predictions with a margin under 0.5.</p>
 <p>I then dedup on article and dataset id. Rows with data-keyword context and higher confidence win ties.</p>
 <h2>What I'd do differently</h2>

@@ -12,7 +12,8 @@
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
 <h1>Docker Layers, Registries and S3, Explained</h1>
 <p class="meta">May 12, 2026 · 3 min read</p>
-<p>After reading this you will know what a Docker layer, digest and manifest are, and why a registry is not just a bucket of tarballs. You will see why pushing a changed app can upload only a few KB.</p>
+<p>Change one file in a Docker image and push it, and about 2 KB goes up, not the 900 MB of Python underneath. The same trick means a layer you already have never downloads twice.</p>
+<p>It works because of three small things: layers, digests and manifests. This post explains each, and why a registry is not just a bucket of tarballs.</p>
 <h2>A Dockerfile becomes layers</h2>
 <pre><code>FROM python:3.11           # Step 1
 RUN pip install flask      # Step 2
@@ -34,7 +35,7 @@ CMD ["python", "/app/app.py"]</code></pre>
 <h2>Push and pull move only what is missing</h2>
 <p>On <code>docker push</code>, Docker asks the registry whether it has each digest. It uploads only the missing layers, then the manifest last. If only <code>app.py</code> changed, about 2 KB goes up.</p>
 <p>On <code>docker pull</code>, Docker fetches the manifest, checks its local cache, and downloads only the layers it lacks.</p>
-<h2>Why a raw S3 tarball is worse</h2>
+<h2>A raw S3 tarball loses all of this</h2>
 <p>If you run <code>docker save</code> and copy the tarball to S3, S3 sees one big file. It has no layers, no manifest and no dedup.</p>
 <pre><code>docker save myrepo/myapp:v1 &gt; myapp.tar
 aws s3 cp myapp.tar s3://my-bucket/</code></pre>
