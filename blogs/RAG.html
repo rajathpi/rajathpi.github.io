@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Building RAG from Scratch — Rajath Pai</title>
 <meta name="description" content="Building RAG from Scratch">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="Rajath Pai, writing" href="../feed.xml">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Rajath Pai">
+<meta property="og:title" content="Building RAG from Scratch">
+<meta property="og:description" content="Building RAG from Scratch">
+<meta property="og:url" content="https://rajathpi.github.io/blogs/RAG.html">
+<meta property="og:image" content="https://rajathpi.github.io/assets/headshot_circle.png">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="../styles/site.css">
 <script src="../scripts/figs.js"></script>
 </head>
@@ -14,7 +23,7 @@
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
 <h1>Building RAG from Scratch</h1>
 <p class="meta">January 2025 · notebook</p>
-<p>In this notebook we will build a RAG from scratch</p>
+<p>In this notebook we build a RAG pipeline from scratch.</p>
 <pre><code>corpus_of_documents = [
     &quot;Take a leisurely walk in the park and enjoy the fresh air.&quot;,
     &quot;Visit a local museum and discover something new.&quot;,
@@ -29,8 +38,8 @@
 ]
 </code></pre>
 <p>We will use Jaccard similarity here.</p>
-<p><strong>Jaccard Similarty</strong>: It is the intersection divided by the union of "sets" of words (that is, the no of sets of unions).</p>
-<p>Preprocessing : We will need to convert the string to a set</p>
+<p><strong>Jaccard similarity</strong>: the size of the intersection divided by the size of the union of the two sets of words.</p>
+<p>Preprocessing: convert each string to a set of words.</p>
 <pre><code>def jaccard_similarity(query, document):
     query = query.lower().split(&quot; &quot;)
     document = document.lower().split(&quot; &quot;)
@@ -38,7 +47,7 @@
     union = set(query).union(set(document))
     return len(intersection)/len(union)
 </code></pre>
-<p>Now we define a function that will take in the query and corpus and select the best document to return to the user</p>
+<p>Now we define a function that will take in the query and corpus and select the best document to return to the user.</p>
 <pre><code>def return_response(query, corpus):
     similarities = []
     for doc in corpus:
@@ -53,21 +62,21 @@ return_response(user_input, corpus_of_documents)
 </code></pre>
 <pre class="out">'Take a leisurely walk in the park and enjoy the fresh air.'</pre>
 
-<p>We have now successfully completed the <strong>R</strong> from the <strong>RAG</strong></p>
-<p>This retrival has no knowledge of semantics. To solve this, we will bring in an LLM.</p>
+<p>That completes the <strong>R</strong> in <strong>RAG</strong>.</p>
+<p>This retrieval has no knowledge of semantics. To solve this, we will bring in an LLM.</p>
 <p>Now we move to the Augmentation part.</p>
 <h3>Adding LLM</h3>
 <pre><code>import requests
 import json
 </code></pre>
-<p>First we define the inputs. To works with this model, we're going to take</p>
+<p>First we define the inputs. To work with the model, we will:</p>
 <ol>
 <li>User input.</li>
 <li>Fetch the most similar document.</li>
 <li>Pass that into a prompt to the language model.</li>
 <li>Return the result to the user.</li>
 </ol>
-<p>Prompt: It is an instruction that you provide to the LLM.</p>
+<p>Prompt: the instruction you give the LLM.</p>
 <p>When you run the code you will see the streaming result. Streaming the result is important for user experience.</p>
 <pre><code>user_input = &quot;I like to hike&quot;
 relevant_document = return_response(user_input, corpus_of_documents)
@@ -83,12 +92,12 @@ The user input is: {user_input}
 Compile a recommendation to the user based on the recommended activity and the user input.
 &quot;&quot;&quot;
 </code></pre>
-<p>We will try two different models</p>
+<p>We will try two different models:</p>
 <ol>
 <li><strong>Llama 3</strong></li>
-<li><strong>Deepseek-R1</strong></li>
+<li><strong>DeepSeek-R1</strong></li>
 </ol>
-<p>both models have 7B parameters</p>
+<p>Both models have about 7B parameters.</p>
 <h3>Llama 3</h3>
 <pre><code>url = 'http://localhost:11434/api/generate'
 
@@ -121,7 +130,7 @@ Hmm, how can I make this more engaging? Maybe emphasize that hiking isn't just a
 
 Go for a hike and enjoy the stunning views of nature!Try a new trail!You'll love this!Try a new trail!Try a challenging trail!Go for a longer, more challenging hike!You'll love this one!You'll love this!You'll love this!</pre>
 
-<h3>Deepseek-r1</h3>
+<h3>DeepSeek-R1</h3>
 <pre><code>url = 'http://localhost:11434/api/generate'
 
 data = {
@@ -160,7 +169,7 @@ I need to keep it short since the bot's style is concise. Maybe something like s
 Try hiking again or explore other outdoor activities you enjoy!</pre>
 
 <hr />
-<p>Lets see what happens when you give the wrong input that isnt in the corpus</p>
+<p>Let's see what happens with an input that isn't in the corpus.</p>
 <pre><code>user_input = &quot;I don't like to hike&quot;
 relevant_document = return_response(user_input, corpus_of_documents)
 # https://github.com/jmorganca/ollama/blob/main/docs/api.md
