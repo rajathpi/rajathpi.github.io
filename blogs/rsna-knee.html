@@ -54,6 +54,22 @@
 <p>The board had called these about 0.001 worse than my picks. The private board said about 0.002 better, the direction the holdout had pointed.</p>
 <h2>Three decimals were noise</h2>
 <p>Every public notebook I had submitted as-is also fell to 0.942. I had ranked variants in 0.001 steps on 390 studies, where noise is easily that large. In one family of experiments the displayed score was called right 3 times in 5, and "this beats my best" was right 0 times in 5.</p>
+<h2>Use this yourself: Pick finals with two rulers</h2>
+<p>This applies when a public leaderboard scores a small slice of the test set and you have a second, independent check, such as a clean holdout.</p>
+<ol>
+<li>Before you see any scores, write down your rule for choosing finals.</li>
+<li>Build a holdout the public models never trained on, with the cleanest labels you can get.</li>
+<li>Score every candidate on both rulers. Mark the ones where the rulers disagree.</li>
+<li>Take final one from the public board's top. Take final two from the holdout's top among the rest.</li>
+<li>If the rulers agree, spend the second final on the most different candidate, not a near copy.</li>
+</ol>
+<pre><code>def pick_finals(rows):
+    """rows: (name, public_score, holdout_score). Returns two finals, one per ruler."""
+    by_public = max(rows, key=lambda r: r[1])
+    rest = [r for r in rows if r is not by_public]
+    by_holdout = max(rest, key=lambda r: r[2])
+    return by_public[0], by_holdout[0]</code></pre>
+<p>Skip this when the holdout is tiny and noisy, or when it was used to tune the same candidates. Then it is just a second board you have fitted.</p>
 <h2>What I'd do differently</h2>
 <ul>
 <li><strong>Pick finals from two independent rulers.</strong> If they disagree and the independent one has a mechanism behind it, take one final from each. I spent both on the same bet.</li>

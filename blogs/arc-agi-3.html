@@ -52,6 +52,34 @@
 <figcaption>Of the 53.5 missing points in 100 audited trajectories (mean 46.5).</figcaption>
 </figure>
 <p>So I cut the harness window from 128 Ki to 112 Ki tokens to fit 12 streams. Tokens per second rose from 566 to 614. The aggressive version, 14 streams and an 88K window, scored 21.26, below the 24 to 29 band. My guess is that games lost history before the window trimmed it. I can't prove that with one submission a day.</p>
+<h2>Use this yourself: build the offline harness before you submit</h2>
+<p>This applies to any competition where you get one submission a day but can run the environment locally.</p>
+<ol>
+<li>Run the official engine locally and wrap it in one <code>reset</code> / <code>step</code> interface, so a human, a script and a model all use the same door.</li>
+<li>Write every session to one recording format, one JSON line per step, and never log anywhere else.</li>
+<li>Build a replay that reads those lines back, so any run, good or bad, can be inspected after the fact.</li>
+<li>Copy the scoring formula from the official code instead of retyping it from the rules page. Check it on a recording where you know the answer.</li>
+<li>Keep an append-only journal of each experiment with its pass/fail gate written first.</li>
+</ol>
+<pre><code>import json
+
+def record(env, actions, path):
+    obs = env.reset()
+    with open(path, "w") as f:
+        for a in actions:
+            obs, done = env.step(a)
+            f.write(json.dumps({"action": a, "obs": obs, "done": done}) + "\n")
+            if done:
+                break
+
+def replay(path):
+    for line in open(path):
+        yield json.loads(line)
+
+# paste the official scorer here; this is the formula from the post
+def level_score(human, agent, solved):
+    return min((human / agent) ** 2, 1.0) if solved else 0.0</code></pre>
+<p>The pitfall: the harness runs one game alone, while the real run may share a clock across many, so time and budget results need a shared-clock test before you trust them.</p>
 <h2>What I'd do differently</h2>
 <ul>
 <li><strong>Test offline benchmarks against a shared clock.</strong> My action-budget gain was real offline and meaningless online.</li>

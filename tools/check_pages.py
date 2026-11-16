@@ -85,7 +85,8 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
 srv = socketserver.TCPServer(("127.0.0.1", 0), functools.partial(Quiet, directory=str(ROOT)))
 threading.Thread(target=srv.serve_forever, daemon=True).start()
 port = srv.server_address[1]
-harness = ROOT / "_check_harness.html"
+PROFILE = __import__("tempfile").mkdtemp(prefix="checkpages_")  # own Chrome profile, so parallel runs don't clash
+harness = ROOT / f"_check_harness_{__import__('os').getpid()}.html"
 bad = 0
 try:
     for page in PAGES:
@@ -94,8 +95,8 @@ try:
             harness.write_text(HARNESS.format(src="/" + rel, w=w, check=json.dumps(CHECK)), encoding="utf8")
             for mode in ("light", "dark"):
                 flag = "--force-dark-mode" if mode == "dark" else "--blink-settings=preferredColorScheme=1"
-                dom = subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--window-size=1400,900", "--virtual-time-budget=30000",
-                                      flag, "--dump-dom", f"http://127.0.0.1:{port}/_check_harness.html"],
+                dom = subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--window-size=1400,900", f"--user-data-dir={PROFILE}", "--virtual-time-budget=30000",
+                                      flag, "--dump-dom", f"http://127.0.0.1:{port}/{harness.name}"],
                                      capture_output=True, text=True, encoding="utf8").stdout
                 m = re.search(r'<pre id="__check">(.*?)</pre>', dom, re.S)
                 raw = m.group(1) if m else ""
@@ -112,5 +113,6 @@ try:
 finally:
     harness.unlink(missing_ok=True)
     srv.shutdown()
+    __import__("shutil").rmtree(PROFILE, ignore_errors=True)
 print("OK, no issues" if not bad else f"{bad} issue(s)")
 sys.exit(1 if bad else 0)

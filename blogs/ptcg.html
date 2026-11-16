@@ -12,7 +12,7 @@
 <main class="post">
 <p class="crumb"><a href="../index.html">Rajath Pai</a> / <a href="../blogs.html">Writing</a></p>
 <h1>Pokémon TCG AI: Search Can&#x27;t Fix a Bad Value Function</h1>
-<p class="meta">Pokémon TCG AI Battle Challenge, strategy write-up (Kaggle) · 4 min read</p>
+<p class="meta">Pokémon TCG AI Battle Challenge, strategy write-up (Kaggle) · 5 min read</p>
 <p>My search agent beat its own no-search version 97 % of the time. Then it lost 1&ndash;15 to a simple rule bot.</p>
 <p>Kaggle's Pokémon TCG competition had a simulation ladder and a strategy write-up track. I entered only the write-up, so I have no ladder rank. The lesson: search amplifies whatever value function you give it.</p>
 <h2>I split a result into deck, pilot and luck</h2>
@@ -67,6 +67,22 @@
 </figure>
 <h2>Luck alone gives one agent a threefold rank range</h2>
 <p>I simulated the ladder with 3,000 agents. A single agent of fixed strength ended up with a rating spread of about &plusmn;32 points. An agent whose true rank is about 140 finishes anywhere from roughly 78th to 241st (90 % interval) from match order alone.</p>
+<h2>Use this yourself: Perfect Information Monte Carlo for hidden cards</h2>
+<p>This applies to a turn-based game where you cannot see everything, but you have a real simulator for the rules.</p>
+<ol>
+<li>Write <code>sample_world</code>. It turns what you have seen into one complete, plausible game state, hidden cards included.</li>
+<li>Write <code>legal_moves</code> and <code>apply</code>. Use the real engine, so the rules are never your own approximation.</li>
+<li>Write <code>evaluate</code>, a score for a finished position. Search is only as good as this.</li>
+<li>For each candidate move, apply it in each sampled world, score the result and average over worlds.</li>
+<li>Play the highest average. Start with a small number of worlds. In my runs most of the gain came by two.</li>
+</ol>
+<pre><code>def pimc_move(state, sample_world, legal_moves, apply, evaluate, k=8):
+    """Pick the move with the best average value over k guessed worlds."""
+    worlds = [sample_world(state) for _ in range(k)]
+    def avg(move):
+        return sum(evaluate(apply(w, move)) for w in worlds) / k
+    return max(legal_moves(state), key=avg)</code></pre>
+<p>The pitfall is the evaluation. PIMC treats each world as fully known, so it never values hiding or gathering information, and a flawed score gets amplified. Test it against a plain rule bot before trusting it.</p>
 <h2>What I'd do differently</h2>
 <ul>
 <li><strong>Learn the evaluation.</strong> It is the bottleneck. Distil search decisions and top teams' public games into a small value network, then widen the override gate as it earns it.</li>
